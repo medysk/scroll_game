@@ -55,6 +55,11 @@ public class CollisionDetection {
     objs.forEach( (objId, subject) -> {
       // 同じオブジェクトの場合、次のオブジェクトへ
       if( target == subject ) { return; }
+      // 不可視オブジェクトの場合、次のオブジェクトへ
+      if( subject instanceof FixedObj && ! ((FixedObj) subject).isVisivility() ) {
+        return;
+      }
+
       // 衝突していた場合、仮の衝突リストに入れる
       if( CollisionInfoAnalyzer.isCollided(target, subject) ) {
         preCollisionIds.add( subject.getObjId() );

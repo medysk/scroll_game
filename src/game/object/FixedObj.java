@@ -13,8 +13,29 @@ public abstract class FixedObj extends Obj {
   // ”j‰ó‰Â”\‚©H
   protected boolean isDestory;
 
+  /**
+   * ‰Šú‰»
+   * @param positionX
+   * @param positionY
+   */
   public FixedObj( int positionX, int positionY ) {
     super( positionX, positionY );
+  }
+
+  /**
+   * ‰Â‹‚©‚Ç‚¤‚©‚ğ•Ô‚·
+   * @return ‰Â‹‚¾‚Á‚½‚ç true
+   */
+  public boolean isVisivility() {
+    return isVisibility;
+  }
+
+  /**
+   * ”j‰ó‰Â”\‚©‚Ç‚¤‚©‚ğ•Ô‚·
+   * @return ”j‰ó‰Â”\‚È‚ç true
+   */
+  public boolean isDestory() {
+    return isDestory;
   }
 
   /* (”ñ Javadoc)
