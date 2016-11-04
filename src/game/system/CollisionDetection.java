@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import game.FieldPanel;
 import game.object.FixedObj;
 import game.object.MoveObj;
 import game.object.Obj;
@@ -23,7 +22,7 @@ import game.object.fixed.Uphill;
  * // 判定をしたいオブジェクトから呼び出して利用する
  * CollisionDetection cd = new CollisionDetection( this )
  * cd.execute(); // 衝突判定
- * isFlying = ! cd.onGround();
+ * isFlying = ! cd.onFixedObj();
  *
  * @author medysk
  *
@@ -69,7 +68,8 @@ public class CollisionDetection {
   }
 
   /**
-   * 衝突情報を格納したリストを巡回する
+   * 衝突情報を格納したリストを巡回し、コールバック関数の
+   * 引数に衝突情報を渡す
    * @param cons コールバック関数
    */
   public void forEach( Consumer<CollisionData> cons ) {
@@ -79,37 +79,63 @@ public class CollisionDetection {
     } );
   }
 
+  /**
+   * execute()を実行した時点で衝突を起こしているかどうか
+   * @return 衝突を起こしていたら true
+   */
   public boolean isCollided() {
     return ! collisionDataList.isEmpty();
   }
 
+  /**
+   * execute()を実行した時点で、キャラクターが" FixedObj に乗っているか
+   * @return FixedObj に乗っていれば true
+   */
   public boolean onFixedObj() {
-    return determinationProc( data -> {
+    return findCollisionData( data -> {
       return data.getSubject() instanceof FixedObj &&
           data.getSide() == Side.BOTTOM;
     });
   }
 
+  /**
+   * execute()を実行した時点で、キャラクターが" Ground に乗っているか
+   * @return Ground に乗っていれば true
+   */
   public boolean onGround() {
-    return determinationProc( data -> {
+    return findCollisionData( data -> {
       return data.getSubject() instanceof Ground &&
           data.getSide() == Side.BOTTOM;
     });
   }
 
+  /**
+   * execute()を実行した時点で、キャラクターが" Uphill と衝突を起こしているか
+   * @return 衝突を起こしていれば true
+   */
   public boolean onUphill() {
-    return determinationProc( data -> data.getSubject() instanceof Uphill );
+    return findCollisionData( data -> data.getSubject() instanceof Uphill );
   }
 
+  /**
+   * execute()を実行した時点で、キャラクターが" Downhill と衝突を起こしているか
+   * @return 衝突を起こしていれば true
+   */
   public boolean onDownhill() {
-    return determinationProc( data -> data.getSubject() instanceof Downhill );
+    return findCollisionData( data -> data.getSubject() instanceof Downhill );
   }
 
   // public (enum Side) collidingWith~~
 
   // ###  Private Methods  ###
 
-  private boolean determinationProc( Predicate<CollisionData> predicate ) {
+  /**
+   * 衝突リストを巡回し、衝突データをコールバック関数に渡す
+   * コールバック関数は、衝突データを受け取り条件を指定する(返り値はboolean型)
+   * @param predicate boolean型を返すコールバック関数
+   * @return コールバック関数が一度でも true を返すと true
+   */
+  private boolean findCollisionData( Predicate<CollisionData> predicate ) {
     // オブジェクトが衝突を起こしていなければ false
     if( ! isCollided() ) { return false; }
 
