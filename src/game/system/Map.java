@@ -88,8 +88,8 @@ public class Map {
     for(int i=0; i<5; i++) {
       Obj.create( new BrickBlock(i*30 + 800, 450) );
       Obj.create( new BrickBlock(i*30 + 200, 420) );
-      Obj.create( new RockBlock(i*30 + 400, 450) );
-      Obj.create( new RockBlock(i*30 + 400, 420) );
+      Obj.create( new RockBlock(i*30 + 400, 450, true) );
+      Obj.create( new RockBlock(i*30 + 400, 420, true) );
     }
   }
 
