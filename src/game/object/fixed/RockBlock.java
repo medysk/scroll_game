@@ -3,14 +3,27 @@ package game.object.fixed;
 import java.awt.Color;
 import java.awt.Graphics;
 
+/**
+ * 破壊できないブロック
+ * @author medysk
+ *
+ */
 public class RockBlock extends Block {
 
+  /**
+   * 設定の初期化
+   * @param positionX
+   * @param positionY
+   */
   public RockBlock(int positionX, int positionY, boolean isVisibility) {
     super(positionX, positionY);
-    this.isVisibility = isVisibility;
-    isDestory = false;
+    this.isVisibility = isVisibility;    // 可視ならtrue
+    isDestory = false;                   // 破壊可能ならtrue
   }
 
+  /* (非 Javadoc)
+   * @see game.object.fixed.Block#draw(java.awt.Graphics)
+   */
   @Override
   public void draw(Graphics g) {
     g.setColor( new Color(128, 128, 128) );
