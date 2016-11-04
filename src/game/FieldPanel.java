@@ -39,7 +39,7 @@ public class FieldPanel extends JPanel {
     super.paintComponent(g);
 
     // TODO: Backgroundクラスに処理を任せる
-    g.setColor( Color.BLACK );
+    g.setColor( new Color(30, 144, 255) );
     g.fillRect( 0, 0, getWidth(), getHeight() );
 
     // オブジェクトの描写
