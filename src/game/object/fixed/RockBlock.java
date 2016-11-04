@@ -5,9 +5,9 @@ import java.awt.Graphics;
 
 public class RockBlock extends Block {
 
-  public RockBlock(int positionX, int positionY) {
+  public RockBlock(int positionX, int positionY, boolean isVisibility) {
     super(positionX, positionY);
-    isVisibility = true;
+    this.isVisibility = isVisibility;
     isDestory = false;
   }
 
