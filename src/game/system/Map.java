@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import game.object.Obj;
+import game.object.fixed.BrickBlock;
+import game.object.fixed.RockBlock;
 import game.object.fixed.Downhill;
 import game.object.fixed.Flat;
 import game.object.fixed.Ground;
@@ -82,6 +84,13 @@ public class Map {
       }
     }
     Obj.create( new Uphill(2970, 640) );
+
+    for(int i=0; i<5; i++) {
+      Obj.create( new BrickBlock(i*30 + 800, 450) );
+      Obj.create( new BrickBlock(i*30 + 200, 420) );
+      Obj.create( new RockBlock(i*30 + 400, 450) );
+      Obj.create( new RockBlock(i*30 + 400, 420) );
+    }
   }
 
   private static void createMapInformation() {
