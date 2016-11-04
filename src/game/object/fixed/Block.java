@@ -10,7 +10,7 @@ import game.object.FixedObj;
  * @author medysk
  *
  */
-public class Block extends FixedObj {
+public abstract class Block extends FixedObj {
 
   /**
    * İ’è‚Ì‰Šú‰»
@@ -24,9 +24,14 @@ public class Block extends FixedObj {
     width = 30;
   }
 
+  /**
+   * Character‚ªBlock‚Ì’ê‚ÉÕ“Ë‚µ‚½Û‚Ìˆ—
+   */
+  public abstract void bottomAction();
+
   /* (”ñ Javadoc)
    * @see game.object.Obj#draw(java.awt.Graphics)
    */
   @Override
-  public void draw(Graphics g) {}
+  public abstract void draw(Graphics g);
 }

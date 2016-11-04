@@ -22,6 +22,17 @@ public class RockBlock extends Block {
   }
 
   /* (非 Javadoc)
+   * @see game.object.fixed.Block#bottomAction()
+   */
+  @Override
+  public void bottomAction() {
+    // ブロックが不可視だったら可視化
+    if( ! isVisibility ) {
+      isVisibility = true;
+    }
+  }
+
+  /* (非 Javadoc)
    * @see game.object.fixed.Block#draw(java.awt.Graphics)
    */
   @Override

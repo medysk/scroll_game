@@ -86,6 +86,7 @@ public class Map {
     Obj.create( new Uphill(2970, 640) );
 
     for(int i=0; i<5; i++) {
+//      Obj.create( new RockBlock(i*30 + 170, 420, false) );
       Obj.create( new BrickBlock(i*30 + 800, 450) );
       Obj.create( new BrickBlock(i*30 + 200, 420) );
       Obj.create( new RockBlock(i*30 + 400, 450, true) );

@@ -22,6 +22,17 @@ public class BrickBlock extends Block {
   }
 
   /* (非 Javadoc)
+   * @see game.object.fixed.Block#bottomAction()
+   */
+  @Override
+  public void bottomAction() {
+    // TODO: 破壊アニメーションを実装し呼び出す
+
+    // ゲームから除外
+    destructor(objId);
+  }
+
+  /* (非 Javadoc)
    * @see game.object.fixed.Block#draw(java.awt.Graphics)
    */
   @Override
@@ -40,5 +51,4 @@ public class BrickBlock extends Block {
                 positionX + width,
                 positionY + height / 2);
   }
-
 }
