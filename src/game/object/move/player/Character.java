@@ -47,7 +47,7 @@ public class Character extends MoveObj {
     action();
     super.move();
     cd.execute();
-    isFlying = ! cd.onGround();
+    isFlying = ! cd.onFixedObj();
     // à íuï‚ê≥
     positionCorrection();
     positionWithinLimit();

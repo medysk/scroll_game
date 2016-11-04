@@ -53,8 +53,7 @@ public abstract class MoveObj extends Obj {
         vectorY = maxFallVelocity;
       }
     } else {
-      vectorY = 0;
-//      vectorY = fallVelocity;
+      vectorY = fallVelocity;
     }
   }
 

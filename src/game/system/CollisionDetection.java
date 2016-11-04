@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import game.FieldPanel;
+import game.object.FixedObj;
 import game.object.MoveObj;
 import game.object.Obj;
 import game.object.fixed.Downhill;
@@ -80,6 +81,13 @@ public class CollisionDetection {
 
   public boolean isCollided() {
     return ! collisionDataList.isEmpty();
+  }
+
+  public boolean onFixedObj() {
+    return determinationProc( data -> {
+      return data.getSubject() instanceof FixedObj &&
+          data.getSide() == Side.BOTTOM;
+    });
   }
 
   public boolean onGround() {
