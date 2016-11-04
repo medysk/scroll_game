@@ -48,9 +48,22 @@ public class Character extends MoveObj {
     super.move();
     cd.execute();
     isFlying = ! cd.onFixedObj();
+
     // 位置補正
     positionCorrection();
     positionWithinLimit();
+
+    // 衝突処理
+    collisionHandling();
+  }
+
+  private void collisionHandling() {
+    cd.forEach( data -> {
+      // オブジェクトのTOPに衝突した かつ ジャンプ中(上昇中)
+      if( data.getSide() == Side.TOP && (isFlying && vectorY < 0) ) {
+        vectorY = 0;
+      }
+    } );
   }
 
   /**
@@ -133,20 +146,19 @@ public class Character extends MoveObj {
    * オブジェクトが重ならないようにする
    */
   private void positionCorrection() {
-    cd.forEach( obj -> {
-//      if( obj.getSubjectObj() instanceof Ground ) { return; }
-      switch (obj.getSide()) {
+    cd.forEach( data -> {
+      switch (data.getSide()) {
       case TOP:
-        positionY = obj.getCollisionPositionY();
+        positionY = data.getCollisionPositionY();
         break;
       case LEFT:
-        positionX = obj.getCollisionPositionX();
+        positionX = data.getCollisionPositionX();
         break;
       case BOTTOM:
-        positionY = obj.getCollisionPositionY();
+        positionY = data.getCollisionPositionY();
         break;
       case RIGHT:
-        positionX = obj.getCollisionPositionX();
+        positionX = data.getCollisionPositionX();
         break;
       }
     });
