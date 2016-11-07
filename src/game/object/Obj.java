@@ -133,8 +133,8 @@ public abstract class Obj {
   }
 
   public String getObjId() { return objId; }
-  public int getPositinX() { return positionX; }
-  public int getPositinY() { return positionY; }
+  public int getPositionX() { return positionX; }
+  public int getPositionY() { return positionY; }
   public int getWidth()    { return width; }
   public int getHeight()   { return height; }
 

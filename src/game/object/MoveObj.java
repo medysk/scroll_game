@@ -37,10 +37,16 @@ public abstract class MoveObj extends Obj {
    * オブジェクトを移動させるためのメソッド
    */
   public void move() {
-    prePositionX = positionX;
-    prePositionY = positionY;
     positionX += vectorX;
     positionY += vectorY;
+  }
+
+  /**
+   * 前回位置の更新
+   */
+  public void updatePrePosition() {
+    prePositionX = positionX;
+    prePositionY = positionY;
   }
 
   /**
@@ -70,7 +76,7 @@ public abstract class MoveObj extends Obj {
   public boolean isDownMove()  { return vectorY > 0; }
   public boolean isLeftMove()  { return vectorX < 0; }
 
-  // ###  Accessorss  ###
+  // ###  Accessors  ###
 
   /**
    * getter

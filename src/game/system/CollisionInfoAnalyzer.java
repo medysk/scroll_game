@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import game.FieldPanel;
+import game.object.FixedObj;
 import game.object.MoveObj;
 import game.object.Obj;
 import game.object.Trajectory;
@@ -44,6 +45,7 @@ public class CollisionInfoAnalyzer {
     // Trajectoryに使用する分母
     int denominator = Math.abs(target.getVectorX()) > Math.abs(target.getVectorY()) ?
         Math.abs(target.getVectorX()) : Math.abs(target.getVectorY());
+
     int targetMoveCount = 0;
     Obj subject;
     HashMap<String,Obj> objs = Obj.getInstances();
@@ -131,7 +133,7 @@ public class CollisionInfoAnalyzer {
     if( collisionMap.containsKey(side) ) {
       if( collisionMap.get(side).getSubject() instanceof Flat ) {
         int flatPositionY = collisionMap.get(side).getSubject().upperLeft().get("y");
-        if( flatPositionY <= hill.getPositinY() ) {
+        if( flatPositionY <= hill.getPositionY() ) {
           return side;
         }
       }
@@ -211,20 +213,25 @@ public class CollisionInfoAnalyzer {
       yLength = subject.lowerLeft().get("y") - target.upperLeft().get("y");
     }
 
-    if( xLength <= 1 && yLength <= 1 ) { return null; }
+    // 衝突した範囲が狭い場合に無効にする
+    if( subject instanceof MoveObj ) {
+      if( xLength <= 1 && yLength <= 1 ) { return null; }
+    } else if( subject instanceof FixedObj ) {
+      if( xLength <= 7 && yLength <= 1 ) { return null; }
+    }
 
     // 衝突したサイドを返す
     if( isRight ) {
       if( isTop ) {
-        return xLength < yLength ? Side.RIGHT : Side.TOP;
+        return xLength <= yLength ? Side.RIGHT : Side.TOP;
       } else {
-        return xLength < yLength ? Side.RIGHT : Side.BOTTOM;
+        return xLength <= yLength ? Side.RIGHT : Side.BOTTOM;
       }
     } else {
       if( isTop ) {
-        return xLength < yLength ? Side.LEFT : Side.TOP;
+        return xLength <= yLength ? Side.LEFT : Side.TOP;
       } else {
-        return xLength < yLength ? Side.LEFT : Side.BOTTOM;
+        return xLength <= yLength ? Side.LEFT : Side.BOTTOM;
       }
     }
   }
