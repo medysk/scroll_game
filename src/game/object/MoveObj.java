@@ -1,5 +1,10 @@
 package game.object;
 
+import java.util.function.Consumer;
+
+import game.system.CollisionData;
+import game.system.CollisionManager;
+
 /**
  * ゲームに描写するオブジェクトの内
  * 動作のあるオブジェクトのスーパークラス
@@ -19,9 +24,11 @@ public abstract class MoveObj extends Obj {
   protected int vectorY;
   protected int prePositionX; // 前回の位置
   protected int prePositionY;
+  protected CollisionManager cm;    // 衝突判定用クラス
 
   public MoveObj( int positionX, int positionY ) {
     super( positionX, positionY );
+    cm = new CollisionManager(this);
     setPrePositionX(positionX);
     setPrePositionY(positionY);
   }
@@ -31,7 +38,23 @@ public abstract class MoveObj extends Obj {
    */
   public void execute() {
     fall();
+    action();
+    move();
+
+    cm.execute();                 // 衝突判定
+    isFlying = ! cm.onFixedObj(); // 空中判定
+
+    positionCorrection();         // 位置補正
   }
+
+  // ###  Abstract methods  ###
+
+ /**
+   * MoveObjの動作を実装する
+   */
+  abstract protected void action();
+
+  // ###  Instance methods  ###
 
   /**
    * オブジェクトを移動させるためのメソッド
@@ -39,35 +62,6 @@ public abstract class MoveObj extends Obj {
   public void move() {
     positionX += vectorX;
     positionY += vectorY;
-  }
-
-  /**
-   * 前回位置の更新
-   */
-  public void updatePrePosition() {
-    prePositionX = positionX;
-    prePositionY = positionY;
-  }
-
-  /**
-  * 落下処理
-  */
-  public void fall() {
-    if( isFlying ) {
-      vectorY += fallVelocity;
-      if( vectorY > maxFallVelocity ) {
-        vectorY = maxFallVelocity;
-      }
-    } else {
-      vectorY = fallVelocity;
-    }
-  }
-
-  /**
-  * ジャンプ処理
-  */
-  public void jump() {
-    vectorY -= verticalLeap + Math.abs( vectorX / 2 );
   }
 
   // オブジェクトの移動確認用メソッド
@@ -79,7 +73,6 @@ public abstract class MoveObj extends Obj {
   // ###  Accessors  ###
 
   /**
-   * getter
    * @return オブジェクトが飛んでいればtrue
    */
   public boolean isFlying() {
@@ -102,4 +95,74 @@ public abstract class MoveObj extends Obj {
   public void setVectorX(int px) { vectorX = px; }
   public void setVectorY(int px) { vectorY = px; }
 
+  // ###  Protected methods  ###
+
+  /**
+  * ジャンプ処理
+  */
+  protected void jump() {
+    vectorY -= verticalLeap + Math.abs( vectorX / 2 );
+  }
+
+  /**
+   * 前回位置の更新
+   */
+  protected void updatePrePosition() {
+    prePositionX = positionX;
+    prePositionY = positionY;
+  }
+
+  /**
+   * MoveObjのサブクラスから、衝突処理を実装するときに利用する。
+   * @param cons 衝突処理のコールバック関数
+   */
+  protected void collisionHandling(Consumer<CollisionData> cons) {
+    cm.forEach( data -> {
+      cons.accept( data );
+    } );
+  }
+
+  // ###  Private methods  ###
+
+  /**
+  * 落下処理
+  */
+  private void fall() {
+    if( isFlying ) {
+      vectorY += fallVelocity;
+      if( vectorY > maxFallVelocity ) {
+        vectorY = maxFallVelocity;
+      }
+    } else {
+      vectorY = fallVelocity;
+    }
+  }
+
+  /**
+   * オブジェクトが重ならないようにする
+   */
+  private void positionCorrection() {
+    cm.forEach( data -> {
+      // 不可視オブジェクトの場合、次のdataへ
+      if( data.getSubject() instanceof FixedObj &&
+          ! ((FixedObj) data.getSubject()).isVisivility() ) {
+        return;
+      }
+
+      switch (data.getSide()) {
+      case TOP:
+        positionY = data.getCollisionPositionY();
+        break;
+      case LEFT:
+        positionX = data.getCollisionPositionX();
+        break;
+      case BOTTOM:
+        positionY = data.getCollisionPositionY();
+        break;
+      case RIGHT:
+        positionX = data.getCollisionPositionX();
+        break;
+      }
+    });
+  }
 }

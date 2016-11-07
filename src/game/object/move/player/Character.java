@@ -3,11 +3,9 @@ package game.object.move.player;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import game.object.fixed.Block;
 import game.object.FixedObj;
 import game.object.MoveObj;
 import game.system.CollisionData;
-import game.system.CollisionManager;
 import game.system.Key;
 import game.system.KeyState;
 import game.system.Map;
@@ -22,7 +20,6 @@ import game.system.Side;
 public class Character extends MoveObj {
   private KeyState keyState; // キーの状態(押されているかどうか)
   private Momentum momentum; // オブジェクトの勢いを調整するクラス
-  private CollisionManager cm;    // 衝突判定用クラス
 
   public Character( int positionX, int positionY, KeyState keyState ) {
     super( positionX, positionY );
@@ -35,7 +32,6 @@ public class Character extends MoveObj {
     fallVelocity = 1;
     maxFallVelocity = height - 1; //
     verticalLeap = 20;
-    cm = new CollisionManager(this);
     momentum = new Momentum( this ); // Momentumは破壊的な操作を行う
   }
 
@@ -45,96 +41,41 @@ public class Character extends MoveObj {
   @Override
   public void execute() {
     super.execute();
-    action();
-    super.move();
-    cm.execute();
-    isFlying = ! cm.onFixedObj();
 
-    // 衝突処理
-    collisionHandling();
-
-    // 位置補正
-    positionCorrection();
+    // マップの両端から出ないようにする
     positionWithinLimit();
 
-    updatePrePosition();
-  }
-
-  private void collisionHandling() {
-    cm.forEach( data -> {
+    // 衝突処理
+    collisionHandling( data -> {
       // 衝突したオブジェクトがFixedObjかMoveObjかで、処理を分ける
       if( data.getSubject() instanceof FixedObj ) {
-        collisionHandlingForFixedObj( data );
+        collisionHandlingForFixedObj(data);
       } else if( data.getSubject() instanceof MoveObj ) {
-        collisionHandlingForMoveObj( data );
+        collisionHandlingForMoveObj(data);
       }
-    } );
-  }
+    });
 
-  private void collisionHandlingForFixedObj( CollisionData data ) {
-    // オブジェクトのTOPに衝突した かつ ジャンプ中(上昇中)
-    if( data.getSide() == Side.TOP && (isFlying && vectorY < 0) ) {
-
-      ((FixedObj) data.getSubject()).bottomAction();
-
-      vectorY = - vectorY / 3; // 頭がぶつかり跳ね返る
-    }
-  }
-
-  private void collisionHandlingForMoveObj( CollisionData data ) {
+    // 位置補正後に前回位置を更新
+    updatePrePosition();
 
   }
 
-  /**
-   * リミット外に移動できないようにする
+  /* (非 Javadoc)
+   * @see game.object.MoveObj#execute()
    */
-  private void positionWithinLimit() {
-    if( positionX < Map.getLeftLimit() ) {
-      positionX = Map.getLeftLimit();
-    } else if( (positionX + width) > Map.getRightLimit() ) {
-      positionX = Map.getRightLimit() - width;
-    }
-
-//    if( isFlying ) { return; }
-//
-//    int leftSoleLimit;
-//    int centerSoleLimit;
-//    int rightSoleLimit;
-//    try {
-//      leftSoleLimit = Map.getLowerLimit(positionX);
-//    } catch( NullPointerException e ) {
-//      leftSoleLimit = FieldPanel.HEIGHT + height;
-//    }
-//    try {
-//      centerSoleLimit = Map.getLowerLimit(positionX + width / 2);
-//    } catch( NullPointerException e ) {
-//      centerSoleLimit = FieldPanel.HEIGHT + height;
-//    }
-//    try {
-//      rightSoleLimit = Map.getLowerLimit(positionX + width);
-//    } catch ( NullPointerException e) {
-//      rightSoleLimit = FieldPanel.HEIGHT + height;
-//    }
-//
-//    int sole = positionY + height;
-//    if( cd.onUphill() || cd.onDownhill() ) {
-//      if( sole > centerSoleLimit ) {
-//        positionY = centerSoleLimit - height;
-//      }
-//      return;
-//    }
-//    if( sole > leftSoleLimit ) {
-//      positionY = leftSoleLimit - height;
-//    }
-//    if( sole > rightSoleLimit ) {
-//      positionY = rightSoleLimit - height;
-//    }
+  @Override
+  public void draw( Graphics g ) {
+    g.setColor( Color.BLUE );
+    g.fillRect( positionX, positionY, width, height );
   }
 
-  /**
-   * キャラクターの動作
+  // ###  Protected methods  ###
+
+  /* (非 Javadoc)
+   * @see game.object.MoveObj#action()
    */
-  public void action() {
+  @Override
+  protected void action() {
     if( keyState.isKeyPressed( Key.RIGHT.getName() ) ) {
       momentum.rightVectorIncrease();
     } else if( isRightMove() ) {
@@ -152,41 +93,40 @@ public class Character extends MoveObj {
     }
   }
 
-  /* (非 Javadoc)
-   * @see game.object.MoveObj#execute()
+  // ###  Private methods  ###
+
+  /**
+   * FixedObjとの衝突時処理
+   * @param data 衝突情報
    */
-  @Override
-  public void draw( Graphics g ) {
-    g.setColor( Color.BLUE );
-    g.fillRect( positionX, positionY, width, height );
+  private void collisionHandlingForFixedObj( CollisionData data ) {
+    // オブジェクトのTOPに衝突した かつ ジャンプ中(上昇中)
+    if( data.getSide() == Side.TOP && (isFlying && vectorY < 0) ) {
+
+      ((FixedObj) data.getSubject()).bottomAction();
+
+      vectorY = - vectorY / 3; // 頭がぶつかり跳ね返る
+    }
   }
 
   /**
-   * オブジェクトが重ならないようにする
+   * MoveObjとの衝突時処理
+   * @param data 衝突情報
    */
-  private void positionCorrection() {
-    cm.forEach( data -> {
-      // 不可視オブジェクトの場合、次のdataへ
-      if( data.getSubject() instanceof FixedObj &&
-          ! ((FixedObj) data.getSubject()).isVisivility() ) {
-        return;
-      }
+  private void collisionHandlingForMoveObj( CollisionData data ) {
+    // TODO: 敵キャラ作成後に実装
+  }
 
-      switch (data.getSide()) {
-      case TOP:
-        positionY = data.getCollisionPositionY();
-        break;
-      case LEFT:
-        positionX = data.getCollisionPositionX();
-        break;
-      case BOTTOM:
-        positionY = data.getCollisionPositionY();
-        break;
-      case RIGHT:
-        positionX = data.getCollisionPositionX();
-        break;
-      }
-    });
+
+  /**
+   * リミット外に移動できないようにする
+   */
+  private void positionWithinLimit() {
+    if( positionX < Map.getLeftLimit() ) {
+      positionX = Map.getLeftLimit();
+    } else if( (positionX + width) > Map.getRightLimit() ) {
+      positionX = Map.getRightLimit() - width;
+    }
   }
 }
 
