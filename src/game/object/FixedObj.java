@@ -23,6 +23,18 @@ public abstract class FixedObj extends Obj {
   }
 
   /**
+   * Characterがオブジェクトの底に衝突した際の処理
+   */
+  public abstract void bottomAction();
+
+  /**
+   * 可視化
+   */
+  public void visivility() {
+    isVisibility = true;
+  }
+
+  /**
    * 可視かどうかを返す
    * @return 可視だったら true
    */

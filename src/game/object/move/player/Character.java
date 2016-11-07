@@ -3,9 +3,10 @@ package game.object.move.player;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import game.FieldPanel;
+import game.object.fixed.Block;
+import game.object.FixedObj;
 import game.object.MoveObj;
-import game.object.fixed.Ground;
+import game.system.CollisionData;
 import game.system.CollisionDetection;
 import game.system.Key;
 import game.system.KeyState;
@@ -27,8 +28,8 @@ public class Character extends MoveObj {
     super( positionX, positionY );
     this.keyState = keyState;
     // TODO: 設定ファイルから読み込む
-    height = 60;
-    width = 30;
+    height = 50;
+    width = 28;
     minSpeed = 1;
     maxSpeed = 10;
     fallVelocity = 1;
@@ -49,21 +50,39 @@ public class Character extends MoveObj {
     cd.execute();
     isFlying = ! cd.onFixedObj();
 
+    // 衝突処理
+    collisionHandling();
+
     // 位置補正
     positionCorrection();
     positionWithinLimit();
 
-    // 衝突処理
-    collisionHandling();
+    updatePrePosition();
   }
 
   private void collisionHandling() {
     cd.forEach( data -> {
-      // オブジェクトのTOPに衝突した かつ ジャンプ中(上昇中)
-      if( data.getSide() == Side.TOP && (isFlying && vectorY < 0) ) {
-        vectorY = 0;
+      // 衝突したオブジェクトがFixedObjかMoveObjかで、処理を分ける
+      if( data.getSubject() instanceof FixedObj ) {
+        collisionHandlingForFixedObj( data );
+      } else if( data.getSubject() instanceof MoveObj ) {
+        collisionHandlingForMoveObj( data );
       }
     } );
+  }
+
+  private void collisionHandlingForFixedObj( CollisionData data ) {
+    // オブジェクトのTOPに衝突した かつ ジャンプ中(上昇中)
+    if( data.getSide() == Side.TOP && (isFlying && vectorY < 0) ) {
+
+      ((FixedObj) data.getSubject()).bottomAction();
+
+      vectorY = - vectorY / 3; // 頭がぶつかり跳ね返る
+    }
+  }
+
+  private void collisionHandlingForMoveObj( CollisionData data ) {
+
   }
 
   /**
@@ -147,6 +166,12 @@ public class Character extends MoveObj {
    */
   private void positionCorrection() {
     cd.forEach( data -> {
+      // 不可視オブジェクトの場合、次のdataへ
+      if( data.getSubject() instanceof FixedObj &&
+          ! ((FixedObj) data.getSubject()).isVisivility() ) {
+        return;
+      }
+
       switch (data.getSide()) {
       case TOP:
         positionY = data.getCollisionPositionY();

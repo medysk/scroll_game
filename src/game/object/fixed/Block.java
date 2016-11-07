@@ -24,11 +24,6 @@ public abstract class Block extends FixedObj {
     width = 30;
   }
 
-  /**
-   * Character‚ªBlock‚Ì’ê‚ÉÕ“Ë‚µ‚½Û‚Ìˆ—
-   */
-  public abstract void bottomAction();
-
   /* (”ñ Javadoc)
    * @see game.object.Obj#draw(java.awt.Graphics)
    */

@@ -54,10 +54,6 @@ public class CollisionDetection {
     objs.forEach( (objId, subject) -> {
       // 同じオブジェクトの場合、次のオブジェクトへ
       if( target == subject ) { return; }
-      // 不可視オブジェクトの場合、次のオブジェクトへ
-      if( subject instanceof FixedObj && ! ((FixedObj) subject).isVisivility() ) {
-        return;
-      }
 
       // 衝突していた場合、仮の衝突リストに入れる
       if( CollisionInfoAnalyzer.isCollided(target, subject) ) {
@@ -98,7 +94,9 @@ public class CollisionDetection {
    */
   public boolean onFixedObj() {
     return findCollisionData( data -> {
+      // FixedObj かつ 可視オブジェクト かつ 足下
       return data.getSubject() instanceof FixedObj &&
+          ((FixedObj) data.getSubject()).isVisivility() &&
           data.getSide() == Side.BOTTOM;
     });
   }
@@ -130,7 +128,15 @@ public class CollisionDetection {
     return findCollisionData( data -> data.getSubject() instanceof Downhill );
   }
 
-  // public (enum Side) collidingWith~~
+  // ###  Accessorss  ###
+
+  /**
+   * getter
+   * @return 衝突リスト
+   */
+  public List<CollisionData> getCollisionDataList() {
+    return collisionDataList;
+  }
 
   // ###  Private Methods  ###
 
