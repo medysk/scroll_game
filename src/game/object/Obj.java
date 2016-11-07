@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import game.object.move.player.Character;
 import game.object.background.Background;
 import game.object.fixed.Ground;
 
@@ -28,6 +29,8 @@ public abstract class Obj {
   private static final List<String> fixedObjOtherGroundIds = new ArrayList<>();
   private static final List<String> groundIds = new ArrayList<>();
   private static final List<String> backgroundIds = new ArrayList<>();
+
+  private static Character character;
 
   // ###  instance変数  ###
   // オブジェクトの一意なID
@@ -64,6 +67,9 @@ public abstract class Obj {
   }
   // ###  Static Methods  ###
   public static Obj create( Obj obj ) {
+    if( obj instanceof Character ) {
+      character = (Character) obj;
+    }
     instances.put( obj.getObjId(), obj );
     storeId( obj );
     return obj;
@@ -116,6 +122,9 @@ public abstract class Obj {
 
   // ### Accessors ###
 
+  public static Character getCharacter() {
+    return character;
+  }
   public static HashMap<String,Obj> getInstances() {
     return instances;
   }

@@ -10,6 +10,7 @@ import game.object.fixed.Downhill;
 import game.object.fixed.Flat;
 import game.object.fixed.Ground;
 import game.object.fixed.Uphill;
+import game.object.move.enemy.Enemy;
 
 /**
  * ゲームのマップをマップファイルから読み込む
@@ -98,6 +99,11 @@ public class Map {
     for(int i=0; i<8; i++) {
       Obj.create( new Flat( 0, i*30 + 460 ) );
     }
+
+    // 敵キャラ
+    Obj.create( new Enemy(400, 300) );
+    Obj.create( new Enemy(1000, 300) );
+    Obj.create( new Enemy(1500, 300) );
   }
 
   private static void createMapInformation() {

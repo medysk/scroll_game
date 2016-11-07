@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import game.Frame;
 import game.FieldPanel;
+import game.object.MoveObj;
 import game.object.Obj;
 import game.object.move.player.Character;
 import game.system.FrameManagement;
@@ -17,7 +18,7 @@ import game.system.Map;
  */
 public class Game implements Runnable {
   private static Frame frame;           // GUI用のフレーム
-  private static FieldPanel fieldPanel;       // ゲーム描写用のメインパネル
+  private static FieldPanel fieldPanel; // ゲーム描写用のメインパネル
   private static Character character;   // 自キャラ
   private static KeyState keyState;     // キー入力管理
   private static Thread game;           // スレッド用クラス
@@ -52,7 +53,11 @@ public class Game implements Runnable {
 
     while(true) {
       FrameManagement.increment();
-      character.execute();
+
+      Obj.getMoveObjIds().forEach( id -> {
+        ((MoveObj) Obj.getInstances().get(id)).execute();
+      });
+
       fieldPanel.repaint();      // メインパネルの再描写
 
       // ゲームの速度に影響する処理
