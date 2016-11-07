@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 import javax.swing.JPanel;
 
+import game.object.FixedObj;
 import game.object.Obj;
 import game.object.move.player.Character;
 import game.system.Map;
@@ -49,22 +50,27 @@ public class FieldPanel extends JPanel {
 
     // オブジェクトの描写
     objs.forEach( (k, obj) -> {
+      // 不可視オブジェクトの場合、描写しない
+      if( obj instanceof FixedObj && ! ((FixedObj)obj).isVisivility() ) {
+        return;
+      }
+
       // 画面外のオブジェクトは描写しない
-      if( character.getPositinX() + WIDTH / 2 < obj.getPositinX() &&
-          character.getPositinX() - WIDTH / 2 > obj.getPositinX() + obj.getWidth() ) {
+      if( character.getPositionX() + WIDTH / 2 < obj.getPositionX() &&
+          character.getPositionX() - WIDTH / 2 > obj.getPositionX() + obj.getWidth() ) {
         return;
       }
 
       // キャラクターに合わせてマップをスライドさせる
-      if( character.getPositinX() < (WIDTH / 2) ) {
+      if( character.getPositionX() < (WIDTH / 2) ) {
         obj.draw( g.create() );
-      } else if( character.getPositinX() > (Map.getRightLimit() - WIDTH / 2) ) {
+      } else if( character.getPositionX() > (Map.getRightLimit() - WIDTH / 2) ) {
         Graphics ng = g.create();
         ng.translate( - Map.getRightLimit() + (WIDTH), 0);
         obj.draw(ng);
       } else {
         Graphics ng = g.create();
-        ng.translate(- character.getPositinX() + (WIDTH / 2), 0);
+        ng.translate(- character.getPositionX() + (WIDTH / 2), 0);
         obj.draw(ng);
       }
     } );
