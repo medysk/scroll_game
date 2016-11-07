@@ -74,7 +74,7 @@ public class Map {
       Obj.create( new Flat( i*30, 670 ) );
     }
     for(int i=0; i<=30; i++) {
-      if(i*30+300 >= 900 && i*30+300 <= 990) continue;
+        if(i*30+300 >= 900 && i*30+300 <= 990) continue; // 穴
       if( i == 0 ) {
         Obj.create( new Uphill( i*30 + 300, 640 ) );
       } else if( i == 30) {
@@ -86,11 +86,17 @@ public class Map {
     Obj.create( new Uphill(2970, 640) );
 
     for(int i=0; i<5; i++) {
-//      Obj.create( new RockBlock(i*30 + 170, 420, false) );
-      Obj.create( new BrickBlock(i*30 + 800, 450) );
+      Obj.create( new BrickBlock(i*30 + 650, 480) );
       Obj.create( new BrickBlock(i*30 + 200, 420) );
       Obj.create( new RockBlock(i*30 + 400, 450, true) );
       Obj.create( new RockBlock(i*30 + 400, 420, true) );
+      if( i < 2 ) {
+        Obj.create( new RockBlock(i*30 + 890, 500, false) );
+      }
+    }
+
+    for(int i=0; i<8; i++) {
+      Obj.create( new Flat( 0, i*30 + 460 ) );
     }
   }
 
@@ -100,8 +106,8 @@ public class Map {
     rightLimit = 0;
 
     groundIds.forEach( id -> {
-      int x = objs.get(id).getPositinX();
-      int y = objs.get(id).getPositinY();
+      int x = objs.get(id).getPositionX();
+      int y = objs.get(id).getPositionY();
 
       // マップ右端
       if( rightLimit  < x + objs.get(id).getWidth() ) {
@@ -120,15 +126,15 @@ public class Map {
   }
 
   private static void inputLowerLimit( Ground ground ) {
-    int x = ground.getPositinX();
+    int x = ground.getPositionX();
     for( int i=0; i<ground.getWidth(); i++ ) {
       if( ground instanceof Flat ) {
-        lowerLimit.put( x + i, ground.getPositinY() );
+        lowerLimit.put( x + i, ground.getPositionY() );
       } else if( ground instanceof Uphill ) {
-        int y = ground.getPositinY() - i + ground.getHeight();
+        int y = ground.getPositionY() - i + ground.getHeight();
         lowerLimit.put( x + i, y );
       } else if( ground instanceof Downhill ) {
-        lowerLimit.put( x + i, ground.getPositinY() + i );
+        lowerLimit.put( x + i, ground.getPositionY() + i );
       }
     }
   }
