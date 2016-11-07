@@ -7,7 +7,7 @@ import game.object.fixed.Block;
 import game.object.FixedObj;
 import game.object.MoveObj;
 import game.system.CollisionData;
-import game.system.CollisionDetection;
+import game.system.CollisionManager;
 import game.system.Key;
 import game.system.KeyState;
 import game.system.Map;
@@ -22,7 +22,7 @@ import game.system.Side;
 public class Character extends MoveObj {
   private KeyState keyState; // キーの状態(押されているかどうか)
   private Momentum momentum; // オブジェクトの勢いを調整するクラス
-  private CollisionDetection cd;    // 衝突判定用クラス
+  private CollisionManager cm;    // 衝突判定用クラス
 
   public Character( int positionX, int positionY, KeyState keyState ) {
     super( positionX, positionY );
@@ -35,7 +35,7 @@ public class Character extends MoveObj {
     fallVelocity = 1;
     maxFallVelocity = height - 1; //
     verticalLeap = 20;
-    cd = new CollisionDetection(this);
+    cm = new CollisionManager(this);
     momentum = new Momentum( this ); // Momentumは破壊的な操作を行う
   }
 
@@ -47,8 +47,8 @@ public class Character extends MoveObj {
     super.execute();
     action();
     super.move();
-    cd.execute();
-    isFlying = ! cd.onFixedObj();
+    cm.execute();
+    isFlying = ! cm.onFixedObj();
 
     // 衝突処理
     collisionHandling();
@@ -61,7 +61,7 @@ public class Character extends MoveObj {
   }
 
   private void collisionHandling() {
-    cd.forEach( data -> {
+    cm.forEach( data -> {
       // 衝突したオブジェクトがFixedObjかMoveObjかで、処理を分ける
       if( data.getSubject() instanceof FixedObj ) {
         collisionHandlingForFixedObj( data );
@@ -165,7 +165,7 @@ public class Character extends MoveObj {
    * オブジェクトが重ならないようにする
    */
   private void positionCorrection() {
-    cd.forEach( data -> {
+    cm.forEach( data -> {
       // 不可視オブジェクトの場合、次のdataへ
       if( data.getSubject() instanceof FixedObj &&
           ! ((FixedObj) data.getSubject()).isVisivility() ) {

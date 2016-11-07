@@ -27,7 +27,7 @@ import game.object.fixed.Uphill;
  * @author medysk
  *
  */
-public class CollisionDetection {
+public class CollisionManager {
   // 衝突が起こった際に、衝突状況を格納する
   private List<CollisionData> collisionDataList;
   // 衝突判定を行う対象のオブジェクト
@@ -39,7 +39,7 @@ public class CollisionDetection {
   /**
    * @param obj 衝突判定を行いたいオブジェクト
    */
-  public CollisionDetection(MoveObj target) {
+  public CollisionManager(MoveObj target) {
     this.target = target;
   }
 
