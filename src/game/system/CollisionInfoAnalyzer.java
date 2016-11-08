@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-import game.FieldPanel;
+import game.MapPanel;
 import game.object.FixedObj;
 import game.object.MoveObj;
 import game.object.Obj;
@@ -148,7 +148,7 @@ public class CollisionInfoAnalyzer {
     try {
       centerSoleLimit = Map.getLowerLimit(centerSolePositionX);
     } catch( NullPointerException e ) {
-      centerSoleLimit = FieldPanel.HEIGHT + target.getHeight();
+      centerSoleLimit = MapPanel.HEIGHT + target.getHeight();
     }
     if( centerSolePositionY > centerSoleLimit ) {
       return new CollisionData(target.getMoveObj(), subject, Side.BOTTOM,

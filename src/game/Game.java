@@ -3,7 +3,7 @@ package game;
 import java.util.concurrent.TimeUnit;
 
 import game.Frame;
-import game.FieldPanel;
+import game.MapPanel;
 import game.object.MoveObj;
 import game.object.Obj;
 import game.object.move.player.Character;
@@ -18,7 +18,7 @@ import game.system.Map;
  */
 public class Game implements Runnable {
   private static Frame frame;           // GUI用のフレーム
-  private static FieldPanel fieldPanel; // ゲーム描写用のメインパネル
+  private static MapPanel fieldPanel; // ゲーム描写用のメインパネル
   private static Character character;   // 自キャラ
   private static KeyState keyState;     // キー入力管理
   private static Thread game;           // スレッド用クラス
@@ -27,7 +27,7 @@ public class Game implements Runnable {
   static {
     Map.create();
     frame = new Frame();
-    fieldPanel = new FieldPanel();
+    fieldPanel = new MapPanel();
     keyState = new KeyState();
     fieldPanel.addKeyListener(keyState);
     character = (Character) Obj.create( new Character( 20, 20, keyState ) ); // TODO: 初期位置は設定ファイルから読み込む
