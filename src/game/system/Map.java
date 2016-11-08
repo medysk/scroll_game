@@ -102,8 +102,8 @@ public class Map {
 
     // “GƒLƒƒƒ‰
     Obj.create( new Enemy(400, 300) );
-    Obj.create( new Enemy(1000, 300) );
-    Obj.create( new Enemy(1500, 300) );
+    Obj.create( new Enemy(2300, 300) );
+    Obj.create( new Enemy(2500, 300) );
   }
 
   private static void createMapInformation() {

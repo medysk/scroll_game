@@ -29,7 +29,7 @@ public class BrickBlock extends Block {
     // TODO: 破壊アニメーションを実装し呼び出す
 
     // ゲームから除外
-    destructor(objId);
+    destructor();
   }
 
   /* (非 Javadoc)

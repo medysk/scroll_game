@@ -4,6 +4,7 @@ import java.rmi.server.UID;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import game.object.move.player.Character;
 import game.object.background.Background;
@@ -25,8 +26,9 @@ public abstract class Obj {
   private static final HashMap<String,Obj> instances = new HashMap<>();
 
   // サブクラスをインスタンス化する際に種類別にIDを格納する
-  private static final List<String> moveObjIds = new ArrayList<>();
-  private static final List<String> fixedObjOtherGroundIds = new ArrayList<>();
+  // moveObjIdsを走査中にリストの削除をしたいのでスレッドセーフにする
+  private static final List<String> moveObjIds = new CopyOnWriteArrayList<>();
+  private static final List<String> fixedObjOtherGroundIds = new CopyOnWriteArrayList<>();
   private static final List<String> groundIds = new ArrayList<>();
   private static final List<String> backgroundIds = new ArrayList<>();
 
@@ -109,8 +111,9 @@ public abstract class Obj {
    * インスタンス削除用メソッド
    * @param id Objサブクラスのインスタンスに一意に与えられるobjIdを渡す
    */
-  public void destructor(String id) {
-    instances.remove(id);
+  public void destructor() {
+    deleteId(this);
+    instances.remove(this.objId);
   }
 
   /**
@@ -168,6 +171,22 @@ public abstract class Obj {
       groundIds.add( obj.getObjId() );
     } else if( obj instanceof FixedObj ) {
       fixedObjOtherGroundIds.add( obj.getObjId() );
+    }
+  }
+
+  /**
+   *
+   * @param obj
+   */
+  private static void deleteId(Obj obj) {
+    if( obj instanceof MoveObj ) {
+      moveObjIds.remove( obj.getObjId() );
+    } else if( obj instanceof Background ) {
+      backgroundIds.remove( obj.getObjId() );
+    } else if( obj instanceof Ground ) {  // GroundクラスはFixedObjのサブクラス
+      groundIds.remove( obj.getObjId() );
+    } else if( obj instanceof FixedObj ) {
+      fixedObjOtherGroundIds.remove( obj.getObjId() );
     }
   }
 }

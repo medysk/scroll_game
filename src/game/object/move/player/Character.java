@@ -5,6 +5,7 @@ import java.awt.Graphics;
 
 import game.object.FixedObj;
 import game.object.MoveObj;
+import game.object.move.enemy.Enemy;
 import game.system.CollisionData;
 import game.system.Key;
 import game.system.KeyState;
@@ -114,7 +115,23 @@ public class Character extends MoveObj {
    * @param data Õ“Ëî•ñ
    */
   private void collisionHandlingForMoveObj( CollisionData data ) {
-    // TODO: “GƒLƒƒƒ‰ì¬Œã‚ÉÀ‘•
+    if( ! (data.getSubject() instanceof Enemy) ) {
+      return;
+    }
+
+    if( data.getSide() == Side.BOTTOM ) {
+      // “¥‚ñ‚¾‚ç“G‚ğ“|‚·
+      if( keyState.isKeyPressed( Key.UP.getName() ) ) {
+        vectorY = - verticalLeap - vectorY / 3;
+      } else {
+        vectorY = - vectorY / 3;
+      }
+
+      data.getSubject().destructor();
+    } else {
+      // TODO: GameOverƒƒWƒbƒN‚ğÀ‘•‚·‚é
+      destructor();
+    }
   }
 
 

@@ -54,9 +54,9 @@ public abstract class FixedObj extends Obj {
    * @see game.object.Obj#destructor()
    */
   @Override
-  public void destructor(String id) {
+  public void destructor() {
     if( isDestory ) {
-      super.destructor(id);
+      super.destructor();
     }
   }
 }
