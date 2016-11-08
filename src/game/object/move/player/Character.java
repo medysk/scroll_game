@@ -5,7 +5,7 @@ import java.awt.Graphics;
 
 import game.object.FixedObj;
 import game.object.MoveObj;
-import game.object.move.enemy.Enemy;
+import game.object.move.enemy.Enemy1;
 import game.system.CollisionData;
 import game.system.Key;
 import game.system.KeyState;
@@ -115,7 +115,7 @@ public class Character extends MoveObj {
    * @param data è’ìÀèÓïÒ
    */
   private void collisionHandlingForMoveObj( CollisionData data ) {
-    if( ! (data.getSubject() instanceof Enemy) ) {
+    if( ! (data.getSubject() instanceof Enemy1) ) {
       return;
     }
 

@@ -10,7 +10,7 @@ import game.object.fixed.Downhill;
 import game.object.fixed.Flat;
 import game.object.fixed.Ground;
 import game.object.fixed.Uphill;
-import game.object.move.enemy.Enemy;
+import game.object.move.enemy.Enemy1;
 
 /**
  * ゲームのマップをマップファイルから読み込む
@@ -101,9 +101,9 @@ public class Map {
     }
 
     // 敵キャラ
-    Obj.create( new Enemy(400, 300) );
-    Obj.create( new Enemy(2300, 300) );
-    Obj.create( new Enemy(2500, 300) );
+    Obj.create( new Enemy1(400, 300) );
+    Obj.create( new Enemy1(2300, 300) );
+    Obj.create( new Enemy1(2500, 300) );
   }
 
   private static void createMapInformation() {

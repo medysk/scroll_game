@@ -14,14 +14,14 @@ import game.system.Side;
  * @author medysk
  *
  */
-public class Enemy extends MoveObj {
+public class Enemy1 extends MoveObj {
 
   /**
    * İ’è‚Ì‰Šú‰»
    * @param positionX ‰ŠúˆÊ’u
    * @param positionY
    */
-  public Enemy(int positionX, int positionY) {
+  public Enemy1(int positionX, int positionY) {
     super(positionX, positionY);
     height = 28;
     width = 28;
