@@ -16,7 +16,7 @@ import game.system.Map;
  * @author medysk
  *
  */
-public class Game implements Runnable {
+public class Stage implements Runnable {
   private static Frame frame;           // GUI用のフレーム
   private static MapPanel mapPanel; // ゲーム描写用のメインパネル
   private static Character character;   // 自キャラ
@@ -39,7 +39,7 @@ public class Game implements Runnable {
    */
   public static void main(String[] args){
     FrameManagement.increment();
-    game = new Thread( new Game() );
+    game = new Thread( new Stage() );
 
     frame.setParams( mapPanel );
     game.start();
@@ -63,7 +63,6 @@ public class Game implements Runnable {
       // ゲームの速度に影響する処理
       // TODO: ゲームの基本機能を実装したのち、調整する また、設定ファイルから読み込む
       try {
-//        TimeUnit.MILLISECONDS.sleep(15);
         TimeUnit.MILLISECONDS.sleep(15);
       } catch( InterruptedException e ) {
         e.printStackTrace();
