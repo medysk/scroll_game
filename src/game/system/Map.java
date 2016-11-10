@@ -107,7 +107,7 @@ public class Map {
   }
 
   private static void createMapInformation() {
-    groundIds = Obj.getGroundIds();
+    groundIds = Obj.groundIds();
     leftLimit = 0;
     rightLimit = 0;
 

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Predicate;
 
 import game.object.move.player.Character;
 import game.object.background.Background;
@@ -20,19 +21,11 @@ import java.awt.Graphics;
  * @author medysk
  *
  */
-public abstract class Obj {
+public abstract class Obj  implements Cloneable {
   // ###  static変数  ###
+
   // サブクラスをインスタンス化する際にこの変数に格納する
-  private static final HashMap<String,Obj> instances = new HashMap<>();
-
-  // サブクラスをインスタンス化する際に種類別にIDを格納する
-  // moveObjIdsを走査中にリストの削除をしたいのでスレッドセーフにする
-  private static final List<String> moveObjIds = new CopyOnWriteArrayList<>();
-  private static final List<String> fixedObjOtherGroundIds = new CopyOnWriteArrayList<>();
-  private static final List<String> groundIds = new ArrayList<>();
-  private static final List<String> backgroundIds = new ArrayList<>();
-
-  private static Character character;
+  private static HashMap<String,Obj> instances = new HashMap<>();
 
   // ###  instance変数  ###
   // オブジェクトの一意なID
@@ -67,17 +60,72 @@ public abstract class Obj {
     setPosition( positionX, positionY );
     objId = new UID().toString();
   }
+  // ########################
   // ###  Static Methods  ###
+  // ########################
+
   public static Obj create( Obj obj ) {
-    if( obj instanceof Character ) {
-      character = (Character) obj;
-    }
     instances.put( obj.getObjId(), obj );
-    storeId( obj );
     return obj;
   }
 
+  public static void overwriteInstances(HashMap<String,Obj> cpInstances) {
+    instances.clear();
+
+    cpInstances.forEach( (id,obj) -> {
+      try {
+        instances.put(id, (Obj) obj.clone() );
+      } catch (CloneNotSupportedException e) {
+        e.printStackTrace();
+      }
+    });
+  }
+
+  public static Character getCharacter() {
+    for(Obj obj : instances.values()) {
+      if( obj instanceof Character ) {
+        return (Character) obj;
+      }
+    }
+    return null;
+  }
+
+  public static HashMap<String,Obj> getInstances() {
+    return instances;
+  }
+
+  public static CopyOnWriteArrayList<String> moveObjIds() {
+    List<String> ids = selectIds( obj -> obj instanceof MoveObj );
+    return new CopyOnWriteArrayList<String>(ids);
+  }
+
+  public static List<String> backgroundIds() {
+    return selectIds( obj -> obj instanceof Background );
+  }
+
+  public static List<String> groundIds() {
+    return selectIds( obj -> obj instanceof Ground );
+  }
+
+  public static List<String> fixedObjOtherGroundIds() {
+    return selectIds( obj -> {
+      return ! (obj instanceof Ground) && obj instanceof FixedObj;
+    });
+  }
+
+  private static List<String> selectIds(Predicate<Obj> predicate) {
+    List<String> list = new ArrayList<>();
+    instances.forEach( (id,obj) -> {
+      if( predicate.test(obj) ) {
+        list.add(id);
+      }
+    });
+    return list;
+  }
+
+  // ##########################
   // ###  Instance Methods  ###
+  // ##########################
 
   public HashMap<String,Integer> upperLeft() {
     return new HashMap<String,Integer>(){ {
@@ -108,40 +156,21 @@ public abstract class Obj {
   }
 
   /**
-   * インスタンス削除用メソッド
-   * @param id Objサブクラスのインスタンスに一意に与えられるobjIdを渡す
+   * インスタンス削除
    */
   public void destructor() {
-    deleteId(this);
     instances.remove(this.objId);
   }
 
   /**
-   * オブジェクトのグラフィック用メソッド
+   * オブジェクトのグラフィック
    * @param g
    */
   public abstract void draw(Graphics g);
 
-
-  // ### Accessors ###
-
-  public static Character getCharacter() {
-    return character;
-  }
-  public static HashMap<String,Obj> getInstances() {
-    return instances;
-  }
-  public static List<String> getMoveObjIds() {
-    return moveObjIds;
-  }
-  public static List<String> getBackgroundIds() {
-    return backgroundIds;
-  }
-  public static List<String> getGroundIds() {
-    return groundIds;
-  }
-  public static List<String> getFixedObjOtherGroundIds() {
-    return fixedObjOtherGroundIds;
+  @Override
+  public Object clone() throws CloneNotSupportedException {
+    return super.clone();
   }
 
   public String getObjId() { return objId; }
@@ -153,40 +182,5 @@ public abstract class Obj {
   public void setPosition( int x, int y ) {
     positionX = x;
     positionY = y;
-  }
-
-  // ###  Private Methods  ###
-
-  /**
-   * インスタンスのidをObjサブクラスの種類ごとに分け、
-   * それぞれのリストに格納する
-   * @param id Objサブクラスのインスタンスに一意に与えられるobjIdを渡す
-   */
-  private static void storeId(Obj obj) {
-    if( obj instanceof MoveObj ) {
-      moveObjIds.add( obj.getObjId() );
-    } else if( obj instanceof Background ) {
-      backgroundIds.add( obj.getObjId() );
-    } else if( obj instanceof Ground ) {  // GroundクラスはFixedObjのサブクラス
-      groundIds.add( obj.getObjId() );
-    } else if( obj instanceof FixedObj ) {
-      fixedObjOtherGroundIds.add( obj.getObjId() );
-    }
-  }
-
-  /**
-   *
-   * @param obj
-   */
-  private static void deleteId(Obj obj) {
-    if( obj instanceof MoveObj ) {
-      moveObjIds.remove( obj.getObjId() );
-    } else if( obj instanceof Background ) {
-      backgroundIds.remove( obj.getObjId() );
-    } else if( obj instanceof Ground ) {  // GroundクラスはFixedObjのサブクラス
-      groundIds.remove( obj.getObjId() );
-    } else if( obj instanceof FixedObj ) {
-      fixedObjOtherGroundIds.remove( obj.getObjId() );
-    }
   }
 }

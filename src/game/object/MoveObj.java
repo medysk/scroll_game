@@ -37,6 +37,9 @@ public abstract class MoveObj extends Obj {
    * オブジェクトの実行用メソッド
    */
   public void execute() {
+    // Characterがゲームから除外された場合、動作を行わない
+    if( Obj.getCharacter() == null ) { return; }
+
     fall();
     action();
     move();
@@ -79,6 +82,13 @@ public abstract class MoveObj extends Obj {
     return isFlying;
   }
 
+  @Override
+  public Object clone() throws CloneNotSupportedException {
+    MoveObj obj = (MoveObj)super.clone();
+    obj.setCollisionManager(obj);
+    return obj;
+  }
+
   // getter
   public int getVectorX() { return vectorX; }
   public int getVectorY() { return vectorY; }
@@ -94,6 +104,7 @@ public abstract class MoveObj extends Obj {
   public void setPrePositionY(int y) { prePositionY = y; }
   public void setVectorX(int px) { vectorX = px; }
   public void setVectorY(int px) { vectorY = px; }
+  public void setCollisionManager(MoveObj obj) { cm = new CollisionManager(obj); }
 
   // ###  Protected methods  ###
 
@@ -118,6 +129,10 @@ public abstract class MoveObj extends Obj {
    */
   protected void collisionHandling(Consumer<CollisionData> cons) {
     cm.forEach( data -> {
+      // 自インスタンスとの衝突ではない場合、処理を飛ばす
+      if( data.getTarget() != this) {
+        return;
+      }
       cons.accept( data );
     } );
   }

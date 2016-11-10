@@ -42,4 +42,8 @@ public class FrameManagement {
   public static long getFrameCount() {
     return frameCount;
   }
+
+  public static void setFrameCount( long fc ) {
+    frameCount = fc;
+  }
 }

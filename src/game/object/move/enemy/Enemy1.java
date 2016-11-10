@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import game.MapPanel;
 import game.object.MoveObj;
 import game.object.Obj;
+import game.object.move.player.Character;
 import game.system.FrameManagement;
 import game.system.Side;
 
@@ -44,6 +45,12 @@ public class Enemy1 extends MoveObj {
    // オブジェクトのTOPに衝突した かつ ジャンプ中(上昇中)
       if( data.getSide() == Side.TOP && (isFlying && vectorY < 0) ) {
         vectorY = - vectorY / 3;
+      }
+
+      if( data.getSubject() instanceof Character ) {
+        if( data.getSide() != Side.TOP ) {
+          data.getSubject().destructor();
+        }
       }
     });
 

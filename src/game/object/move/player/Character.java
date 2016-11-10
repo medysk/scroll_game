@@ -2,10 +2,12 @@ package game.object.move.player;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.concurrent.TimeUnit;
 
+import game.MapPanel;
+import game.Stage;
 import game.object.FixedObj;
 import game.object.MoveObj;
-import game.object.move.enemy.Enemy1;
 import game.system.CollisionData;
 import game.system.Key;
 import game.system.KeyState;
@@ -19,6 +21,7 @@ import game.system.Side;
  *
  */
 public class Character extends MoveObj {
+
   private KeyState keyState; // キーの状態(押されているかどうか)
   private Momentum momentum; // オブジェクトの勢いを調整するクラス
 
@@ -70,6 +73,8 @@ public class Character extends MoveObj {
     g.fillRect( positionX, positionY, width, height );
   }
 
+
+
   // ###  Protected methods  ###
 
   /* (非 Javadoc)
@@ -94,6 +99,35 @@ public class Character extends MoveObj {
     }
   }
 
+  @Override
+  public void destructor() {
+    // echoのX座標の割り出す
+    int x;
+    if( positionX < MapPanel.WIDTH  / 2 ) {
+      x = positionX;
+    } else if( positionX > Map.getRightLimit() - MapPanel.WIDTH / 2  ) {
+      int clearance = Map.getRightLimit() - positionX;
+      x = MapPanel.WIDTH - clearance;
+    } else {
+      x = MapPanel.WIDTH / 2;
+    }
+
+    Stage.echo("下手すぎる", x - 50, positionY -30, 1, 800);
+    super.destructor();
+  }
+
+  @Override
+  public Object clone() throws CloneNotSupportedException {
+    Character obj = (Character)super.clone();
+    obj.setCollisionManager(obj);
+    obj.setMomentum(obj);
+    return obj;
+  }
+
+  public void setMomentum(Character character) {
+    momentum = new Momentum(character);
+  }
+
   // ###  Private methods  ###
 
   /**
@@ -115,10 +149,6 @@ public class Character extends MoveObj {
    * @param data 衝突情報
    */
   private void collisionHandlingForMoveObj( CollisionData data ) {
-    if( ! (data.getSubject() instanceof Enemy1) ) {
-      return;
-    }
-
     if( data.getSide() == Side.BOTTOM ) {
       // 踏んだら敵を倒す
       if( keyState.isKeyPressed( Key.UP.getName() ) ) {
@@ -126,10 +156,9 @@ public class Character extends MoveObj {
       } else {
         vectorY = - vectorY / 3;
       }
-
       data.getSubject().destructor();
     } else {
-      // TODO: GameOverロジックを実装する
+      // TODO: キャラクター爆破グラフィック
       destructor();
     }
   }
