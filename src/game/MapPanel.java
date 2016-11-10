@@ -21,7 +21,6 @@ public class MapPanel extends JPanel {
   // TODO: 設定ファイルから読み込む
   public static final int WIDTH = 1000;
   public static final int HEIGHT = 700;
-  private Character character;
 
   // ゲームに描写するオブジェクトを格納する
   private HashMap<String,Obj> objs = new HashMap<>();
@@ -30,7 +29,7 @@ public class MapPanel extends JPanel {
    * パネルの設定と変数の初期化
    */
   public MapPanel() {
-    setPreferredSize( new Dimension(WIDTH, HEIGHT) );
+    setSize( new Dimension(WIDTH, HEIGHT) );
     setFocusable( true );
     objs = Obj.getInstances();
   }
@@ -50,6 +49,7 @@ public class MapPanel extends JPanel {
 
     // オブジェクトの描写
     objs.forEach( (k, obj) -> {
+      Character character = Obj.getCharacter();
       // 不可視オブジェクトの場合、描写しない
       if( obj instanceof FixedObj && ! ((FixedObj)obj).isVisivility() ) {
         return;
@@ -74,13 +74,5 @@ public class MapPanel extends JPanel {
         obj.draw(ng);
       }
     } );
-  }
-
-  /**
-   * setter
-   * @param character キャラクターのインスタンス
-   */
-  public void setCharacter( Character character ) {
-    this.character = character;
   }
 }

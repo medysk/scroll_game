@@ -1,8 +1,9 @@
 package game;
 
-import java.awt.Container;
+import java.awt.Dimension;
 
 import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
 /**
@@ -11,22 +12,32 @@ import javax.swing.JPanel;
  *
  */
 public class Frame extends JFrame {
-  private Container contentPane;
+//  private Container contentPane;
+  private JLayeredPane layerPane;
 
-  public Frame() {
+  public Frame(JPanel panel) {
     setTitle("Horizontal Scroll");
-    contentPane = getContentPane();
+//    contentPane = getContentPane();
+    layerPane = new JLayeredPane();
+    layerPane.setPreferredSize(new Dimension( MapPanel.WIDTH, MapPanel.HEIGHT ));
+    layerPane.add(panel, JLayeredPane.DEFAULT_LAYER);
+
+    getContentPane().add(layerPane);
+
+    setDefaultCloseOperation( EXIT_ON_CLOSE );
+    setVisible( true );
+    pack();
   }
 
   /**
    * フレーム設定
    * @param panel ゲーム描写用のパネル貼り付け
    */
-  public void setParams( JPanel panel) {
-    contentPane.add(panel);
+  public void addLayer(JPanel panel, Integer layer) {
+    layerPane.add(panel, layer);
+  }
 
-    setDefaultCloseOperation( EXIT_ON_CLOSE );
-    setVisible( true );
-    pack();
+  public void removeLayer(JPanel panel) {
+    layerPane.remove(panel);
   }
 }
