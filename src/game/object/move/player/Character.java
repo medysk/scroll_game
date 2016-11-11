@@ -7,6 +7,7 @@ import game.StagePanel;
 import game.Stage;
 import game.object.FixedObj;
 import game.object.MoveObj;
+import game.object.fixed.ClearFlag;
 import game.system.CollisionData;
 import game.system.Key;
 import game.system.KeyState;
@@ -81,18 +82,19 @@ public class Character extends MoveObj {
    */
   @Override
   protected void action() {
+    // キーボードの→が押された
     if( keyState.isKeyPressed( Key.RIGHT.getName() ) ) {
       momentum.rightVectorIncrease();
     } else if( isRightMove() ) {
       momentum.rightVectorDecrease();
     }
-
+    // キーボードの←が押された
     if( keyState.isKeyPressed( Key.LEFT.getName() ) ) {
       momentum.leftVectorIncrease();
     } else if( isLeftMove() ) {
       momentum.leftVectorDecrease();
     }
-
+    // キーボードの↑が押された
     if( keyState.isKeyPressed( Key.UP.getName() ) ) {
       if( ! isFlying ) { jump(); }
     }
@@ -100,7 +102,7 @@ public class Character extends MoveObj {
 
   @Override
   public void destructor() {
-    // echoのX座標の割り出す
+    // echoのX座標を割り出す
     int x;
     if( positionX < StagePanel.WIDTH  / 2 ) {
       x = positionX;
@@ -140,6 +142,11 @@ public class Character extends MoveObj {
       ((FixedObj) data.getSubject()).bottomAction();
 
       vectorY = - vectorY / 3; // 頭がぶつかり跳ね返る
+    }
+
+    // クリアフラッグと衝突したらステージクリア
+    if( data.getSubject() instanceof ClearFlag ) {
+      Stage.clear();
     }
   }
 

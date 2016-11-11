@@ -28,8 +28,8 @@ public class Flag extends FixedObj {
     isVisibility = true;    // ‰Â‹‚È‚çtrue
     isDestory = true;       // ”j‰ó‰Â”\‚È‚çtrue
     canCollision = true;    // Õ“Ë‰Â”\‚È‚çtrue
-    height = 0;
-    width = 0;
+    height = 80;
+    width = 30;
   }
 
   @Override
