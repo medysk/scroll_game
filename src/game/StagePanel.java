@@ -47,9 +47,10 @@ public class StagePanel extends JPanel {
       return;
     }
 
+    Character character = Obj.getCharacter();
+
     // オブジェクトの描写
     objs.forEach( (k, obj) -> {
-      Character character = Obj.getCharacter();
       // 不可視オブジェクトの場合、描写しない
       if( obj instanceof FixedObj && ! ((FixedObj)obj).isVisivility() ) {
         return;
