@@ -8,6 +8,7 @@ import game.object.Obj;
 import game.object.fixed.BrickBlock;
 import game.object.fixed.ClearFlag;
 import game.object.fixed.RockBlock;
+import game.object.fixed.SaveFlag;
 import game.object.fixed.Downhill;
 import game.object.fixed.Flat;
 import game.object.fixed.Ground;
@@ -107,6 +108,7 @@ public class Map {
     Obj.create( new Enemy1(2300, 300) );
     Obj.create( new Enemy1(2500, 300) );
     Obj.create( new ClearFlag( 2700, 590) );
+    Obj.create( new SaveFlag( 1270, 590) );
   }
 
   private static void createMapInformation() {
