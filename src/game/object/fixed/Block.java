@@ -24,6 +24,8 @@ public abstract class Block extends FixedObj {
     width = 30;
   }
 
+  public void event() {}
+
   /* (”ñ Javadoc)
    * @see game.object.Obj#draw(java.awt.Graphics)
    */

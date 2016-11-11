@@ -29,9 +29,13 @@ public class Ground extends FixedObj {
     g.setColor( new Color(222, 184, 135) );
   }
 
+  @Override
+  public void event() {}
+
   /* (”ñ Javadoc)
    * @see game.object.FixedObj#bottomAction()
    */
   @Override
-  public void bottomAction() {}
+  public void bottomEvent() {}
+
 }

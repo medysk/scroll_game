@@ -8,6 +8,7 @@ import game.Stage;
 import game.object.FixedObj;
 import game.object.MoveObj;
 import game.object.fixed.ClearFlag;
+import game.object.fixed.Flag;
 import game.system.CollisionData;
 import game.system.Key;
 import game.system.KeyState;
@@ -73,8 +74,6 @@ public class Character extends MoveObj {
     g.fillRect( positionX, positionY, width, height );
   }
 
-
-
   // ###  Protected methods  ###
 
   /* (非 Javadoc)
@@ -139,14 +138,14 @@ public class Character extends MoveObj {
     // オブジェクトのTOPに衝突した かつ ジャンプ中(上昇中)
     if( data.getSide() == Side.TOP && (isFlying && vectorY < 0) ) {
 
-      ((FixedObj) data.getSubject()).bottomAction();
+      ((FixedObj) data.getSubject()).bottomEvent();
 
       vectorY = - vectorY / 3; // 頭がぶつかり跳ね返る
     }
 
     // クリアフラッグと衝突したらステージクリア
-    if( data.getSubject() instanceof ClearFlag ) {
-      Stage.clear();
+    if( data.getSubject() instanceof Flag ) {
+      ((FixedObj) data.getSubject()).event();
     }
   }
 

@@ -13,7 +13,7 @@ import game.object.FixedObj;
  * @author medysk
  *
  */
-public class Flag extends FixedObj {
+public abstract class Flag extends FixedObj {
 
   protected Color flagColor;
   protected String flagSymbol;
@@ -33,7 +33,7 @@ public class Flag extends FixedObj {
   }
 
   @Override
-  public void bottomAction() {}
+  public void bottomEvent() {}
 
   @Override
   public void draw(Graphics g) {

@@ -26,7 +26,7 @@ public class BrickBlock extends Block {
    * @see game.object.fixed.Block#bottomAction()
    */
   @Override
-  public void bottomAction() {
+  public void bottomEvent() {
     // TODO: 破壊アニメーションを実装し呼び出す
 
     // ゲームから除外

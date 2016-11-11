@@ -2,6 +2,8 @@ package game.object.fixed;
 
 import java.awt.Color;
 
+import game.Stage;
+
 /**
  * ステージのクリア地点に設置する旗
  * @author medysk
@@ -16,8 +18,13 @@ public class ClearFlag extends Flag {
    */
   public ClearFlag(int positionX, int positionY) {
     super(positionX, positionY);
-    flagColor = Color.WHITE;
+    flagColor = Color.YELLOW;
     flagSymbol = "G";
+  }
+
+  @Override
+  public void event() {
+    Stage.clear();
   }
 
 }

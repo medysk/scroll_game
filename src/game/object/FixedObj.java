@@ -25,9 +25,14 @@ public abstract class FixedObj extends Obj {
   }
 
   /**
+   * Characterがオブジェクトに衝突した際の処理
+   */
+  public abstract void event();
+
+  /**
    * Characterがオブジェクトの底に衝突した際の処理
    */
-  public abstract void bottomAction();
+  public abstract void bottomEvent();
 
   /**
    * 可視化

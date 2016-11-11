@@ -26,7 +26,7 @@ public class RockBlock extends Block {
    * @see game.object.fixed.Block#bottomAction()
    */
   @Override
-  public void bottomAction() {
+  public void bottomEvent() {
     // ブロックが不可視だったら可視化
     if( ! isVisibility ) {
       isVisibility = true;
