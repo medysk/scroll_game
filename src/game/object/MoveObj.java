@@ -2,6 +2,7 @@ package game.object;
 
 import java.util.function.Consumer;
 
+import game.StagePanel;
 import game.system.CollisionData;
 import game.system.CollisionManager;
 
@@ -65,6 +66,12 @@ public abstract class MoveObj extends Obj {
   public void move() {
     positionX += vectorX;
     positionY += vectorY;
+
+    // 画面下に落ちた場合、ゲームから除外する
+    if( positionY > StagePanel.HEIGHT ) {
+      positionY = StagePanel.HEIGHT;
+      destructor();
+    }
   }
 
   // オブジェクトの移動確認用メソッド
