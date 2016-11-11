@@ -9,7 +9,7 @@ import game.StagePanel;
 import game.object.MoveObj;
 import game.object.Obj;
 import game.object.move.player.Character;
-import game.system.FrameManagement;
+import game.system.FrameManager;
 import game.system.KeyState;
 import game.system.Map;
 import game.system.StageManager;
@@ -39,7 +39,7 @@ public class Stage implements Runnable {
    * Main Method
    */
   public static void main(String[] args){
-    FrameManagement.increment();
+    FrameManager.increment();
     stage = new Thread( new Stage() );
 
     echo("Game Start", 400, 100, 4, 300);
@@ -53,7 +53,7 @@ public class Stage implements Runnable {
    */
   public void run() {
     while(true) {
-      FrameManagement.increment();
+      FrameManager.increment();
 
       Obj.moveObjIds().forEach( id -> {
         // インスタンスがゲームから取り除かれた場合スキップ

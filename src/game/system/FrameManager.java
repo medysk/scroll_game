@@ -7,7 +7,7 @@ package game.system;
  * @author medysk
  *
  */
-public class FrameManagement {
+public class FrameManager {
   private static long frameCount = 0;  // ƒtƒŒ[ƒ€”
 
   /**

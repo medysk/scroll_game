@@ -71,7 +71,7 @@ public class Momentum {
   private int acceleratedCalc() {
     // オブジェクトが任意の方向に継続的に進んでいる場合、maxSpeedまで段階的に加速
     // 処理は runFrame回に一度実行する
-    if( FrameManagement.isActionFrame(interval) ) {
+    if( FrameManager.isActionFrame(interval) ) {
       int acceleration = (maxSpeed - minSpeed) / 10;
       if( acceleration == 0 ) { acceleration = 1; }
       int distance = acceleration + Math.abs( obj.getVectorX() );
@@ -84,7 +84,7 @@ public class Momentum {
   private int decelerationCalc() {
     // オブジェクトが進んでいる時、キーを離すと停止まで段階的に減速させる
     // 処理は runFrame回に一度実行する
-    if( FrameManagement.isActionFrame(interval) ) {
+    if( FrameManager.isActionFrame(interval) ) {
       int deceleration = (maxSpeed - 0) / 3;
       if( deceleration == 0 ) { deceleration = 1; }
       int distance = Math.abs( obj.getVectorX() ) - deceleration;

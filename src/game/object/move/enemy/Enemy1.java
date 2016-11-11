@@ -7,7 +7,7 @@ import game.StagePanel;
 import game.object.MoveObj;
 import game.object.Obj;
 import game.object.move.player.Character;
-import game.system.FrameManagement;
+import game.system.FrameManager;
 import game.system.Side;
 
 /**
@@ -69,7 +69,7 @@ public class Enemy1 extends MoveObj {
       return;
     }
 
-    if( FrameManagement.isActionFrame(100) ) {
+    if( FrameManager.isActionFrame(100) ) {
       jump();
     }
 

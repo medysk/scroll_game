@@ -18,7 +18,7 @@ public class StageManager {
    */
   public static void save() {
     cpInstances = new HashMap<>();
-    FrameManagement.getFrameCount();
+    FrameManager.getFrameCount();
 
     Obj.getInstances().forEach( (id,obj) -> {
       try {
@@ -35,7 +35,7 @@ public class StageManager {
    */
   public static void load() {
     Obj.overwriteInstances(cpInstances);
-    FrameManagement.setFrameCount(frameCount);
+    FrameManager.setFrameCount(frameCount);
   }
 }
 
