@@ -3,7 +3,7 @@ package game;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.swing.JPanel;
 
@@ -23,7 +23,7 @@ public class StagePanel extends JPanel {
   public static final int HEIGHT = 700;
 
   // ゲームに描写するオブジェクトを格納する
-  private HashMap<String,Obj> objs = new HashMap<>();
+  private ConcurrentHashMap<String,Obj> objs = new ConcurrentHashMap<>();
 
   /**
    * パネルの設定と変数の初期化

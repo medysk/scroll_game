@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import game.StagePanel;
 import game.object.FixedObj;
@@ -48,7 +49,7 @@ public class CollisionInfoAnalyzer {
 
     int targetMoveCount = 0;
     Obj subject;
-    HashMap<String,Obj> objs = Obj.getInstances();
+    ConcurrentHashMap<String,Obj> objs = Obj.getInstances();
     HashMap<Side,CollisionData> collisionMap = new HashMap<>();
     Trajectory tTrajectory = new Trajectory(target, denominator);
     List<CollisionData> collisionDataList = new ArrayList<>();

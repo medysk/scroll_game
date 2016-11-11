@@ -2,6 +2,7 @@ package game.system;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import game.object.Obj;
 import game.object.fixed.BrickBlock;
@@ -19,7 +20,7 @@ import game.object.move.enemy.Enemy1;
  *
  */
 public class Map {
-  private final static HashMap<String,Obj> objs = Obj.getInstances();
+  private final static ConcurrentHashMap<String,Obj> objs = Obj.getInstances();
   // key: Y座標, value: X座標(地面最上部)
   private final static HashMap<Integer,Integer> lowerLimit = new HashMap<>();   // Y軸上の地面の表面
   private static int leftLimit;

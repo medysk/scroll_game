@@ -1,8 +1,8 @@
 package game.system;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -33,7 +33,7 @@ public class CollisionManager {
   // 衝突判定を行う対象のオブジェクト
   private MoveObj target;
   // 対象のオブジェクトと衝突しているかを判定したい被対象のオブジェクト群
-  private static final HashMap<String,Obj> objs = Obj.getInstances();
+  private static final ConcurrentHashMap<String,Obj> objs = Obj.getInstances();
 
 
   /**

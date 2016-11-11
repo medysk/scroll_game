@@ -4,6 +4,7 @@ import java.rmi.server.UID;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Predicate;
 
@@ -25,7 +26,7 @@ public abstract class Obj  implements Cloneable {
   // ###  static変数  ###
 
   // サブクラスをインスタンス化する際にこの変数に格納する
-  private static HashMap<String,Obj> instances = new HashMap<>();
+  private static ConcurrentHashMap<String,Obj> instances = new ConcurrentHashMap<>();
 
   // ###  instance変数  ###
   // オブジェクトの一意なID
@@ -90,7 +91,7 @@ public abstract class Obj  implements Cloneable {
     return null;
   }
 
-  public static HashMap<String,Obj> getInstances() {
+  public static ConcurrentHashMap<String, Obj> getInstances() {
     return instances;
   }
 
