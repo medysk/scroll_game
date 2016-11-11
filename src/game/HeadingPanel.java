@@ -41,8 +41,7 @@ public class HeadingPanel extends JPanel {
     g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
                         RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-    Font font2 = new Font(Font.SANS_SERIF, Font.BOLD, 36);
-    g2.setFont(font2);
+    g2.setFont( new Font(Font.SANS_SERIF, Font.BOLD, 36) );
 
     g2.drawString(heading, x, y);
   }

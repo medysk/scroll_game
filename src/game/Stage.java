@@ -112,8 +112,8 @@ public class Stage implements Runnable {
    * @param x Xç¿ïW
    * @param y Yç¿ïW
    */
-  public static void echo( String str, int x, int y, int flashing, int milliSeconds ) {
-    HeadingPanel headingPanel = new HeadingPanel(str, x, y);
+  public static void echo( String msg, int x, int y, int flashing, int milliSeconds ) {
+    HeadingPanel headingPanel = new HeadingPanel(msg, x, y);
 
     for( int i=0; i<flashing*2; i++) {
       // ï∂éöóÒÇì_ñ≈Ç≥ÇπÇÈ

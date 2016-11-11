@@ -2,7 +2,6 @@ package game.object.move.player;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.concurrent.TimeUnit;
 
 import game.StagePanel;
 import game.Stage;
