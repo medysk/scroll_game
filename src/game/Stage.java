@@ -5,7 +5,7 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.JLayeredPane;
 
 import game.Frame;
-import game.MapPanel;
+import game.StagePanel;
 import game.object.MoveObj;
 import game.object.Obj;
 import game.object.move.player.Character;
@@ -21,7 +21,7 @@ import game.system.StageManager;
  */
 public class Stage implements Runnable {
   private static Frame frame;           // GUI用のフレーム
-  private static MapPanel mapPanel;     // ゲーム描写用のメインパネル
+  private static StagePanel stagePanel;     // ゲーム描写用のメインパネル
   private static KeyState keyState;     // キー入力管理
   private static Thread stage;          // スレッド用クラス
 
@@ -30,9 +30,9 @@ public class Stage implements Runnable {
     keyState = new KeyState();
     Obj.create( new Character( 20, 20, keyState ) ); // TODO: 初期位置は設定ファイルから読み込む
     Map.create();
-    mapPanel = new MapPanel();
-    frame = new Frame(mapPanel);
-    mapPanel.addKeyListener(keyState);
+    stagePanel = new StagePanel();
+    frame = new Frame(stagePanel);
+    stagePanel.addKeyListener(keyState);
   }
 
   /**
@@ -68,7 +68,7 @@ public class Stage implements Runnable {
         restart();
       }
 
-      mapPanel.repaint();      // メインパネルの再描写
+      stagePanel.repaint();      // メインパネルの再描写
 
       // ゲームの速度
       // TODO: ゲームの基本機能を実装したのち、調整する また、設定ファイルから読み込む
@@ -116,7 +116,7 @@ public class Stage implements Runnable {
         e.printStackTrace();
       }
       frame.removeLayer(headingPanel);
-      mapPanel.repaint();
+      stagePanel.repaint();
     }
     headingPanel = null;
   }

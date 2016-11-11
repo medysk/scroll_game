@@ -3,7 +3,7 @@ package game.object.move.enemy;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import game.MapPanel;
+import game.StagePanel;
 import game.object.MoveObj;
 import game.object.Obj;
 import game.object.move.player.Character;
@@ -65,7 +65,7 @@ public class Enemy1 extends MoveObj {
   protected void action() {
     // キャラクターが近ずくと動き始める
     int difference = Obj.getCharacter().getPositionX() - positionX;
-    if( Math.abs(difference) > MapPanel.WIDTH / 2 ) {
+    if( Math.abs(difference) > StagePanel.WIDTH / 2 ) {
       return;
     }
 

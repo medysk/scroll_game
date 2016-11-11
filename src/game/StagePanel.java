@@ -17,7 +17,7 @@ import game.system.Map;
  * @author medysk
  *
  */
-public class MapPanel extends JPanel {
+public class StagePanel extends JPanel {
   // TODO: 設定ファイルから読み込む
   public static final int WIDTH = 1000;
   public static final int HEIGHT = 700;
@@ -28,7 +28,7 @@ public class MapPanel extends JPanel {
   /**
    * パネルの設定と変数の初期化
    */
-  public MapPanel() {
+  public StagePanel() {
     setSize( new Dimension(WIDTH, HEIGHT) );
     setFocusable( true );
     objs = Obj.getInstances();

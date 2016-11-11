@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.concurrent.TimeUnit;
 
-import game.MapPanel;
+import game.StagePanel;
 import game.Stage;
 import game.object.FixedObj;
 import game.object.MoveObj;
@@ -103,13 +103,13 @@ public class Character extends MoveObj {
   public void destructor() {
     // echoÇÃXç¿ïWÇÃäÑÇËèoÇ∑
     int x;
-    if( positionX < MapPanel.WIDTH  / 2 ) {
+    if( positionX < StagePanel.WIDTH  / 2 ) {
       x = positionX;
-    } else if( positionX > Map.getRightLimit() - MapPanel.WIDTH / 2  ) {
+    } else if( positionX > Map.getRightLimit() - StagePanel.WIDTH / 2  ) {
       int clearance = Map.getRightLimit() - positionX;
-      x = MapPanel.WIDTH - clearance;
+      x = StagePanel.WIDTH - clearance;
     } else {
-      x = MapPanel.WIDTH / 2;
+      x = StagePanel.WIDTH / 2;
     }
 
     Stage.echo("â∫éËÇ∑Ç¨ÇÈ", x - 50, positionY -30, 1, 800);

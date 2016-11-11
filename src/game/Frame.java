@@ -19,7 +19,7 @@ public class Frame extends JFrame {
     setTitle("Horizontal Scroll");
 //    contentPane = getContentPane();
     layerPane = new JLayeredPane();
-    layerPane.setPreferredSize(new Dimension( MapPanel.WIDTH, MapPanel.HEIGHT ));
+    layerPane.setPreferredSize(new Dimension( StagePanel.WIDTH, StagePanel.HEIGHT ));
     layerPane.add(panel, JLayeredPane.DEFAULT_LAYER);
 
     getContentPane().add(layerPane);
