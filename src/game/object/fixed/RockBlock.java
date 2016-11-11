@@ -17,8 +17,9 @@ public class RockBlock extends Block {
    */
   public RockBlock(int positionX, int positionY, boolean isVisibility) {
     super(positionX, positionY);
-    this.isVisibility = isVisibility;    // ‰Â‹‚È‚çtrue
-    isDestory = false;                   // ”j‰ó‰Â”\‚È‚çtrue
+    this.isVisibility = isVisibility;   // ‰Â‹‚È‚çtrue
+    canCollision = isVisibility;        // ‰Â‹‚È‚çÕ“Ë‰Â”\
+    isDestory = false;                  // ”j‰ó‰Â”\‚È‚çtrue
   }
 
   /* (”ñ Javadoc)

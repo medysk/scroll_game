@@ -12,6 +12,8 @@ public abstract class FixedObj extends Obj {
   protected boolean isVisibility;
   // 破壊可能か？
   protected boolean isDestory;
+  // 衝突可能か？
+  protected boolean canCollision;
 
   /**
    * 初期化
@@ -40,6 +42,10 @@ public abstract class FixedObj extends Obj {
    */
   public boolean isVisivility() {
     return isVisibility;
+  }
+
+  public boolean canCollision() {
+    return canCollision;
   }
 
   /**

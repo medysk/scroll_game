@@ -96,7 +96,7 @@ public class CollisionManager {
     return findCollisionData( data -> {
       // FixedObj かつ 可視オブジェクト かつ 足下
       return data.getSubject() instanceof FixedObj &&
-          ((FixedObj) data.getSubject()).isVisivility() &&
+          ((FixedObj) data.getSubject()).canCollision() &&
           data.getSide() == Side.BOTTOM;
     });
   }

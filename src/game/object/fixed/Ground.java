@@ -16,6 +16,7 @@ public class Ground extends FixedObj {
     super( positionX, positionY );
     isVisibility = true;
     isDestory = false;
+    canCollision = true;
     height = 30;
     width = 30;
   }

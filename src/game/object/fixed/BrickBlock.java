@@ -19,6 +19,7 @@ public class BrickBlock extends Block {
     super(positionX, positionY);
     isVisibility = true;    // ‰Â‹‚È‚çtrue
     isDestory = true;       // ”j‰ó‰Â”\‚È‚çtrue
+    canCollision = true;    // Õ“Ë‰Â”\‚È‚çtrue
   }
 
   /* (”ñ Javadoc)
