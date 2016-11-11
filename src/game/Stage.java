@@ -21,9 +21,11 @@ import game.system.StageManager;
  */
 public class Stage implements Runnable {
   private static Frame frame;           // GUI用のフレーム
-  private static StagePanel stagePanel;     // ゲーム描写用のメインパネル
+  private static StagePanel stagePanel; // ゲーム描写用のメインパネル
   private static KeyState keyState;     // キー入力管理
   private static Thread stage;          // スレッド用クラス
+  private static boolean isClear;              // クリアフラグ
+  private static int deathCount;               // 死亡回数
 
   // 初期化、設定、実行
   static {
@@ -33,6 +35,8 @@ public class Stage implements Runnable {
     stagePanel = new StagePanel();
     frame = new Frame(stagePanel);
     stagePanel.addKeyListener(keyState);
+    isClear = false;
+    deathCount = 0;
   }
 
   /**
@@ -70,6 +74,9 @@ public class Stage implements Runnable {
 
       stagePanel.repaint();      // メインパネルの再描写
 
+      // ステージクリアしたらスレッドを終了
+      if( isClear ) { break; }
+
       // ゲームの速度
       // TODO: ゲームの基本機能を実装したのち、調整する また、設定ファイルから読み込む
       try {
@@ -84,7 +91,7 @@ public class Stage implements Runnable {
    * ステージを最初から、もしくはセーブポイントから開始する
    */
   public static void restart() {
-//    stage.interrupt();
+    deathCount++;
     StageManager.load();
     echo("restart", 450, 100, 4, 300);
   }
@@ -92,8 +99,11 @@ public class Stage implements Runnable {
   /**
    * ステージクリアの処理
    */
-  public void clear() {
-
+  public static void clear() {
+    isClear = true;
+    echo("Game Clear", 400, 100, 5, 300);
+    String msg = "あなたの死亡回数は" + deathCount + "回です";
+    echo(msg, 400, 100, 1, 5000);
   }
 
   /**
