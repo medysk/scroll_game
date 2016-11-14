@@ -14,6 +14,8 @@ public abstract class FixedObj extends Obj {
   protected boolean isDestory;
   // 衝突可能か？
   protected boolean canCollision;
+  // 通過可能か？
+  protected boolean canPassing;
 
   /**
    * 初期化
@@ -49,8 +51,20 @@ public abstract class FixedObj extends Obj {
     return isVisibility;
   }
 
+  /**
+   * 衝突処理を行うかどうか
+   * @return 衝突するなら true
+   */
   public boolean canCollision() {
     return canCollision;
+  }
+
+  /**
+   * MoveObjが通過できるかどうか
+   * @return
+   */
+  public boolean canPassing() {
+    return canPassing;
   }
 
   /**

@@ -94,9 +94,10 @@ public class CollisionManager {
    */
   public boolean onFixedObj() {
     return findCollisionData( data -> {
-      // FixedObj かつ 可視オブジェクト かつ 足下
+      // FixedObj かつ 可視オブジェクト かつ 通過オブジェクト以外 かつ 足下
       return data.getSubject() instanceof FixedObj &&
           ((FixedObj) data.getSubject()).canCollision() &&
+          ! ((FixedObj)data.getSubject()).canPassing() &&
           data.getSide() == Side.BOTTOM;
     });
   }

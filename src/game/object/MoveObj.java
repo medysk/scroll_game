@@ -165,9 +165,9 @@ public abstract class MoveObj extends Obj {
    */
   private void positionCorrection() {
     cm.forEach( data -> {
-      // 不可視オブジェクトの場合、次のdataへ
+      // 通過オブジェクトの場合、次のdataへ
       if( data.getSubject() instanceof FixedObj &&
-          ! ((FixedObj) data.getSubject()).isVisivility() ) {
+          ((FixedObj) data.getSubject()).canPassing() ) {
         return;
       }
 

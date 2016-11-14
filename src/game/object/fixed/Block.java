@@ -20,6 +20,7 @@ public abstract class Block extends FixedObj {
   public Block(int positionX, int positionY) {
     super(positionX, positionY);
     // TODO: İ’èƒtƒ@ƒCƒ‹‚©‚ç“Ç‚İ‚Ş
+    canPassing = false;
     height = 30;
     width = 30;
   }

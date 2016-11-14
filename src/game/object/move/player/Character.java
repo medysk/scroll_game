@@ -7,7 +7,6 @@ import game.StagePanel;
 import game.Stage;
 import game.object.FixedObj;
 import game.object.MoveObj;
-import game.object.fixed.ClearFlag;
 import game.object.fixed.Flag;
 import game.system.CollisionData;
 import game.system.Key;

@@ -28,6 +28,7 @@ public abstract class Flag extends FixedObj {
     isVisibility = true;    // ‰Â‹‚È‚çtrue
     isDestory = true;       // ”j‰ó‰Â”\‚È‚çtrue
     canCollision = true;    // Õ“Ë‰Â”\‚È‚çtrue
+    canPassing = true;      // ’Ê‰ß‰Â”\‚È‚çtrue
     height = 80;
     width = 30;
   }

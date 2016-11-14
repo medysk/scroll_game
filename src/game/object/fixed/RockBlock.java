@@ -30,6 +30,7 @@ public class RockBlock extends Block {
     // ブロックが不可視だったら可視化
     if( ! isVisibility ) {
       isVisibility = true;
+      canCollision = true;
     }
   }
 
