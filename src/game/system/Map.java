@@ -1,19 +1,23 @@
 package game.system;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+import game.Stage;
 import game.object.Obj;
-import game.object.fixed.BrickBlock;
-import game.object.fixed.ClearFlag;
-import game.object.fixed.RockBlock;
-import game.object.fixed.SaveFlag;
 import game.object.fixed.Downhill;
 import game.object.fixed.Flat;
 import game.object.fixed.Ground;
+import game.object.fixed.RockBlock;
 import game.object.fixed.Uphill;
-import game.object.move.enemy.Enemy1;
+import game.object.move.player.Character;
 
 /**
  * ゲームのマップをマップファイルから読み込む
@@ -28,14 +32,19 @@ public class Map {
   private static int rightLimit;
   private static List<String> groundIds;
 
+  private static FileReader fr;
+  private static BufferedReader br;
+
 
   /**
    * マップをファイルから読み込み
    * マップ情報を設定
    */
-//TODO: 引数にfilepath(enum?)を受け取る
-  public static void create() {
-    createProc();
+  public static void create(String filePath) {
+    List<String[]> records = readFile(filePath);
+
+    createObj(records);
+
     createMapInformation();
   }
 
@@ -66,49 +75,109 @@ public class Map {
 
   // ###  Private Methods  ###
 
-  private static void createProc() {
- // TODO: スタブなので削除する
-    for(int i=0; i<100; i++) {
-      if(i*30 >= 900 && i*30 <= 990) continue;
-      if(i*30 >= 1290 && i*30 <= 1500) {
-        if( i*30 == 1290 ) Obj.create( new Downhill(i*30, 670) );
-        if( i*30 == 1500) Obj.create( new Uphill(i*30, 670) );
-        continue;
-      }
-      Obj.create( new Flat( i*30, 670 ) );
+  /**
+   * ファイルを読み込む
+   * @param filePath
+   * @return ファイルの1行がリストの1要素、配列には1行を分割した要素が入る
+   */
+  private static List<String[]> readFile(String filePath) {
+    try {
+      fr = new FileReader(filePath);
+    } catch (FileNotFoundException e) {
+      System.out.println("ファイルが開けません。指定したパスが間違っています。");
     }
-    for(int i=0; i<=30; i++) {
-        if(i*30+300 >= 900 && i*30+300 <= 990) continue; // 穴
-      if( i == 0 ) {
-        Obj.create( new Uphill( i*30 + 300, 640 ) );
-      } else if( i == 30) {
-        Obj.create( new Downhill( i*30 + 300, 640 ) );
-      } else {
-        Obj.create( new Flat( i*30 + 300, 640 ) );
-      }
-    }
-    Obj.create( new Uphill(2970, 640) );
+    br = new BufferedReader(fr);
 
-    for(int i=0; i<5; i++) {
-      Obj.create( new BrickBlock(i*30 + 650, 480) );
-      Obj.create( new BrickBlock(i*30 + 200, 420) );
-      Obj.create( new RockBlock(i*30 + 400, 450, true) );
-      Obj.create( new RockBlock(i*30 + 400, 420, true) );
-      if( i < 2 ) {
-        Obj.create( new RockBlock(i*30 + 890, 500, false) );
+    String line;
+    int lineLength = 0;
+    List<String[]> records = new ArrayList<>();
+
+    try {
+      // map{n}.conf は20行までをマップの記述エリアとしている
+      while ( (line = br.readLine()) != null && records.size() <= 20) {
+        records.add( line.split("") );
+        if(lineLength < records.get(records.size() - 1).length ) {
+          lineLength = records.get(records.size() - 1).length;
+        }
+      }
+
+      if( records.size() < 20 ) {
+        throw new IOException("map{n}.conf が20行未満です");
+      }
+
+      br.close();
+      fr.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    return records;
+  }
+
+  private static void createObj( List<String[]> records ) {
+    // TODO: 設定ファイルから読み込む
+    final int baseHeight = 30;
+    final int baseWidth = 30;
+    int recordLength = 0;
+    int columnLength;
+
+    // マップファイル1行ごとのループ
+    for( String[] record : records ) {
+      int y = baseHeight * recordLength++; // オブジェクトのY座標
+      int x = 0;                           // オブジェクトのX座標
+
+      columnLength = 0;
+      // マップファイル1行の一文字ごとのループ
+      for( String symbol : record ) {
+        x = baseWidth * columnLength++;
+
+        if( ! ObjMap.containsKey(symbol) ) { continue; }
+
+        Obj obj = instantiation(symbol, x, y);
+        // パラメータが必要なインスタンスなら、セットする
+        if(obj instanceof Character) {
+          ((Character) obj).setKeyState(Stage.getKeyState());
+        } else if( symbol.equals("I") ) {
+          ((RockBlock) obj).invisibility();
+        }
+
+        // GroundのサブクラスとBlockのサブクラス以外は位置補正を行う
+        positionCorrection(obj);
       }
     }
+  }
 
-    for(int i=0; i<8; i++) {
-      Obj.create( new Flat( 0, i*30 + 460 ) );
+  // 位置補正
+  private static void positionCorrection(Obj obj) {
+    // TODO: 30はベースのオブジェクトサイズ　設定ファイルから読み込む
+    int dif = obj.getHeight() - 30;
+    obj.setPosition(obj.getPositionX(), obj.getPositionY() - dif);
+  }
+
+  // インスタンスの作成
+  private static Obj instantiation(String symbol, int x, int y) {
+    Constructor<?> constructor = null;
+    Obj obj = null;
+
+    Class<?>[] types = { int.class, int.class };
+    try {
+      constructor = ObjMap.get(symbol).getConstructor(types);
+    } catch (NoSuchMethodException e) {
+      e.printStackTrace();
+    } catch (SecurityException e) {
+      e.printStackTrace();
     }
 
-    // 敵キャラ
-    Obj.create( new Enemy1(400, 300) );
-    Obj.create( new Enemy1(2300, 300) );
-    Obj.create( new Enemy1(2500, 300) );
-    Obj.create( new ClearFlag( 2700, 590) );
-    Obj.create( new SaveFlag( 1270, 590) );
+    Object[] args = { x, y };
+    try {
+      obj = Obj.create( (Obj) constructor.newInstance(args) );
+    } catch (IllegalArgumentException e) {
+      e.printStackTrace();
+    } catch (ReflectiveOperationException  e) {
+      e.printStackTrace();
+    }
+
+    return obj;
   }
 
   private static void createMapInformation() {
