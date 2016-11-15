@@ -24,14 +24,13 @@ public class Stage implements Runnable {
   private static StagePanel stagePanel; // ゲーム描写用のメインパネル
   private static KeyState keyState;     // キー入力管理
   private static Thread stage;          // スレッド用クラス
-  private static boolean isClear;              // クリアフラグ
-  private static int deathCount;               // 死亡回数
+  private static boolean isClear;       // クリアフラグ
+  private static int deathCount;        // 死亡回数
 
   // 初期化、設定、実行
   static {
     keyState = new KeyState();
-    Obj.create( new Character( 20, 20, keyState ) ); // TODO: 初期位置は設定ファイルから読み込む
-    Map.create();
+    Map.create("config/map/map1.conf");
     stagePanel = new StagePanel();
     frame = new Frame(stagePanel);
     stagePanel.addKeyListener(keyState);
@@ -129,5 +128,12 @@ public class Stage implements Runnable {
       stagePanel.repaint();
     }
     headingPanel = null;
+  }
+
+  /**
+   * @return KeyStateのインスタンス
+   */
+  public static KeyState getKeyState() {
+    return keyState;
   }
 }

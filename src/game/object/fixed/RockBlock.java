@@ -15,11 +15,19 @@ public class RockBlock extends Block {
    * @param positionX
    * @param positionY
    */
-  public RockBlock(int positionX, int positionY, boolean isVisibility) {
+  public RockBlock(int positionX, int positionY) {
     super(positionX, positionY);
-    this.isVisibility = isVisibility;   // 可視ならtrue
-    canCollision = isVisibility;        // 可視なら衝突可能
-    isDestory = false;                  // 破壊可能ならtrue
+    isVisibility = true;   // 可視ならtrue( default: true )
+    canCollision = true;   // 衝突可能( default: true )
+    isDestory = false;     // 破壊可能ならtrue
+  }
+
+  /**
+   * 不可視化
+   */
+  public void invisibility() {
+    isVisibility = false;
+    canPassing = true;
   }
 
   /* (非 Javadoc)
@@ -30,7 +38,7 @@ public class RockBlock extends Block {
     // ブロックが不可視だったら可視化
     if( ! isVisibility ) {
       isVisibility = true;
-      canCollision = true;
+      canPassing = false;
     }
   }
 

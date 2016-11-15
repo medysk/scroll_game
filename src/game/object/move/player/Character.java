@@ -25,9 +25,8 @@ public class Character extends MoveObj {
   private KeyState keyState; // キーの状態(押されているかどうか)
   private Momentum momentum; // オブジェクトの勢いを調整するクラス
 
-  public Character( int positionX, int positionY, KeyState keyState ) {
+  public Character( int positionX, int positionY ) {
     super( positionX, positionY );
-    this.keyState = keyState;
     // TODO: 設定ファイルから読み込む
     height = 50;
     width = 28;
@@ -120,11 +119,16 @@ public class Character extends MoveObj {
     Character obj = (Character)super.clone();
     obj.setCollisionManager(obj);
     obj.setMomentum(obj);
+    obj.setKeyState(Stage.getKeyState());
     return obj;
   }
 
   public void setMomentum(Character character) {
     momentum = new Momentum(character);
+  }
+
+  public void setKeyState(KeyState keyState) {
+    this.keyState = keyState;
   }
 
   // ###  Private methods  ###
