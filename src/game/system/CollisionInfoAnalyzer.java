@@ -104,7 +104,9 @@ public class CollisionInfoAnalyzer {
     // 最終的な位置が坂だったら collisionMap の BOTTOM を上書き
     if( hill != null ) {
       CollisionData data = collisionForHill(tTrajectory, hill);
-      if( data != null ) {
+      if( data == null ) {
+        collisionMap.remove(Side.BOTTOM);
+      } else {
         collisionMap.put(Side.BOTTOM, data);
 
         // 坂の登頂付近で壁になっていないFlatに衝突しないようにする
@@ -123,7 +125,7 @@ public class CollisionInfoAnalyzer {
   }
 
   /**
-   * 坂でFlatに衝突しているか判別する
+   * 坂でGroundに衝突しているか判定する
    * @param collisionMap
    * @param side
    * @param lower
@@ -131,12 +133,19 @@ public class CollisionInfoAnalyzer {
    */
   private static Side collisionOnGroundAtHill(
       HashMap<Side,CollisionData> collisionMap, Side side, Ground hill) {
-    if( collisionMap.containsKey(side) ) {
+    // サイドが衝突している かつ Ground と衝突している
+    if( collisionMap.containsKey(side) &&
+        collisionMap.get(side).getSubject() instanceof Ground ) {
+
+      int positionY;
       if( collisionMap.get(side).getSubject() instanceof Flat ) {
-        int flatPositionY = collisionMap.get(side).getSubject().upperLeft().get("y");
-        if( flatPositionY <= hill.getPositionY() ) {
-          return side;
-        }
+        positionY = collisionMap.get(side).getSubject().getPositionY();
+      } else {
+        positionY = collisionMap.get(side).getSubject().lowerLeft().get("y");
+      }
+
+      if( positionY >= hill.getPositionY() ) {
+        return side;
       }
     }
     return null;
