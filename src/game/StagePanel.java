@@ -20,7 +20,7 @@ import game.system.Map;
 public class StagePanel extends JPanel {
   // TODO: 設定ファイルから読み込む
   public static final int WIDTH = 1000;
-  public static final int HEIGHT = 700;
+  public static final int HEIGHT = 600;
 
   // ゲームに描写するオブジェクトを格納する
   private ConcurrentHashMap<String,Obj> objs = new ConcurrentHashMap<>();
@@ -48,6 +48,10 @@ public class StagePanel extends JPanel {
     }
 
     Character character = Obj.getCharacter();
+
+    if( character == null ) {
+      return;
+    }
 
     // オブジェクトの描写
     objs.forEach( (k, obj) -> {
