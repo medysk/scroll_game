@@ -17,19 +17,19 @@ import game.object.fixed.Ground;
 import game.object.fixed.Uphill;
 
 /**
- * CollisionDetection‚©‚ç—˜—p‚·‚éÕ“Ë‚Ì‰ğÍ‚ğs‚¤ƒNƒ‰ƒX
+ * CollisionDetectionã‹ã‚‰åˆ©ç”¨ã™ã‚‹è¡çªã®è§£æã‚’è¡Œã†ã‚¯ãƒ©ã‚¹
  * @author medysk
  *
  */
 public class CollisionInfoAnalyzer {
   /**
-   * Õ“Ë”»’è‚Ìˆ—
+   * è¡çªåˆ¤å®šã®å‡¦ç†
    *
    * @param target
    * @param subject
    */
   public static boolean isCollided( Obj target, Obj subject ) {
-    // Õ“Ë‚µ‚Ä‚¢‚ê‚Î true
+    // è¡çªã—ã¦ã„ã‚Œã° true
     return target.upperLeft().get("x")  < subject.upperRight().get("x") &&
            target.lowerRight().get("x") > subject.lowerLeft().get("x")  &&
            target.upperLeft().get("y")  < subject.lowerLeft().get("y")  &&
@@ -37,13 +37,13 @@ public class CollisionInfoAnalyzer {
   }
 
   /**
-   * Õ“Ëî•ñ‚ÌƒŠƒXƒg‚ğ‚à‚Æ‚ÉÚ×‚ÈÕ“Ëî•ñ‚ğæ“¾‚·‚é
-   * @param target ‘ÎÛƒIƒuƒWƒFƒNƒg
-   * @param ids Õ“Ë‚ğ‹N‚±‚µ‚½”í‘ÎÛƒIƒuƒWƒFƒNƒgID‚ÌƒŠƒXƒg
-   * @return CollisionData‚ÌƒŠƒXƒg‚ğ•Ô‚·
+   * è¡çªæƒ…å ±ã®ãƒªã‚¹ãƒˆã‚’ã‚‚ã¨ã«è©³ç´°ãªè¡çªæƒ…å ±ã‚’å–å¾—ã™ã‚‹
+   * @param target å¯¾è±¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+   * @param ids è¡çªã‚’èµ·ã“ã—ãŸè¢«å¯¾è±¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆIDã®ãƒªã‚¹ãƒˆ
+   * @return CollisionDataã®ãƒªã‚¹ãƒˆã‚’è¿”ã™
    */
   public static List<CollisionData> createCollisionData(MoveObj target, List<String> ids) {
-    // Trajectory‚Ég—p‚·‚é•ª•ê
+    // Trajectoryã«ä½¿ç”¨ã™ã‚‹åˆ†æ¯
     int denominator = Math.abs(target.getVectorX()) > Math.abs(target.getVectorY()) ?
         Math.abs(target.getVectorX()) : Math.abs(target.getVectorY());
 
@@ -55,15 +55,15 @@ public class CollisionInfoAnalyzer {
     List<CollisionData> collisionDataList = new ArrayList<>();
     Ground hill = null;
 
-    // ‘ÎÛ‚ÌƒIƒuƒWƒFƒNƒg‚Ì‘O‰ñˆÊ’u‚©‚çˆÚ“®æ‚Ü‚Å‚Ìƒ‹[ƒv
+    // å¯¾è±¡ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å‰å›ä½ç½®ã‹ã‚‰ç§»å‹•å…ˆã¾ã§ã®ãƒ«ãƒ¼ãƒ—
     while( targetMoveCount <= denominator ) {
       HashSet<String> completionIds = new HashSet<>();
       targetMoveCount++;
       tTrajectory.increase();
 
-      // Õ“ËƒŠƒXƒg‚ÌƒIƒuƒWƒFƒNƒg‚ğ„‰ñ‚·‚éƒ‹[ƒv
+      // è¡çªãƒªã‚¹ãƒˆã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å·¡å›ã™ã‚‹ãƒ«ãƒ¼ãƒ—
       for( String id : ids ) {
-        // MoveObj‚Ìê‡target‚Æ“¯‚¶”‚¾‚¯ˆÊ’u‚ği‚ß‚é
+        // MoveObjã®å ´åˆtargetã¨åŒã˜æ•°ã ã‘ä½ç½®ã‚’é€²ã‚ã‚‹
         if( objs.get(id) instanceof MoveObj ) {
           subject = new Trajectory((MoveObj) objs.get(id), denominator);
 
@@ -73,19 +73,19 @@ public class CollisionInfoAnalyzer {
         } else {
           subject = objs.get(id);
         }
-        // Õ“Ë‚ğ‹N‚±‚µ‚Ä‚¢‚½‚ç
+        // è¡çªã‚’èµ·ã“ã—ã¦ã„ãŸã‚‰
         if( isCollided( tTrajectory, subject ) ) {
-          // â‚Í•Ê‚Éˆ—‚·‚é
+          // å‚ã¯åˆ¥ã«å‡¦ç†ã™ã‚‹
           if( objs.get(id) instanceof Uphill || objs.get(id) instanceof Downhill ) {
-            // Õ“Ë‚µ‚½ƒIƒuƒWƒFƒNƒg‚ÌID‚ğ“ü‚ê‚é(ids‚©‚çíœ‚·‚é‚Æ‚«‚Ég‚¤)
+            // è¡çªã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®IDã‚’å…¥ã‚Œã‚‹(idsã‹ã‚‰å‰Šé™¤ã™ã‚‹ã¨ãã«ä½¿ã†)
             completionIds.add(subject.getObjId());
             hill = (Ground)subject;
             continue;
           }
 
-          // Õ“Ë‚µ‚½ƒIƒuƒWƒFƒNƒg‚ÌID‚ğ“ü‚ê‚é(ids‚©‚çíœ‚·‚é‚Æ‚«‚Ég‚¤)
+          // è¡çªã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®IDã‚’å…¥ã‚Œã‚‹(idsã‹ã‚‰å‰Šé™¤ã™ã‚‹ã¨ãã«ä½¿ã†)
           completionIds.add(subject.getObjId());
-          // Õ“ËˆÊ’u‚ğæ“¾
+          // è¡çªä½ç½®ã‚’å–å¾—
           Side side = checkSide(tTrajectory, objs.get(id));
           if( side == null ) { continue; }
 
@@ -97,19 +97,17 @@ public class CollisionInfoAnalyzer {
           }
         }
       }
-      // Õ“ËÏ‚İ‚ÌID‚ğíœ
+      // è¡çªæ¸ˆã¿ã®IDã‚’å‰Šé™¤
       completionIds.forEach( id -> ids.remove(ids.indexOf(id)) );
     }
 
-    // ÅI“I‚ÈˆÊ’u‚ªâ‚¾‚Á‚½‚ç collisionMap ‚Ì BOTTOM ‚ğã‘‚«
+    // æœ€çµ‚çš„ãªä½ç½®ãŒå‚ã ã£ãŸã‚‰ collisionMap ã® BOTTOM ã‚’ä¸Šæ›¸ã
     if( hill != null ) {
       CollisionData data = collisionForHill(tTrajectory, hill);
-      if( data == null ) {
-        collisionMap.remove(Side.BOTTOM);
-      } else {
+      if( data != null ) {
         collisionMap.put(Side.BOTTOM, data);
 
-        // â‚Ì“o’¸•t‹ß‚Å•Ç‚É‚È‚Á‚Ä‚¢‚È‚¢Flat‚ÉÕ“Ë‚µ‚È‚¢‚æ‚¤‚É‚·‚é
+        // å‚ã®ç™»é ‚ä»˜è¿‘ã§å£ã«ãªã£ã¦ã„ãªã„Flatã«è¡çªã—ãªã„ã‚ˆã†ã«ã™ã‚‹
         Side course = target.getVectorX() < 0 ? Side.LEFT : Side.RIGHT;
         Side deleteSide = collisionOnGroundAtHill(
             collisionMap, course, (Ground) data.getSubject() );
@@ -125,7 +123,7 @@ public class CollisionInfoAnalyzer {
   }
 
   /**
-   * â‚ÅGround‚ÉÕ“Ë‚µ‚Ä‚¢‚é‚©”»’è‚·‚é
+   * å‚ã§Groundã«è¡çªã—ã¦ã„ã‚‹ã‹åˆ¤å®šã™ã‚‹
    * @param collisionMap
    * @param side
    * @param lower
@@ -133,7 +131,7 @@ public class CollisionInfoAnalyzer {
    */
   private static Side collisionOnGroundAtHill(
       HashMap<Side,CollisionData> collisionMap, Side side, Ground hill) {
-    // ƒTƒCƒh‚ªÕ“Ë‚µ‚Ä‚¢‚é ‚©‚Â Ground ‚ÆÕ“Ë‚µ‚Ä‚¢‚é
+    // ã‚µã‚¤ãƒ‰ãŒè¡çªã—ã¦ã„ã‚‹ ã‹ã¤ Ground ã¨è¡çªã—ã¦ã„ã‚‹
     if( collisionMap.containsKey(side) &&
         collisionMap.get(side).getSubject() instanceof Ground ) {
 
@@ -195,10 +193,10 @@ public class CollisionInfoAnalyzer {
   }
 
   /**
-   * Õ“Ë‚µ‚½‘¤–Ê‚ğ’²‚×‚é
-   * @param target ‘ÎÛƒIƒuƒWƒFƒNƒg
-   * @param subject ”í‘ÎÛƒIƒuƒWƒFƒNƒg
-   * @return SideŒ^(enum)‚Å•Ô‚· ”»’è‚Å‚«‚È‚¢ê‡‚Í null ‚ğ•Ô‚·
+   * è¡çªã—ãŸå´é¢ã‚’èª¿ã¹ã‚‹
+   * @param target å¯¾è±¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+   * @param subject è¢«å¯¾è±¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+   * @return Sideå‹(enum)ã§è¿”ã™ åˆ¤å®šã§ããªã„å ´åˆã¯ null ã‚’è¿”ã™
    */
   private static Side checkSide( Obj target, Obj subject ) {
     int xLength;
@@ -206,7 +204,7 @@ public class CollisionInfoAnalyzer {
     boolean isRight;
     boolean isTop;
 
-    // Õ“Ë‚µ‚½”ÍˆÍ‚ğæ“¾
+    // è¡çªã—ãŸç¯„å›²ã‚’å–å¾—
     if( target.upperLeft().get("x") < subject.upperLeft().get("x") ) {
       isRight = true;
       xLength = target.upperRight().get("x") - subject.upperLeft().get("x");
@@ -223,14 +221,14 @@ public class CollisionInfoAnalyzer {
       yLength = subject.lowerLeft().get("y") - target.upperLeft().get("y");
     }
 
-    // Õ“Ë‚µ‚½”ÍˆÍ‚ª‹·‚¢ê‡‚É–³Œø‚É‚·‚é
+    // è¡çªã—ãŸç¯„å›²ãŒç‹­ã„å ´åˆã«ç„¡åŠ¹ã«ã™ã‚‹
     if( subject instanceof MoveObj ) {
       if( xLength <= 1 && yLength <= 1 ) { return null; }
     } else if( subject instanceof FixedObj ) {
       if( xLength <= 7 && yLength <= 1 ) { return null; }
     }
 
-    // Õ“Ë‚µ‚½ƒTƒCƒh‚ğ•Ô‚·
+    // è¡çªã—ãŸã‚µã‚¤ãƒ‰ã‚’è¿”ã™
     if( isRight ) {
       if( isTop ) {
         return xLength <= yLength ? Side.RIGHT : Side.TOP;
