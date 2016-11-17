@@ -5,21 +5,19 @@ import java.awt.Graphics;
 import game.object.FixedObj;
 
 /**
- * ƒuƒƒbƒNƒIƒuƒWƒFƒNƒg‚ÌƒX[ƒp[ƒNƒ‰ƒX
- *
  * @author medysk
- *
+ * ãƒ–ãƒ­ãƒƒã‚¯ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚¹ãƒ¼ãƒ‘ãƒ¼ã‚¯ãƒ©ã‚¹
  */
 public abstract class Block extends FixedObj {
 
   /**
-   * İ’è‚Ì‰Šú‰»
-   * @param positionX XÀ•W‚Ì‰ŠúˆÊ’u
-   * @param positionY YÀ•W‚Ì‰ŠúˆÊ’u
+   * è¨­å®šã®åˆæœŸåŒ–
+   * @param positionX Xåº§æ¨™ã®åˆæœŸä½ç½®
+   * @param positionY Yåº§æ¨™ã®åˆæœŸä½ç½®
    */
   public Block(int positionX, int positionY) {
     super(positionX, positionY);
-    // TODO: İ’èƒtƒ@ƒCƒ‹‚©‚ç“Ç‚İ‚Ş
+    // TODO: è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰èª­ã¿è¾¼ã‚€
     canPassing = false;
     height = 30;
     width = 30;
@@ -27,7 +25,7 @@ public abstract class Block extends FixedObj {
 
   public void event() {}
 
-  /* (”ñ Javadoc)
+  /* (é Javadoc)
    * @see game.object.Obj#draw(java.awt.Graphics)
    */
   @Override

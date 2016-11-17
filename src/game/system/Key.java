@@ -3,9 +3,8 @@ package game.system;
 import java.awt.event.KeyEvent;
 
 /**
- * このプログラム上でのキーの名前を統一するためのenum
  * @author medysk
- *
+ * 縺薙�ｮ繝励Ο繧ｰ繝ｩ繝荳翫〒縺ｮ繧ｭ繝ｼ縺ｮ蜷榊燕繧堤ｵｱ荳縺吶ｋ縺溘ａ縺ｮenum
  */
 public enum Key {
   UP   ("up",    KeyEvent.VK_UP),
@@ -23,7 +22,7 @@ public enum Key {
 
   /**
    * getter
-   * @return キーのnameを返す
+   * @return 繧ｭ繝ｼ縺ｮname繧定ｿ斐☆
    */
   public String getName() {
     return name;
@@ -31,7 +30,7 @@ public enum Key {
 
   /**
    * getter
-   * @return キーコードを返す
+   * @return 繧ｭ繝ｼ繧ｳ繝ｼ繝峨ｒ霑斐☆
    */
   public int getCode() {
     return code;

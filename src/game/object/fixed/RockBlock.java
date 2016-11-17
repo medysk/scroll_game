@@ -4,45 +4,44 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 /**
- * ”j‰ó‚Å‚«‚È‚¢ƒuƒƒbƒN
  * @author medysk
- *
+ * ç ´å£Šã§ããªã„ãƒ–ãƒ­ãƒƒã‚¯
  */
 public class RockBlock extends Block {
 
   /**
-   * İ’è‚Ì‰Šú‰»
+   * è¨­å®šã®åˆæœŸåŒ–
    * @param positionX
    * @param positionY
    */
   public RockBlock(int positionX, int positionY) {
     super(positionX, positionY);
-    isVisibility = true;   // ‰Â‹‚È‚çtrue( default: true )
-    canCollision = true;   // Õ“Ë‰Â”\( default: true )
-    isDestory = false;     // ”j‰ó‰Â”\‚È‚çtrue
+    isVisibility = true;   // å¯è¦–ãªã‚‰true( default: true )
+    canCollision = true;   // è¡çªå¯èƒ½( default: true )
+    isDestory = false;     // ç ´å£Šå¯èƒ½ãªã‚‰true
   }
 
   /**
-   * •s‰Â‹‰»
+   * ä¸å¯è¦–åŒ–
    */
   public void invisibility() {
     isVisibility = false;
     canPassing = true;
   }
 
-  /* (”ñ Javadoc)
+  /* (é Javadoc)
    * @see game.object.fixed.Block#bottomAction()
    */
   @Override
   public void bottomEvent() {
-    // ƒuƒƒbƒN‚ª•s‰Â‹‚¾‚Á‚½‚ç‰Â‹‰»
+    // ãƒ–ãƒ­ãƒƒã‚¯ãŒä¸å¯è¦–ã ã£ãŸã‚‰å¯è¦–åŒ–
     if( ! isVisibility ) {
       isVisibility = true;
       canPassing = false;
     }
   }
 
-  /* (”ñ Javadoc)
+  /* (é Javadoc)
    * @see game.object.fixed.Block#draw(java.awt.Graphics)
    */
   @Override

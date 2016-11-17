@@ -14,64 +14,63 @@ import game.object.fixed.Ground;
 import game.object.fixed.Uphill;
 
 /**
- * ƒIƒuƒWƒFƒNƒg“¯m‚ÌÕ“Ë”»’è—pƒNƒ‰ƒX
- * Às‚ÍMoveObj‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğexecuteƒƒ\ƒbƒh‚É“n‚·‚±‚Æ‚Å
- * ‚»‚ÌƒIƒuƒWƒFƒNƒg‚ÆÕ“Ë‚µ‚Ä‚¢‚éƒIƒuƒWƒFƒNƒg‚ª‚ ‚é‚©”»’è‚·‚é
- *
- * g—p—á
- * // ”»’è‚ğ‚µ‚½‚¢ƒIƒuƒWƒFƒNƒg‚©‚çŒÄ‚Ño‚µ‚Ä—˜—p‚·‚é
- * CollisionDetection cd = new CollisionDetection( this )
- * cd.execute(); // Õ“Ë”»’è
- * isFlying = ! cd.onFixedObj();
- *
  * @author medysk
  *
+ * ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒå£«ã®è¡çªåˆ¤å®šç”¨ã‚¯ãƒ©ã‚¹
+ * å®Ÿè¡Œã¯MoveObjã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’executeãƒ¡ã‚½ãƒƒãƒ‰ã«æ¸¡ã™ã“ã¨ã§
+ * ãã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨è¡çªã—ã¦ã„ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒã‚ã‚‹ã‹åˆ¤å®šã™ã‚‹
+ *
+ * ä½¿ç”¨ä¾‹
+ * // åˆ¤å®šã‚’ã—ãŸã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‹ã‚‰å‘¼ã³å‡ºã—ã¦åˆ©ç”¨ã™ã‚‹
+ * CollisionDetection cd = new CollisionDetection( this )
+ * cd.execute(); // è¡çªåˆ¤å®š
+ * isFlying = ! cd.onFixedObj();
  */
 public class CollisionManager {
-  // Õ“Ë‚ª‹N‚±‚Á‚½Û‚ÉAÕ“Ëó‹µ‚ğŠi”[‚·‚é
+  // è¡çªãŒèµ·ã“ã£ãŸéš›ã«ã€è¡çªçŠ¶æ³ã‚’æ ¼ç´ã™ã‚‹
   private List<CollisionData> collisionDataList;
-  // Õ“Ë”»’è‚ğs‚¤‘ÎÛ‚ÌƒIƒuƒWƒFƒNƒg
+  // è¡çªåˆ¤å®šã‚’è¡Œã†å¯¾è±¡ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
   private MoveObj target;
-  // ‘ÎÛ‚ÌƒIƒuƒWƒFƒNƒg‚ÆÕ“Ë‚µ‚Ä‚¢‚é‚©‚ğ”»’è‚µ‚½‚¢”í‘ÎÛ‚ÌƒIƒuƒWƒFƒNƒgŒQ
+  // å¯¾è±¡ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨è¡çªã—ã¦ã„ã‚‹ã‹ã‚’åˆ¤å®šã—ãŸã„è¢«å¯¾è±¡ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç¾¤
   private static final ConcurrentHashMap<String,Obj> objs = Obj.getInstances();
 
 
   /**
-   * @param obj Õ“Ë”»’è‚ğs‚¢‚½‚¢ƒIƒuƒWƒFƒNƒg
+   * @param obj è¡çªåˆ¤å®šã‚’è¡Œã„ãŸã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
    */
   public CollisionManager(MoveObj target) {
     this.target = target;
   }
 
   /**
-   * Õ“Ë”»’è‚ğs‚¤ƒƒ\ƒbƒh
+   * è¡çªåˆ¤å®šã‚’è¡Œã†ãƒ¡ã‚½ãƒƒãƒ‰
    */
   public void execute() {
-    // (‰¼‚Ì)Õ“Ë‚ª‹N‚±‚Á‚½ƒIƒuƒWƒFƒNƒg‚ÌID‚ğ“ü‚ê‚é
+    // (ä»®ã®)è¡çªãŒèµ·ã“ã£ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®IDã‚’å…¥ã‚Œã‚‹
     List<String> preCollisionIds = new ArrayList<>();
-    collisionDataList = new ArrayList<>();  // ‰Šú‰»
+    collisionDataList = new ArrayList<>();  // åˆæœŸåŒ–
 
     objs.forEach( (objId, subject) -> {
-      // “¯‚¶ƒIƒuƒWƒFƒNƒg‚Ìê‡AŸ‚ÌƒIƒuƒWƒFƒNƒg‚Ö
+      // åŒã˜ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å ´åˆã€æ¬¡ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¸
       if( target == subject ) { return; }
 
-      // Õ“Ë‚µ‚Ä‚¢‚½ê‡A‰¼‚ÌÕ“ËƒŠƒXƒg‚É“ü‚ê‚é
+      // è¡çªã—ã¦ã„ãŸå ´åˆã€ä»®ã®è¡çªãƒªã‚¹ãƒˆã«å…¥ã‚Œã‚‹
       if( CollisionInfoAnalyzer.isCollided(target, subject) ) {
         preCollisionIds.add( subject.getObjId() );
       }
     });
-    // Õ“Ë‚ª‹N‚±‚Á‚Ä‚¢‚È‚©‚Á‚½‚çˆ—‚ğ–ß‚·
+    // è¡çªãŒèµ·ã“ã£ã¦ã„ãªã‹ã£ãŸã‚‰å‡¦ç†ã‚’æˆ»ã™
     if( preCollisionIds.isEmpty() ) { return; }
 
-    // Å‰‚ÌÕ“Ë(ƒTƒCƒh–ˆ)‚ª‹N‚±‚Á‚½ˆÊ’u‚ğæ“¾
+    // æœ€åˆã®è¡çª(ã‚µã‚¤ãƒ‰æ¯)ãŒèµ·ã“ã£ãŸä½ç½®ã‚’å–å¾—
     collisionDataList = CollisionInfoAnalyzer.
         createCollisionData(target, preCollisionIds);
   }
 
   /**
-   * Õ“Ëî•ñ‚ğŠi”[‚µ‚½ƒŠƒXƒg‚ğ„‰ñ‚µAƒR[ƒ‹ƒoƒbƒNŠÖ”‚Ì
-   * ˆø”‚ÉÕ“Ëî•ñ‚ğ“n‚·
-   * @param cons ƒR[ƒ‹ƒoƒbƒNŠÖ”
+   * è¡çªæƒ…å ±ã‚’æ ¼ç´ã—ãŸãƒªã‚¹ãƒˆã‚’å·¡å›ã—ã€ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã®
+   * å¼•æ•°ã«è¡çªæƒ…å ±ã‚’æ¸¡ã™
+   * @param cons ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°
    */
   public void forEach( Consumer<CollisionData> cons ) {
     if( collisionDataList.isEmpty() ) { return; }
@@ -81,20 +80,20 @@ public class CollisionManager {
   }
 
   /**
-   * execute()‚ğÀs‚µ‚½“_‚ÅÕ“Ë‚ğ‹N‚±‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
-   * @return Õ“Ë‚ğ‹N‚±‚µ‚Ä‚¢‚½‚ç true
+   * execute()ã‚’å®Ÿè¡Œã—ãŸæ™‚ç‚¹ã§è¡çªã‚’èµ·ã“ã—ã¦ã„ã‚‹ã‹ã©ã†ã‹
+   * @return è¡çªã‚’èµ·ã“ã—ã¦ã„ãŸã‚‰ true
    */
   public boolean isCollided() {
     return ! collisionDataList.isEmpty();
   }
 
   /**
-   * execute()‚ğÀs‚µ‚½“_‚ÅAƒLƒƒƒ‰ƒNƒ^[‚ª" FixedObj ‚Éæ‚Á‚Ä‚¢‚é‚©
-   * @return FixedObj ‚Éæ‚Á‚Ä‚¢‚ê‚Î true
+   * execute()ã‚’å®Ÿè¡Œã—ãŸæ™‚ç‚¹ã§ã€ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãŒ" FixedObj ã«ä¹—ã£ã¦ã„ã‚‹ã‹
+   * @return FixedObj ã«ä¹—ã£ã¦ã„ã‚Œã° true
    */
   public boolean onFixedObj() {
     return findCollisionData( data -> {
-      // FixedObj ‚©‚Â ‰Â‹ƒIƒuƒWƒFƒNƒg ‚©‚Â ’Ê‰ßƒIƒuƒWƒFƒNƒgˆÈŠO ‚©‚Â ‘«‰º
+      // FixedObj ã‹ã¤ å¯è¦–ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ ã‹ã¤ é€šéã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆä»¥å¤– ã‹ã¤ è¶³ä¸‹
       return data.getSubject() instanceof FixedObj &&
           ((FixedObj) data.getSubject()).canCollision() &&
           ! ((FixedObj)data.getSubject()).canPassing() &&
@@ -103,8 +102,8 @@ public class CollisionManager {
   }
 
   /**
-   * execute()‚ğÀs‚µ‚½“_‚ÅAƒLƒƒƒ‰ƒNƒ^[‚ª" Ground ‚Éæ‚Á‚Ä‚¢‚é‚©
-   * @return Ground ‚Éæ‚Á‚Ä‚¢‚ê‚Î true
+   * execute()ã‚’å®Ÿè¡Œã—ãŸæ™‚ç‚¹ã§ã€ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãŒ" Ground ã«ä¹—ã£ã¦ã„ã‚‹ã‹
+   * @return Ground ã«ä¹—ã£ã¦ã„ã‚Œã° true
    */
   public boolean onGround() {
     return findCollisionData( data -> {
@@ -114,16 +113,16 @@ public class CollisionManager {
   }
 
   /**
-   * execute()‚ğÀs‚µ‚½“_‚ÅAƒLƒƒƒ‰ƒNƒ^[‚ª" Uphill ‚ÆÕ“Ë‚ğ‹N‚±‚µ‚Ä‚¢‚é‚©
-   * @return Õ“Ë‚ğ‹N‚±‚µ‚Ä‚¢‚ê‚Î true
+   * execute()ã‚’å®Ÿè¡Œã—ãŸæ™‚ç‚¹ã§ã€ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãŒ" Uphill ã¨è¡çªã‚’èµ·ã“ã—ã¦ã„ã‚‹ã‹
+   * @return è¡çªã‚’èµ·ã“ã—ã¦ã„ã‚Œã° true
    */
   public boolean onUphill() {
     return findCollisionData( data -> data.getSubject() instanceof Uphill );
   }
 
   /**
-   * execute()‚ğÀs‚µ‚½“_‚ÅAƒLƒƒƒ‰ƒNƒ^[‚ª" Downhill ‚ÆÕ“Ë‚ğ‹N‚±‚µ‚Ä‚¢‚é‚©
-   * @return Õ“Ë‚ğ‹N‚±‚µ‚Ä‚¢‚ê‚Î true
+   * execute()ã‚’å®Ÿè¡Œã—ãŸæ™‚ç‚¹ã§ã€ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãŒ" Downhill ã¨è¡çªã‚’èµ·ã“ã—ã¦ã„ã‚‹ã‹
+   * @return è¡çªã‚’èµ·ã“ã—ã¦ã„ã‚Œã° true
    */
   public boolean onDownhill() {
     return findCollisionData( data -> data.getSubject() instanceof Downhill );
@@ -133,7 +132,7 @@ public class CollisionManager {
 
   /**
    * getter
-   * @return Õ“ËƒŠƒXƒg
+   * @return è¡çªãƒªã‚¹ãƒˆ
    */
   public List<CollisionData> getCollisionDataList() {
     return collisionDataList;
@@ -142,13 +141,13 @@ public class CollisionManager {
   // ###  Private Methods  ###
 
   /**
-   * Õ“ËƒŠƒXƒg‚ğ„‰ñ‚µAÕ“Ëƒf[ƒ^‚ğƒR[ƒ‹ƒoƒbƒNŠÖ”‚É“n‚·
-   * ƒR[ƒ‹ƒoƒbƒNŠÖ”‚ÍAÕ“Ëƒf[ƒ^‚ğó‚¯æ‚èğŒ‚ğw’è‚·‚é(•Ô‚è’l‚ÍbooleanŒ^)
-   * @param predicate booleanŒ^‚ğ•Ô‚·ƒR[ƒ‹ƒoƒbƒNŠÖ”
-   * @return ƒR[ƒ‹ƒoƒbƒNŠÖ”‚ªˆê“x‚Å‚à true ‚ğ•Ô‚·‚Æ true
+   * è¡çªãƒªã‚¹ãƒˆã‚’å·¡å›ã—ã€è¡çªãƒ‡ãƒ¼ã‚¿ã‚’ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã«æ¸¡ã™
+   * ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã¯ã€è¡çªãƒ‡ãƒ¼ã‚¿ã‚’å—ã‘å–ã‚Šæ¡ä»¶ã‚’æŒ‡å®šã™ã‚‹(è¿”ã‚Šå€¤ã¯booleanå‹)
+   * @param predicate booleanå‹ã‚’è¿”ã™ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°
+   * @return ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ãŒä¸€åº¦ã§ã‚‚ true ã‚’è¿”ã™ã¨ true
    */
   private boolean findCollisionData( Predicate<CollisionData> predicate ) {
-    // ƒIƒuƒWƒFƒNƒg‚ªÕ“Ë‚ğ‹N‚±‚µ‚Ä‚¢‚È‚¯‚ê‚Î false
+    // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒè¡çªã‚’èµ·ã“ã—ã¦ã„ãªã‘ã‚Œã° false
     if( ! isCollided() ) { return false; }
 
     for( CollisionData data : collisionDataList ) {

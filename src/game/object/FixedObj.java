@@ -1,24 +1,23 @@
 package game.object;
 
 /**
- * ƒQ[ƒ€‚É•`Ê‚·‚éƒIƒuƒWƒFƒNƒg‚Ì“à
- * “®‚©‚È‚¢ƒIƒuƒWƒFƒNƒg‚ÌƒX[ƒp[ƒNƒ‰ƒX
  * @author medysk
- *
+ * ã‚²ãƒ¼ãƒ ã«æå†™ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å†…
+ * å‹•ã‹ãªã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚¹ãƒ¼ãƒ‘ãƒ¼ã‚¯ãƒ©ã‚¹
  */
 public abstract class FixedObj extends Obj {
-  // ƒIƒuƒWƒFƒNƒg‚Ì‰Â‹« true: Œ©‚¦‚é, false: Œ©‚¦‚È‚¢
-  // ƒLƒƒƒ‰ƒNƒ^[‚ÆÕ“Ë‚ª‹N‚±‚é‚ÆØ‚è‘Ö‚¦‚½‚è‚·‚é
+  // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å¯è¦–æ€§ true: è¦‹ãˆã‚‹, false: è¦‹ãˆãªã„
+  // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã¨è¡çªãŒèµ·ã“ã‚‹ã¨åˆ‡ã‚Šæ›¿ãˆãŸã‚Šã™ã‚‹
   protected boolean isVisibility;
-  // ”j‰ó‰Â”\‚©H
+  // ç ´å£Šå¯èƒ½ã‹ï¼Ÿ
   protected boolean isDestory;
-  // Õ“Ë‰Â”\‚©H
+  // è¡çªå¯èƒ½ã‹ï¼Ÿ
   protected boolean canCollision;
-  // ’Ê‰ß‰Â”\‚©H
+  // é€šéå¯èƒ½ã‹ï¼Ÿ
   protected boolean canPassing;
 
   /**
-   * ‰Šú‰»
+   * åˆæœŸåŒ–
    * @param positionX
    * @param positionY
    */
@@ -27,40 +26,40 @@ public abstract class FixedObj extends Obj {
   }
 
   /**
-   * Character‚ªƒIƒuƒWƒFƒNƒg‚ÉÕ“Ë‚µ‚½Û‚Ìˆ—
+   * CharacterãŒã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«è¡çªã—ãŸéš›ã®å‡¦ç†
    */
   public abstract void event();
 
   /**
-   * Character‚ªƒIƒuƒWƒFƒNƒg‚Ì’ê‚ÉÕ“Ë‚µ‚½Û‚Ìˆ—
+   * CharacterãŒã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®åº•ã«è¡çªã—ãŸéš›ã®å‡¦ç†
    */
   public abstract void bottomEvent();
 
   /**
-   * ‰Â‹‰»
+   * å¯è¦–åŒ–
    */
   public void visivility() {
     isVisibility = true;
   }
 
   /**
-   * ‰Â‹‚©‚Ç‚¤‚©‚ğ•Ô‚·
-   * @return ‰Â‹‚¾‚Á‚½‚ç true
+   * å¯è¦–ã‹ã©ã†ã‹ã‚’è¿”ã™
+   * @return å¯è¦–ã ã£ãŸã‚‰ true
    */
   public boolean isVisivility() {
     return isVisibility;
   }
 
   /**
-   * Õ“Ëˆ—‚ğs‚¤‚©‚Ç‚¤‚©
-   * @return Õ“Ë‚·‚é‚È‚ç true
+   * è¡çªå‡¦ç†ã‚’è¡Œã†ã‹ã©ã†ã‹
+   * @return è¡çªã™ã‚‹ãªã‚‰ true
    */
   public boolean canCollision() {
     return canCollision;
   }
 
   /**
-   * MoveObj‚ª’Ê‰ß‚Å‚«‚é‚©‚Ç‚¤‚©
+   * MoveObjãŒé€šéã§ãã‚‹ã‹ã©ã†ã‹
    * @return
    */
   public boolean canPassing() {
@@ -68,14 +67,14 @@ public abstract class FixedObj extends Obj {
   }
 
   /**
-   * ”j‰ó‰Â”\‚©‚Ç‚¤‚©‚ğ•Ô‚·
-   * @return ”j‰ó‰Â”\‚È‚ç true
+   * ç ´å£Šå¯èƒ½ã‹ã©ã†ã‹ã‚’è¿”ã™
+   * @return ç ´å£Šå¯èƒ½ãªã‚‰ true
    */
   public boolean isDestory() {
     return isDestory;
   }
 
-  /* (”ñ Javadoc)
+  /* (é Javadoc)
    * @see game.object.Obj#destructor()
    */
   @Override

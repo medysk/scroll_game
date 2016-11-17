@@ -1,6 +1,4 @@
-/**
- *
- */
+
 package game.object.fixed;
 
 import java.awt.Color;
@@ -8,14 +6,13 @@ import java.awt.Color;
 import game.system.StageManager;
 
 /**
- * ƒXƒe[ƒW‚ÌƒZ[ƒu’n“_‚Éİ’u‚·‚éŠø
  * @author medysk
- *
+ * ã‚¹ãƒ†ãƒ¼ã‚¸ã®ã‚»ãƒ¼ãƒ–åœ°ç‚¹ã«è¨­ç½®ã™ã‚‹æ——
  */
 public class SaveFlag extends Flag {
 
   /**
-   * İ’è‚Ì‰Šú‰»
+   * è¨­å®šã®åˆæœŸåŒ–
    * @param positionX
    * @param positionY
    */

@@ -11,15 +11,14 @@ import game.system.FrameManager;
 import game.system.Side;
 
 /**
- * “GƒLƒƒƒ‰ƒNƒ^[
  * @author medysk
- *
+ * æ•µã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼
  */
 public class Enemy1 extends MoveObj {
 
   /**
-   * İ’è‚Ì‰Šú‰»
-   * @param positionX ‰ŠúˆÊ’u
+   * è¨­å®šã®åˆæœŸåŒ–
+   * @param positionX åˆæœŸä½ç½®
    * @param positionY
    */
   public Enemy1(int positionX, int positionY) {
@@ -33,16 +32,16 @@ public class Enemy1 extends MoveObj {
     verticalLeap = 12;
   }
 
-  /* (”ñ Javadoc)
+  /* (é Javadoc)
    * @see game.object.MoveObj#execute()
    */
   @Override
   public void execute() {
     super.execute();
 
-    // Õ“Ëˆ—
+    // è¡çªå‡¦ç†
     collisionHandling( data -> {
-   // ƒIƒuƒWƒFƒNƒg‚ÌTOP‚ÉÕ“Ë‚µ‚½ ‚©‚Â ƒWƒƒƒ“ƒv’†(ã¸’†)
+   // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®TOPã«è¡çªã—ãŸ ã‹ã¤ ã‚¸ãƒ£ãƒ³ãƒ—ä¸­(ä¸Šæ˜‡ä¸­)
       if( data.getSide() == Side.TOP && (isFlying && vectorY < 0) ) {
         vectorY = - vectorY / 3;
       }
@@ -54,16 +53,16 @@ public class Enemy1 extends MoveObj {
       }
     });
 
-    // ˆÊ’u•â³Œã‚É‘O‰ñˆÊ’u‚ğXV
+    // ä½ç½®è£œæ­£å¾Œã«å‰å›ä½ç½®ã‚’æ›´æ–°
     updatePrePosition();
   }
 
-  /* (”ñ Javadoc)
+  /* (é Javadoc)
    * @see game.object.MoveObj#action()
    */
   @Override
   protected void action() {
-    // ƒLƒƒƒ‰ƒNƒ^[‚ª‹ß‚¸‚­‚Æ“®‚«n‚ß‚é
+    // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãŒè¿‘ãšãã¨å‹•ãå§‹ã‚ã‚‹
     int difference = Obj.getCharacter().getPositionX() - positionX;
     if( Math.abs(difference) > StagePanel.WIDTH / 2 ) {
       return;
@@ -77,7 +76,7 @@ public class Enemy1 extends MoveObj {
         - minSpeed : minSpeed;
   }
 
-  /* (”ñ Javadoc)
+  /* (é Javadoc)
    * @see game.object.Obj#draw(java.awt.Graphics)
    */
   @Override

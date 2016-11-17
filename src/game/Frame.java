@@ -7,9 +7,8 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
 /**
- * GUI—p‚ÌƒtƒŒ[ƒ€‚ğì¬
  * @author medysk
- *
+ * GUIç”¨ã®ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’ä½œæˆ
  */
 public class Frame extends JFrame {
 //  private Container contentPane;
@@ -30,8 +29,8 @@ public class Frame extends JFrame {
   }
 
   /**
-   * ƒtƒŒ[ƒ€İ’è
-   * @param panel ƒQ[ƒ€•`Ê—p‚Ìƒpƒlƒ‹“\‚è•t‚¯
+   * ãƒ•ãƒ¬ãƒ¼ãƒ è¨­å®š
+   * @param panel ã‚²ãƒ¼ãƒ æå†™ç”¨ã®ãƒ‘ãƒãƒ«è²¼ã‚Šä»˜ã‘
    */
   public void addLayer(JPanel panel, Integer layer) {
     layerPane.add(panel, layer);

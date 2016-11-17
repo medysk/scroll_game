@@ -8,26 +8,24 @@ import game.Frame;
 import game.StagePanel;
 import game.object.MoveObj;
 import game.object.Obj;
-import game.object.move.player.Character;
 import game.system.FrameManager;
 import game.system.KeyState;
 import game.system.Map;
 import game.system.StageManager;
 
 /**
- * ƒvƒƒOƒ‰ƒ€Às—p‚ÌƒNƒ‰ƒX
  * @author medysk
- *
+ * ãƒ—ãƒ­ã‚°ãƒ©ãƒ å®Ÿè¡Œç”¨ã®ã‚¯ãƒ©ã‚¹
  */
 public class Stage implements Runnable {
-  private static Frame frame;           // GUI—p‚ÌƒtƒŒ[ƒ€
-  private static StagePanel stagePanel; // ƒQ[ƒ€•`Ê—p‚ÌƒƒCƒ“ƒpƒlƒ‹
-  private static KeyState keyState;     // ƒL[“ü—ÍŠÇ—
-  private static Thread stage;          // ƒXƒŒƒbƒh—pƒNƒ‰ƒX
-  private static boolean isClear;       // ƒNƒŠƒAƒtƒ‰ƒO
-  private static int deathCount;        // €–S‰ñ”
+  private static Frame frame;           // GUIç”¨ã®ãƒ•ãƒ¬ãƒ¼ãƒ 
+  private static StagePanel stagePanel; // ã‚²ãƒ¼ãƒ æå†™ç”¨ã®ãƒ¡ã‚¤ãƒ³ãƒ‘ãƒãƒ«
+  private static KeyState keyState;     // ã‚­ãƒ¼å…¥åŠ›ç®¡ç†
+  private static Thread stage;          // ã‚¹ãƒ¬ãƒƒãƒ‰ç”¨ã‚¯ãƒ©ã‚¹
+  private static boolean isClear;       // ã‚¯ãƒªã‚¢ãƒ•ãƒ©ã‚°
+  private static int deathCount;        // æ­»äº¡å›æ•°
 
-  // ‰Šú‰»Aİ’èAÀs
+  // åˆæœŸåŒ–ã€è¨­å®šã€å®Ÿè¡Œ
   static {
     keyState = new KeyState();
     Map.create("config/map/map1.conf");
@@ -51,33 +49,33 @@ public class Stage implements Runnable {
   }
 
   /**
-   * ƒXƒŒƒbƒh‚ÌÀ‘•ƒƒ\ƒbƒh
-   * ƒQ[ƒ€‚Ì‹N“_
+   * ã‚¹ãƒ¬ãƒƒãƒ‰ã®å®Ÿè£…ãƒ¡ã‚½ãƒƒãƒ‰
+   * ã‚²ãƒ¼ãƒ ã®èµ·ç‚¹
    */
   public void run() {
     while(true) {
       FrameManager.increment();
 
       Obj.moveObjIds().forEach( id -> {
-        // ƒCƒ“ƒXƒ^ƒ“ƒX‚ªƒQ[ƒ€‚©‚çæ‚èœ‚©‚ê‚½ê‡ƒXƒLƒbƒv
+        // ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãŒã‚²ãƒ¼ãƒ ã‹ã‚‰å–ã‚Šé™¤ã‹ã‚ŒãŸå ´åˆã‚¹ã‚­ãƒƒãƒ—
         if( ! Obj.getInstances().containsKey(id) ) {
           return;
         }
         ((MoveObj) Obj.getInstances().get(id)).execute();
       });
 
-      // ƒvƒŒƒCƒ„[‚ªƒQ[ƒ€‚©‚çœŠO‚³‚ê‚½‚çƒŠƒXƒ^[ƒg
+      // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒã‚²ãƒ¼ãƒ ã‹ã‚‰é™¤å¤–ã•ã‚ŒãŸã‚‰ãƒªã‚¹ã‚¿ãƒ¼ãƒˆ
       if( Obj.getCharacter() == null ) {
         restart();
       }
 
-      stagePanel.repaint();      // ƒƒCƒ“ƒpƒlƒ‹‚ÌÄ•`Ê
+      stagePanel.repaint();      // ãƒ¡ã‚¤ãƒ³ãƒ‘ãƒãƒ«ã®å†æå†™
 
-      // ƒXƒe[ƒWƒNƒŠƒA‚µ‚½‚çƒXƒŒƒbƒh‚ğI—¹
+      // ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¯ãƒªã‚¢ã—ãŸã‚‰ã‚¹ãƒ¬ãƒƒãƒ‰ã‚’çµ‚äº†
       if( isClear ) { break; }
 
-      // ƒQ[ƒ€‚Ì‘¬“x
-      // TODO: ƒQ[ƒ€‚ÌŠî–{‹@”\‚ğÀ‘•‚µ‚½‚Ì‚¿A’²®‚·‚é ‚Ü‚½Aİ’èƒtƒ@ƒCƒ‹‚©‚ç“Ç‚İ‚Ş
+      // ã‚²ãƒ¼ãƒ ã®é€Ÿåº¦
+      // TODO: ã‚²ãƒ¼ãƒ ã®åŸºæœ¬æ©Ÿèƒ½ã‚’å®Ÿè£…ã—ãŸã®ã¡ã€èª¿æ•´ã™ã‚‹ ã¾ãŸã€è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰èª­ã¿è¾¼ã‚€
       try {
         TimeUnit.MILLISECONDS.sleep(15);
       } catch( InterruptedException e ) {
@@ -87,7 +85,7 @@ public class Stage implements Runnable {
   }
 
   /**
-   * ƒXƒe[ƒW‚ğÅ‰‚©‚çA‚à‚µ‚­‚ÍƒZ[ƒuƒ|ƒCƒ“ƒg‚©‚çŠJn‚·‚é
+   * ã‚¹ãƒ†ãƒ¼ã‚¸ã‚’æœ€åˆã‹ã‚‰ã€ã‚‚ã—ãã¯ã‚»ãƒ¼ãƒ–ãƒã‚¤ãƒ³ãƒˆã‹ã‚‰é–‹å§‹ã™ã‚‹
    */
   public static void restart() {
     deathCount++;
@@ -96,26 +94,26 @@ public class Stage implements Runnable {
   }
 
   /**
-   * ƒXƒe[ƒWƒNƒŠƒA‚Ìˆ—
+   * ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¯ãƒªã‚¢ã®å‡¦ç†
    */
   public static void clear() {
     isClear = true;
     echo("Game Clear", 400, 100, 5, 300);
-    String msg = "‚ ‚È‚½‚Ì€–S‰ñ”‚Í" + deathCount + "‰ñ‚Å‚·";
+    String msg = "ã‚ãªãŸã®æ­»äº¡å›æ•°ã¯" + deathCount + "å›ã§ã™";
     echo(msg, 400, 100, 1, 5000);
   }
 
   /**
-   * •¶š—ñ‚ğ•`Ê
-   * @param str •¶š—ñ
-   * @param x XÀ•W
-   * @param y YÀ•W
+   * æ–‡å­—åˆ—ã‚’æå†™
+   * @param str æ–‡å­—åˆ—
+   * @param x Xåº§æ¨™
+   * @param y Yåº§æ¨™
    */
   public static void echo( String msg, int x, int y, int flashing, int milliSeconds ) {
     HeadingPanel headingPanel = new HeadingPanel(msg, x, y);
 
     for( int i=0; i<flashing*2; i++) {
-      // •¶š—ñ‚ğ“_–Å‚³‚¹‚é
+      // æ–‡å­—åˆ—ã‚’ç‚¹æ»…ã•ã›ã‚‹
       if( i % 2 == 0) {
         frame.addLayer(headingPanel, JLayeredPane.POPUP_LAYER);
       }
@@ -131,7 +129,7 @@ public class Stage implements Runnable {
   }
 
   /**
-   * @return KeyState‚ÌƒCƒ“ƒXƒ^ƒ“ƒX
+   * @return KeyStateã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
    */
   public static KeyState getKeyState() {
     return keyState;

@@ -20,14 +20,13 @@ import game.object.fixed.Uphill;
 import game.object.move.player.Character;
 
 /**
- * ƒQ[ƒ€‚Ìƒ}ƒbƒv‚ğƒ}ƒbƒvƒtƒ@ƒCƒ‹‚©‚ç“Ç‚İ‚Ş
  * @author medysk
- *
+ * ã‚²ãƒ¼ãƒ ã®ãƒãƒƒãƒ—ã‚’ãƒãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰èª­ã¿è¾¼ã‚€
  */
 public class Map {
   private final static ConcurrentHashMap<String,Obj> objs = Obj.getInstances();
-  // key: YÀ•W, value: XÀ•W(’n–ÊÅã•”)
-  private final static HashMap<Integer,Integer> lowerLimit = new HashMap<>();   // Y²ã‚Ì’n–Ê‚Ì•\–Ê
+  // key: Yåº§æ¨™, value: Xåº§æ¨™(åœ°é¢æœ€ä¸Šéƒ¨)
+  private final static HashMap<Integer,Integer> lowerLimit = new HashMap<>();   // Yè»¸ä¸Šã®åœ°é¢ã®è¡¨é¢
   private static int leftLimit;
   private static int rightLimit;
   private static List<String> groundIds;
@@ -37,8 +36,8 @@ public class Map {
 
 
   /**
-   * ƒ}ƒbƒv‚ğƒtƒ@ƒCƒ‹‚©‚ç“Ç‚İ‚İ
-   * ƒ}ƒbƒvî•ñ‚ğİ’è
+   * ãƒãƒƒãƒ—ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰èª­ã¿è¾¼ã¿
+   * ãƒãƒƒãƒ—æƒ…å ±ã‚’è¨­å®š
    */
   public static void create(String filePath) {
     List<String[]> records = readFile(filePath);
@@ -49,9 +48,9 @@ public class Map {
   }
 
   /**
-   * ”CˆÓ‚ÌXÀ•Wã‚Ì‰ºŒÀ’l‚ğæ“¾‚·‚é
-   * @param x ”CˆÓ‚ÌXÀ•W
-   * @return ‰ºŒÀ’l
+   * ä»»æ„ã®Xåº§æ¨™ä¸Šã®ä¸‹é™å€¤ã‚’å–å¾—ã™ã‚‹
+   * @param x ä»»æ„ã®Xåº§æ¨™
+   * @return ä¸‹é™å€¤
    */
   public static int getLowerLimit( int x ) throws NullPointerException {
     return lowerLimit.get(x);
@@ -76,15 +75,15 @@ public class Map {
   // ###  Private Methods  ###
 
   /**
-   * ƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚Ş
+   * ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚€
    * @param filePath
-   * @return ƒtƒ@ƒCƒ‹‚Ì1s‚ªƒŠƒXƒg‚Ì1—v‘fA”z—ñ‚É‚Í1s‚ğ•ªŠ„‚µ‚½—v‘f‚ª“ü‚é
+   * @return ãƒ•ã‚¡ã‚¤ãƒ«ã®1è¡ŒãŒãƒªã‚¹ãƒˆã®1è¦ç´ ã€é…åˆ—ã«ã¯1è¡Œã‚’åˆ†å‰²ã—ãŸè¦ç´ ãŒå…¥ã‚‹
    */
   private static List<String[]> readFile(String filePath) {
     try {
       fr = new FileReader(filePath);
     } catch (FileNotFoundException e) {
-      System.out.println("ƒtƒ@ƒCƒ‹‚ªŠJ‚¯‚Ü‚¹‚ñBw’è‚µ‚½ƒpƒX‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B");
+      System.out.println("ãƒ•ã‚¡ã‚¤ãƒ«ãŒé–‹ã‘ã¾ã›ã‚“ã€‚æŒ‡å®šã—ãŸãƒ‘ã‚¹ãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚");
     }
     br = new BufferedReader(fr);
 
@@ -93,7 +92,7 @@ public class Map {
     List<String[]> records = new ArrayList<>();
 
     try {
-      // map{n}.conf ‚Í20s‚Ü‚Å‚ğƒ}ƒbƒv‚Ì‹LqƒGƒŠƒA‚Æ‚µ‚Ä‚¢‚é
+      // map{n}.conf ã¯20è¡Œã¾ã§ã‚’ãƒãƒƒãƒ—ã®è¨˜è¿°ã‚¨ãƒªã‚¢ã¨ã—ã¦ã„ã‚‹
       while ( (line = br.readLine()) != null && records.size() <= 20) {
         records.add( line.split("") );
         if(lineLength < records.get(records.size() - 1).length ) {
@@ -102,7 +101,7 @@ public class Map {
       }
 
       if( records.size() < 20 ) {
-        throw new IOException("map{n}.conf ‚ª20s–¢–‚Å‚·");
+        throw new IOException("map{n}.conf ãŒ20è¡Œæœªæº€ã§ã™");
       }
 
       br.close();
@@ -115,46 +114,46 @@ public class Map {
   }
 
   private static void createObj( List<String[]> records ) {
-    // TODO: İ’èƒtƒ@ƒCƒ‹‚©‚ç“Ç‚İ‚Ş
+    // TODO: è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰èª­ã¿è¾¼ã‚€
     final int baseHeight = 30;
     final int baseWidth = 30;
     int recordLength = 0;
     int columnLength;
 
-    // ƒ}ƒbƒvƒtƒ@ƒCƒ‹1s‚²‚Æ‚Ìƒ‹[ƒv
+    // ãƒãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«1è¡Œã”ã¨ã®ãƒ«ãƒ¼ãƒ—
     for( String[] record : records ) {
-      int y = baseHeight * recordLength++; // ƒIƒuƒWƒFƒNƒg‚ÌYÀ•W
-      int x = 0;                           // ƒIƒuƒWƒFƒNƒg‚ÌXÀ•W
+      int y = baseHeight * recordLength++; // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®Yåº§æ¨™
+      int x = 0;                           // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®Xåº§æ¨™
 
       columnLength = 0;
-      // ƒ}ƒbƒvƒtƒ@ƒCƒ‹1s‚Ìˆê•¶š‚²‚Æ‚Ìƒ‹[ƒv
+      // ãƒãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«1è¡Œã®ä¸€æ–‡å­—ã”ã¨ã®ãƒ«ãƒ¼ãƒ—
       for( String symbol : record ) {
         x = baseWidth * columnLength++;
 
         if( ! ObjMap.containsKey(symbol) ) { continue; }
 
         Obj obj = instantiation(symbol, x, y);
-        // ƒpƒ‰ƒ[ƒ^‚ª•K—v‚ÈƒCƒ“ƒXƒ^ƒ“ƒX‚È‚çAƒZƒbƒg‚·‚é
+        // ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒå¿…è¦ãªã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãªã‚‰ã€ã‚»ãƒƒãƒˆã™ã‚‹
         if(obj instanceof Character) {
           ((Character) obj).setKeyState(Stage.getKeyState());
         } else if( symbol.equals("I") ) {
           ((RockBlock) obj).invisibility();
         }
 
-        // Ground‚ÌƒTƒuƒNƒ‰ƒX‚ÆBlock‚ÌƒTƒuƒNƒ‰ƒXˆÈŠO‚ÍˆÊ’u•â³‚ğs‚¤
+        // Groundã®ã‚µãƒ–ã‚¯ãƒ©ã‚¹ã¨Blockã®ã‚µãƒ–ã‚¯ãƒ©ã‚¹ä»¥å¤–ã¯ä½ç½®è£œæ­£ã‚’è¡Œã†
         positionCorrection(obj);
       }
     }
   }
 
-  // ˆÊ’u•â³
+  // ä½ç½®è£œæ­£
   private static void positionCorrection(Obj obj) {
-    // TODO: 30‚Íƒx[ƒX‚ÌƒIƒuƒWƒFƒNƒgƒTƒCƒY@İ’èƒtƒ@ƒCƒ‹‚©‚ç“Ç‚İ‚Ş
+    // TODO: 30ã¯ãƒ™ãƒ¼ã‚¹ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚µã‚¤ã‚ºã€€è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰èª­ã¿è¾¼ã‚€
     int dif = obj.getHeight() - 30;
     obj.setPosition(obj.getPositionX(), obj.getPositionY() - dif);
   }
 
-  // ƒCƒ“ƒXƒ^ƒ“ƒX‚Ìì¬
+  // ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®ä½œæˆ
   private static Obj instantiation(String symbol, int x, int y) {
     Constructor<?> constructor = null;
     Obj obj = null;
@@ -189,17 +188,17 @@ public class Map {
       int x = objs.get(id).getPositionX();
       int y = objs.get(id).getPositionY();
 
-      // ƒ}ƒbƒv‰E’[
+      // ãƒãƒƒãƒ—å³ç«¯
       if( rightLimit  < x + objs.get(id).getWidth() ) {
         rightLimit = x + objs.get(id).getWidth();
       }
 
-      // X²ã‚Ì’n–ÊÅã•”
+      // Xè»¸ä¸Šã®åœ°é¢æœ€ä¸Šéƒ¨
       if( ! lowerLimit.containsKey( x ) ) {
-        // ‚ ‚éXÀ•W’†‚Ìî•ñ‚ª‚È‚¯‚ê‚ÎA‚‚³‚ğ“o˜^
+        // ã‚ã‚‹Xåº§æ¨™ä¸­ã®æƒ…å ±ãŒãªã‘ã‚Œã°ã€é«˜ã•ã‚’ç™»éŒ²
         inputLowerLimit( (Ground)objs.get(id) );
       } else if( lowerLimit.get(x) > y ) {
-        // ‚‚³‚ğã‘‚«
+        // é«˜ã•ã‚’ä¸Šæ›¸ã
         inputLowerLimit( (Ground)objs.get(id) );
       }
     });

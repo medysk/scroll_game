@@ -13,20 +13,19 @@ import game.object.move.player.Character;
 import game.system.Map;
 
 /**
- * ƒQ[ƒ€—p‚ÌƒƒCƒ“ƒpƒlƒ‹
  * @author medysk
- *
+ * ã‚²ãƒ¼ãƒ ç”¨ã®ãƒ¡ã‚¤ãƒ³ãƒ‘ãƒãƒ«
  */
 public class StagePanel extends JPanel {
-  // TODO: İ’èƒtƒ@ƒCƒ‹‚©‚ç“Ç‚İ‚Ş
+  // TODO: è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰èª­ã¿è¾¼ã‚€
   public static final int WIDTH = 1000;
   public static final int HEIGHT = 600;
 
-  // ƒQ[ƒ€‚É•`Ê‚·‚éƒIƒuƒWƒFƒNƒg‚ğŠi”[‚·‚é
+  // ã‚²ãƒ¼ãƒ ã«æå†™ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æ ¼ç´ã™ã‚‹
   private ConcurrentHashMap<String,Obj> objs = new ConcurrentHashMap<>();
 
   /**
-   * ƒpƒlƒ‹‚Ìİ’è‚Æ•Ï”‚Ì‰Šú‰»
+   * ãƒ‘ãƒãƒ«ã®è¨­å®šã¨å¤‰æ•°ã®åˆæœŸåŒ–
    */
   public StagePanel() {
     setSize( new Dimension(WIDTH, HEIGHT) );
@@ -38,11 +37,11 @@ public class StagePanel extends JPanel {
   public void paintComponent( Graphics g ) {
     super.paintComponent(g);
 
-    // TODO: BackgroundƒNƒ‰ƒX‚Éˆ—‚ğ”C‚¹‚é
+    // TODO: Backgroundã‚¯ãƒ©ã‚¹ã«å‡¦ç†ã‚’ä»»ã›ã‚‹
     g.setColor( new Color(30, 144, 255) );
     g.fillRect( 0, 0, getWidth(), getHeight() );
 
-    // ƒIƒuƒWƒFƒNƒg‚Ì•`Ê
+    // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æå†™
     if( objs.isEmpty() ) {
       return;
     }
@@ -53,20 +52,20 @@ public class StagePanel extends JPanel {
       return;
     }
 
-    // ƒIƒuƒWƒFƒNƒg‚Ì•`Ê
+    // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æå†™
     objs.forEach( (k, obj) -> {
-      // •s‰Â‹ƒIƒuƒWƒFƒNƒg‚Ìê‡A•`Ê‚µ‚È‚¢
+      // ä¸å¯è¦–ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å ´åˆã€æå†™ã—ãªã„
       if( obj instanceof FixedObj && ! ((FixedObj)obj).isVisivility() ) {
         return;
       }
 
-      // ‰æ–ÊŠO‚ÌƒIƒuƒWƒFƒNƒg‚Í•`Ê‚µ‚È‚¢
+      // ç”»é¢å¤–ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯æå†™ã—ãªã„
       if( character.getPositionX() + WIDTH / 2 < obj.getPositionX() &&
           character.getPositionX() - WIDTH / 2 > obj.getPositionX() + obj.getWidth() ) {
         return;
       }
 
-      // ƒLƒƒƒ‰ƒNƒ^[‚É‡‚í‚¹‚Äƒ}ƒbƒv‚ğƒXƒ‰ƒCƒh‚³‚¹‚é
+      // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã«åˆã‚ã›ã¦ãƒãƒƒãƒ—ã‚’ã‚¹ãƒ©ã‚¤ãƒ‰ã•ã›ã‚‹
       if( character.getPositionX() < (WIDTH / 2) ) {
         obj.draw( g.create() );
       } else if( character.getPositionX() > (Map.getRightLimit() - WIDTH / 2) ) {

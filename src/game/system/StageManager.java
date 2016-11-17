@@ -5,16 +5,15 @@ import java.util.HashMap;
 import game.object.Obj;
 
 /**
- * ƒXƒe[ƒW‚ÌObj‚Ìó‘Ô‚Ì•Û‘¶A“Ç‚İ‚İ‚ğs‚¤
  * @author medysk
- *
+ * ã‚¹ãƒ†ãƒ¼ã‚¸ã®Objã®çŠ¶æ…‹ã®ä¿å­˜ã€èª­ã¿è¾¼ã¿ã‚’è¡Œã†
  */
 public class StageManager {
   private static HashMap<String,Obj> cpInstances;
   private static long frameCount;
 
   /**
-   * ƒZ[ƒu
+   * ã‚»ãƒ¼ãƒ–
    */
   public static void save() {
     cpInstances = new HashMap<>();
@@ -31,7 +30,7 @@ public class StageManager {
   }
 
   /**
-   * ƒ[ƒh
+   * ãƒ­ãƒ¼ãƒ‰
    */
   public static void load() {
     Obj.overwriteInstances(cpInstances);

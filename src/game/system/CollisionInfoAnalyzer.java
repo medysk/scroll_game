@@ -17,9 +17,8 @@ import game.object.fixed.Ground;
 import game.object.fixed.Uphill;
 
 /**
- * CollisionDetectionから利用する衝突の解析を行うクラス
  * @author medysk
- *
+ * CollisionDetectionから利用する衝突の解析を行うクラス
  */
 public class CollisionInfoAnalyzer {
   /**
@@ -104,6 +103,12 @@ public class CollisionInfoAnalyzer {
     // 最終的な位置が坂だったら collisionMap の BOTTOM を上書き
     if( hill != null ) {
       CollisionData data = collisionForHill(tTrajectory, hill);
+
+      if( collisionMap.containsKey(Side.BOTTOM) &&
+          collisionMap.get(Side.BOTTOM).getSubject() instanceof Flat ) {
+        collisionMap.remove(Side.BOTTOM);
+      }
+
       if( data != null ) {
         collisionMap.put(Side.BOTTOM, data);
 

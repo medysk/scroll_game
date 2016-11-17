@@ -16,18 +16,17 @@ import game.system.Momentum;
 import game.system.Side;
 
 /**
- * ©ƒLƒƒƒ‰ƒNƒ^[
  * @author medysk
- *
+ * è‡ªã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼
  */
 public class Character extends MoveObj {
 
-  private KeyState keyState; // ƒL[‚Ìó‘Ô(‰Ÿ‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©)
-  private Momentum momentum; // ƒIƒuƒWƒFƒNƒg‚Ì¨‚¢‚ğ’²®‚·‚éƒNƒ‰ƒX
+  private KeyState keyState; // ã‚­ãƒ¼ã®çŠ¶æ…‹(æŠ¼ã•ã‚Œã¦ã„ã‚‹ã‹ã©ã†ã‹)
+  private Momentum momentum; // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å‹¢ã„ã‚’èª¿æ•´ã™ã‚‹ã‚¯ãƒ©ã‚¹
 
   public Character( int positionX, int positionY ) {
     super( positionX, positionY );
-    // TODO: İ’èƒtƒ@ƒCƒ‹‚©‚ç“Ç‚İ‚Ş
+    // TODO: è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰èª­ã¿è¾¼ã‚€
     height = 50;
     width = 28;
     minSpeed = 1;
@@ -35,22 +34,22 @@ public class Character extends MoveObj {
     fallVelocity = 1;
     maxFallVelocity = height - 1; //
     verticalLeap = 20;
-    momentum = new Momentum( this ); // Momentum‚Í”j‰ó“I‚È‘€ì‚ğs‚¤
+    momentum = new Momentum( this ); // Momentumã¯ç ´å£Šçš„(å‰¯ä½œç”¨)ãªæ“ä½œã‚’è¡Œã†
   }
 
-  /* (”ñ Javadoc)
+  /* (é Javadoc)
    * @see game.object.MoveObj#execute()
    */
   @Override
   public void execute() {
     super.execute();
 
-    // ƒ}ƒbƒv‚Ì—¼’[‚©‚ço‚È‚¢‚æ‚¤‚É‚·‚é
+    // ãƒãƒƒãƒ—ã®ä¸¡ç«¯ã‹ã‚‰å‡ºãªã„ã‚ˆã†ã«ã™ã‚‹
     positionWithinLimit();
 
-    // Õ“Ëˆ—
+    // è¡çªå‡¦ç†
     collisionHandling( data -> {
-      // Õ“Ë‚µ‚½ƒIƒuƒWƒFƒNƒg‚ªFixedObj‚©MoveObj‚©‚ÅAˆ—‚ğ•ª‚¯‚é
+      // è¡çªã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒFixedObjã‹MoveObjã‹ã§ã€å‡¦ç†ã‚’åˆ†ã‘ã‚‹
       if( data.getSubject() instanceof FixedObj ) {
         collisionHandlingForFixedObj(data);
       } else if( data.getSubject() instanceof MoveObj ) {
@@ -58,12 +57,12 @@ public class Character extends MoveObj {
       }
     });
 
-    // ˆÊ’u•â³Œã‚É‘O‰ñˆÊ’u‚ğXV
+    // ä½ç½®è£œæ­£å¾Œã«å‰å›ä½ç½®ã‚’æ›´æ–°
     updatePrePosition();
 
   }
 
-  /* (”ñ Javadoc)
+  /* (é Javadoc)
    * @see game.object.MoveObj#execute()
    */
   @Override
@@ -74,24 +73,24 @@ public class Character extends MoveObj {
 
   // ###  Protected methods  ###
 
-  /* (”ñ Javadoc)
+  /* (é Javadoc)
    * @see game.object.MoveObj#action()
    */
   @Override
   protected void action() {
-    // ƒL[ƒ{[ƒh‚Ì¨‚ª‰Ÿ‚³‚ê‚½
+    // ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã®â†’ãŒæŠ¼ã•ã‚ŒãŸ
     if( keyState.isKeyPressed( Key.RIGHT.getName() ) ) {
       momentum.rightVectorIncrease();
     } else if( isRightMove() ) {
       momentum.rightVectorDecrease();
     }
-    // ƒL[ƒ{[ƒh‚Ì©‚ª‰Ÿ‚³‚ê‚½
+    // ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã®â†ãŒæŠ¼ã•ã‚ŒãŸ
     if( keyState.isKeyPressed( Key.LEFT.getName() ) ) {
       momentum.leftVectorIncrease();
     } else if( isLeftMove() ) {
       momentum.leftVectorDecrease();
     }
-    // ƒL[ƒ{[ƒh‚Ìª‚ª‰Ÿ‚³‚ê‚½
+    // ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã®â†‘ãŒæŠ¼ã•ã‚ŒãŸ
     if( keyState.isKeyPressed( Key.UP.getName() ) ) {
       if( ! isFlying ) { jump(); }
     }
@@ -99,7 +98,7 @@ public class Character extends MoveObj {
 
   @Override
   public void destructor() {
-    // echo‚ÌXÀ•W‚ğŠ„‚èo‚·
+    // echoã®Xåº§æ¨™ã‚’å‰²ã‚Šå‡ºã™
     int x;
     if( positionX < StagePanel.WIDTH  / 2 ) {
       x = positionX;
@@ -110,7 +109,7 @@ public class Character extends MoveObj {
       x = StagePanel.WIDTH / 2;
     }
 
-    Stage.echo("‰ºè‚·‚¬‚é", x - 50, positionY -30, 1, 800);
+    Stage.echo("ä¸‹æ‰‹ã™ãã‚‹", x - 50, positionY -30, 1, 800);
     super.destructor();
   }
 
@@ -134,31 +133,31 @@ public class Character extends MoveObj {
   // ###  Private methods  ###
 
   /**
-   * FixedObj‚Æ‚ÌÕ“Ëˆ—
-   * @param data Õ“Ëî•ñ
+   * FixedObjã¨ã®è¡çªæ™‚å‡¦ç†
+   * @param data è¡çªæƒ…å ±
    */
   private void collisionHandlingForFixedObj( CollisionData data ) {
-    // ƒIƒuƒWƒFƒNƒg‚ÌTOP‚ÉÕ“Ë‚µ‚½ ‚©‚Â ƒWƒƒƒ“ƒv’†(ã¸’†)
+    // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®TOPã«è¡çªã—ãŸ ã‹ã¤ ã‚¸ãƒ£ãƒ³ãƒ—ä¸­(ä¸Šæ˜‡ä¸­)
     if( data.getSide() == Side.TOP && (isFlying && vectorY < 0) ) {
 
       ((FixedObj) data.getSubject()).bottomEvent();
 
-      vectorY = - vectorY / 3; // “ª‚ª‚Ô‚Â‚©‚è’µ‚Ë•Ô‚é
+      vectorY = - vectorY / 3; // é ­ãŒã¶ã¤ã‹ã‚Šè·³ã­è¿”ã‚‹
     }
 
-    // ƒNƒŠƒAƒtƒ‰ƒbƒO‚ÆÕ“Ë‚µ‚½‚çƒXƒe[ƒWƒNƒŠƒA
+    // ã‚¯ãƒªã‚¢ãƒ•ãƒ©ãƒƒã‚°ã¨è¡çªã—ãŸã‚‰ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¯ãƒªã‚¢
     if( data.getSubject() instanceof Flag ) {
       ((FixedObj) data.getSubject()).event();
     }
   }
 
   /**
-   * MoveObj‚Æ‚ÌÕ“Ëˆ—
-   * @param data Õ“Ëî•ñ
+   * MoveObjã¨ã®è¡çªæ™‚å‡¦ç†
+   * @param data è¡çªæƒ…å ±
    */
   private void collisionHandlingForMoveObj( CollisionData data ) {
     if( data.getSide() == Side.BOTTOM ) {
-      // “¥‚ñ‚¾‚ç“G‚ğ“|‚·
+      // è¸ã‚“ã ã‚‰æ•µã‚’å€’ã™
       if( keyState.isKeyPressed( Key.UP.getName() ) ) {
         vectorY = - verticalLeap - vectorY / 3;
       } else {
@@ -166,14 +165,14 @@ public class Character extends MoveObj {
       }
       data.getSubject().destructor();
     } else {
-      // TODO: ƒLƒƒƒ‰ƒNƒ^[”š”jƒOƒ‰ƒtƒBƒbƒN
+      // TODO: ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼çˆ†ç ´ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯
       destructor();
     }
   }
 
 
   /**
-   * ƒŠƒ~ƒbƒgŠO‚ÉˆÚ“®‚Å‚«‚È‚¢‚æ‚¤‚É‚·‚é
+   * ãƒªãƒŸãƒƒãƒˆå¤–ã«ç§»å‹•ã§ããªã„ã‚ˆã†ã«ã™ã‚‹
    */
   private void positionWithinLimit() {
     if( positionX < Map.getLeftLimit() ) {

@@ -4,17 +4,16 @@ import game.object.MoveObj;
 import game.object.Obj;
 
 /**
- * ƒIƒuƒWƒFƒNƒg‚ÌÕ“Ë‚ª‹N‚±‚Á‚½Û‚ÉAÕ“Ëó‹µ‚ğ•Û‚·‚é‚½‚ß‚Ì\‘¢‘Ì
- * ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚Ìˆø”( MoveObj(‘ÎÛ), Obj(”í‘ÎÛ), Side(‘ÎÛ‚ÌÕ“Ë–Ê) ) ‚ğ“n‚·
  * @author medysk
- *
+ * ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è¡çªãŒèµ·ã“ã£ãŸéš›ã«ã€è¡çªçŠ¶æ³ã‚’ä¿æŒã™ã‚‹ãŸã‚ã®æ§‹é€ ä½“
+ * ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã®å¼•æ•°( MoveObj(å¯¾è±¡), Obj(è¢«å¯¾è±¡), Side(å¯¾è±¡ã®è¡çªé¢) ) ã‚’æ¸¡ã™
  */
 public class CollisionData {
-  private MoveObj targetObj;  // Õ“Ë‚ÌŒŸ¸‘ÎÛ
-  private Obj subjectObj;     // Õ“Ë‚ÌŒŸ¸‘ÎÛ‚ÆÕ“Ë‚ğ‹N‚±‚µ‚½ƒIƒuƒWƒFƒNƒg
-  private Side side;          // Õ“Ë‚ª‹N‚±‚Á‚½Û‚ÉŒŸ¸‘ÎÛ‚ğå‚Æ‚µ‚½Õ“ËˆÊ’u
-  private int collisionPositionX;      // ŒŸ¸‘ÎÛ‚ªÕ“Ë‚ğ‹N‚±‚µ‚½ˆÊ’u
-  private int collisionPositionY;      // ŒŸ¸‘ÎÛ‚ªÕ“Ë‚ğ‹N‚±‚µ‚½ˆÊ’u
+  private MoveObj targetObj;  // è¡çªã®æ¤œæŸ»å¯¾è±¡
+  private Obj subjectObj;     // è¡çªã®æ¤œæŸ»å¯¾è±¡ã¨è¡çªã‚’èµ·ã“ã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+  private Side side;          // è¡çªãŒèµ·ã“ã£ãŸéš›ã«æ¤œæŸ»å¯¾è±¡ã‚’ä¸»ã¨ã—ãŸè¡çªä½ç½®
+  private int collisionPositionX;      // æ¤œæŸ»å¯¾è±¡ãŒè¡çªã‚’èµ·ã“ã—ãŸä½ç½®
+  private int collisionPositionY;      // æ¤œæŸ»å¯¾è±¡ãŒè¡çªã‚’èµ·ã“ã—ãŸä½ç½®
 
   public CollisionData( MoveObj targetObj, Obj subjectObj, Side side,
                         int positionX, int positionY) {

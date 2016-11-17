@@ -3,15 +3,14 @@ package game.system;
 import java.util.HashMap;
 
 /**
- * ƒ}ƒbƒvƒtƒ@ƒCƒ‹‚ÌƒIƒuƒWƒFƒNƒg‹L†‚ÆƒIƒuƒWƒFƒNƒg‚ÌƒNƒ‰ƒX‚ğƒ}ƒbƒsƒ“ƒO‚·‚é
  * @author medysk
- *
+ * ãƒãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆè¨˜å·ã¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚¯ãƒ©ã‚¹ã‚’ãƒãƒƒãƒ”ãƒ³ã‚°ã™ã‚‹
  */
 public class ObjMap {
   private static HashMap<String,Class<?>> objMap = new HashMap<>();
 
   /**
-   * ƒ}ƒbƒsƒ“ƒOî•ñ‚Ìˆê——
+   * ãƒãƒƒãƒ”ãƒ³ã‚°æƒ…å ±ã®ä¸€è¦§
    */
   private enum ObjMapList {
     SAVE_FLAG    ("s", "game.object.fixed.SaveFlag"),
@@ -37,13 +36,13 @@ public class ObjMap {
     public String getClassName() { return className; }
   }
 
-  // ƒ}ƒbƒsƒ“ƒOî•ñ‚Ìˆê——‚ğ‚à‚Æ‚ÉAHashMap‚É’l‚ğƒZƒbƒg‚·‚é
+  // ãƒãƒƒãƒ”ãƒ³ã‚°æƒ…å ±ã®ä¸€è¦§ã‚’ã‚‚ã¨ã«ã€HashMapã«å€¤ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
   static {
     for( ObjMapList map : ObjMapList.values() ) {
       try {
         objMap.put( map.getSymbol(), Class.forName(map.getClassName()) );
       } catch (ClassNotFoundException e) {
-        System.out.println("objMapList‚Ìƒ}ƒbƒsƒ“ƒOî•ñ‚ªŒë‚Á‚Ä‚¢‚Ü‚·");
+        System.out.println("objMapListã®ãƒãƒƒãƒ”ãƒ³ã‚°æƒ…å ±ãŒèª¤ã£ã¦ã„ã¾ã™");
         e.printStackTrace();
       }
     }
@@ -54,7 +53,7 @@ public class ObjMap {
   }
 
   /**
-   * ƒ}ƒbƒvƒtƒ@ƒCƒ‹‚Ì‹L†‚É‘Î‰‚·‚éƒNƒ‰ƒX‚ğæ“¾‚·‚é
+   * ãƒãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«ã®è¨˜å·ã«å¯¾å¿œã™ã‚‹ã‚¯ãƒ©ã‚¹ã‚’å–å¾—ã™ã‚‹
    * @param symbol
    * @return
    */

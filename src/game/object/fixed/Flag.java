@@ -9,9 +9,8 @@ import java.awt.RenderingHints;
 import game.object.FixedObj;
 
 /**
- * ƒXƒe[ƒWã‚Éİ’u‚·‚éŠø‚ÌƒX[ƒp[ƒNƒ‰ƒX
  * @author medysk
- *
+ * ã‚¹ãƒ†ãƒ¼ã‚¸ä¸Šã«è¨­ç½®ã™ã‚‹æ——ã®ã‚¹ãƒ¼ãƒ‘ãƒ¼ã‚¯ãƒ©ã‚¹
  */
 public abstract class Flag extends FixedObj {
 
@@ -19,16 +18,16 @@ public abstract class Flag extends FixedObj {
   protected String flagSymbol;
 
   /**
-   * İ’è‚Ì‰Šú‰»
+   * è¨­å®šã®åˆæœŸåŒ–
    * @param positionX
    * @param positionY
    */
   public Flag(int positionX, int positionY) {
     super(positionX, positionY);
-    isVisibility = true;    // ‰Â‹‚È‚çtrue
-    isDestory = true;       // ”j‰ó‰Â”\‚È‚çtrue
-    canCollision = true;    // Õ“Ë‰Â”\‚È‚çtrue
-    canPassing = true;      // ’Ê‰ß‰Â”\‚È‚çtrue
+    isVisibility = true;    // å¯è¦–ãªã‚‰true
+    isDestory = true;       // ç ´å£Šå¯èƒ½ãªã‚‰true
+    canCollision = true;    // è¡çªå¯èƒ½ãªã‚‰true
+    canPassing = true;      // é€šéå¯èƒ½ãªã‚‰true
     height = 80;
     width = 30;
   }

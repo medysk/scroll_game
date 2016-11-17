@@ -4,36 +4,35 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 /**
- * ”j‰ó‰Â”\‚ÈƒuƒƒbƒN
  * @author medysk
- *
+ * ç ´å£Šå¯èƒ½ãªãƒ–ãƒ­ãƒƒã‚¯
  */
 public class BrickBlock extends Block {
 
   /**
-   * İ’è‚Ì‰Šú‰»
+   * è¨­å®šã®åˆæœŸåŒ–
    * @param positionX
    * @param positionY
    */
   public BrickBlock(int positionX, int positionY) {
     super(positionX, positionY);
-    isVisibility = true;    // ‰Â‹‚È‚çtrue
-    isDestory = true;       // ”j‰ó‰Â”\‚È‚çtrue
-    canCollision = true;    // Õ“Ë‰Â”\‚È‚çtrue
+    isVisibility = true;    // å¯è¦–ãªã‚‰true
+    isDestory = true;       // ç ´å£Šå¯èƒ½ãªã‚‰true
+    canCollision = true;    // è¡çªå¯èƒ½ãªã‚‰true
   }
 
-  /* (”ñ Javadoc)
+  /* (é Javadoc)
    * @see game.object.fixed.Block#bottomAction()
    */
   @Override
   public void bottomEvent() {
-    // TODO: ”j‰óƒAƒjƒ[ƒVƒ‡ƒ“‚ğÀ‘•‚µŒÄ‚Ño‚·
+    // TODO: ç ´å£Šã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å®Ÿè£…ã—å‘¼ã³å‡ºã™
 
-    // ƒQ[ƒ€‚©‚çœŠO
+    // ã‚²ãƒ¼ãƒ ã‹ã‚‰é™¤å¤–
     destructor();
   }
 
-  /* (”ñ Javadoc)
+  /* (é Javadoc)
    * @see game.object.fixed.Block#draw(java.awt.Graphics)
    */
   @Override

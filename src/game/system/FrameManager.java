@@ -1,17 +1,15 @@
 package game.system;
 
 /**
- * ƒQ[ƒ€‚ÌƒtƒŒ[ƒ€”‚ÌŠÇ—‚·‚é
- * ‚Ü‚½A”ƒtƒŒ[ƒ€‚Éˆê“x“®ì‚·‚é‹@”\‚à’ñ‹Ÿ‚·‚é( ^‹U’l‚ğ“n‚·‚¾‚¯ )
- *
  * @author medysk
- *
+ * ã‚²ãƒ¼ãƒ ã®ãƒ•ãƒ¬ãƒ¼ãƒ æ•°ã®ç®¡ç†ã™ã‚‹
+ * ã¾ãŸã€æ•°ãƒ•ãƒ¬ãƒ¼ãƒ ã«ä¸€åº¦å‹•ä½œã™ã‚‹æ©Ÿèƒ½ã‚‚æä¾›ã™ã‚‹( çœŸå½å€¤ã‚’æ¸¡ã™ã ã‘ )
  */
 public class FrameManager {
-  private static long frameCount = 0;  // ƒtƒŒ[ƒ€”
+  private static long frameCount = 0;  // ãƒ•ãƒ¬ãƒ¼ãƒ æ•°
 
   /**
-   * num ‰ñ‚Éˆê“xtrue‚ğ•Ô‚·
+   * num å›ã«ä¸€åº¦trueã‚’è¿”ã™
    * @param num
    * @return
    */
@@ -20,16 +18,16 @@ public class FrameManager {
   }
 
   /**
-   * ”CˆÓ‚ÌƒtƒŒ[ƒ€‚Ü‚Åˆ—‚ğ~‚ß‚é(s‚¤)‚Æ‚«‚Ég—p‚·‚é
-   * @param untilAfterSleepFrame Œ»ƒtƒŒ[ƒ€” + ~‚ß‚½‚¢ƒtƒŒ[ƒ€”
-   * @return Œ»İ‚ÌƒtƒŒ[ƒ€”‚ğˆø”‚ÌƒtƒŒ[ƒ€”‚ª‘å‚«‚¯‚ê‚Î true ‚ğ•Ô‚·
+   * ä»»æ„ã®ãƒ•ãƒ¬ãƒ¼ãƒ ã¾ã§å‡¦ç†ã‚’æ­¢ã‚ã‚‹(è¡Œã†)ã¨ãã«ä½¿ç”¨ã™ã‚‹
+   * @param untilAfterSleepFrame ç¾ãƒ•ãƒ¬ãƒ¼ãƒ æ•° + æ­¢ã‚ãŸã„ãƒ•ãƒ¬ãƒ¼ãƒ æ•°
+   * @return ç¾åœ¨ã®ãƒ•ãƒ¬ãƒ¼ãƒ æ•°ã‚’å¼•æ•°ã®ãƒ•ãƒ¬ãƒ¼ãƒ æ•°ãŒå¤§ãã‘ã‚Œã° true ã‚’è¿”ã™
    */
   public static boolean isExceedFrame( long untilAfterSleepFrame ) {
     return frameCount > untilAfterSleepFrame;
   }
 
   /**
-   * ƒtƒŒ[ƒ€”ƒJƒEƒ“ƒg‚ÌƒCƒ“ƒNƒŠƒƒ“ƒg
+   * ãƒ•ãƒ¬ãƒ¼ãƒ æ•°ã‚«ã‚¦ãƒ³ãƒˆã®ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ãƒˆ
    */
   public static void increment() {
     frameCount++;

@@ -5,9 +5,8 @@ import java.awt.event.KeyListener;
 import java.util.HashMap;
 
 /**
- * ƒL[ƒCƒxƒ“ƒg‚ğ‚à‚Æ‚ÉŒ»İ‚ÌƒL[‚Ìó‘Ô‚ğ•Û‚·‚éƒNƒ‰ƒX
  * @author medysk
- *
+ * ã‚­ãƒ¼ã‚¤ãƒ™ãƒ³ãƒˆã‚’ã‚‚ã¨ã«ç¾åœ¨ã®ã‚­ãƒ¼ã®çŠ¶æ…‹ã‚’ä¿æŒã™ã‚‹ã‚¯ãƒ©ã‚¹
  */
 public class KeyState implements KeyListener {
   private HashMap<String, Boolean> keyState;
@@ -20,7 +19,7 @@ public class KeyState implements KeyListener {
     }
   }
 
-  /* (”ñ Javadoc)
+  /* (é Javadoc)
    * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
    */
   public void keyPressed( KeyEvent e ) {
@@ -40,7 +39,7 @@ public class KeyState implements KeyListener {
     }
   }
 
-  /* (”ñ Javadoc)
+  /* (é Javadoc)
    * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
    */
   public void keyReleased( KeyEvent e ) {
@@ -63,17 +62,17 @@ public class KeyState implements KeyListener {
   public void keyTyped( KeyEvent e ) {}
 
   /**
-   * ”CˆÓ‚ÌƒL[‚Ìó‘Ô‚ğ•Ô‚·
-   * @param keyName Key(enum)‚Ìname‚ğ“n‚·
-   * @return true: ƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚é false: ƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚È‚¢
+   * ä»»æ„ã®ã‚­ãƒ¼ã®çŠ¶æ…‹ã‚’è¿”ã™
+   * @param keyName Key(enum)ã®nameã‚’æ¸¡ã™
+   * @return true: ã‚­ãƒ¼ãŒæŠ¼ã•ã‚Œã¦ã„ã‚‹ false: ã‚­ãƒ¼ãŒæŠ¼ã•ã‚Œã¦ã„ãªã„
    */
   public boolean isKeyPressed( String keyName ) {
     return keyState.get( keyName );
   }
 
   /**
-   * ‘S‚Ä‚ÌƒL[‚Ìó‘Ô‚ğ•Ô‚·
-   * @return keyName( Key(enum)‚Ìname ), ƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚ê‚Îtrue
+   * å…¨ã¦ã®ã‚­ãƒ¼ã®çŠ¶æ…‹ã‚’è¿”ã™
+   * @return keyName( Key(enum)ã®name ), ã‚­ãƒ¼ãŒæŠ¼ã•ã‚Œã¦ã„ã‚Œã°true
    */
   public HashMap<String, Boolean> getKeyState() {
     return keyState;

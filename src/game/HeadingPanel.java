@@ -8,8 +8,12 @@ import java.awt.RenderingHints;
 
 import javax.swing.JPanel;
 
+/**
+ * @author medysk
+ * æ–‡å­—è¡¨ç¤º
+ */
 public class HeadingPanel extends JPanel {
-  // TODO: İ’èƒtƒ@ƒCƒ‹‚©‚ç“Ç‚İ‚Ş
+  // TODO: è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰èª­ã¿è¾¼ã‚€
   public static final int WIDTH = 1000;
   public static final int HEIGHT = 700;
 
@@ -29,7 +33,7 @@ public class HeadingPanel extends JPanel {
     this.y = y;
   }
 
-  /* (”ñ Javadoc)
+  /* (é Javadoc)
    * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
    */
   @Override
@@ -44,9 +48,5 @@ public class HeadingPanel extends JPanel {
     g2.setFont( new Font(Font.SANS_SERIF, Font.BOLD, 36) );
 
     g2.drawString(heading, x, y);
-  }
-
-  public void set(String heading, int left, int top) {
-
   }
 }

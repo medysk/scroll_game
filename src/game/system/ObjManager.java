@@ -1,14 +1,12 @@
 package game.system;
 
 /**
- * �Q�[���t���[�����ƂɈ�x����Obj�̃T�u�N���X��
- * �C���X�^���X�ꗗ����ޕʂɕ������Ƃ��s��
- * 
- * �Q�[����1�t���[�����ɃC���X�^���X�ꗗ�����x��
- * �S�������Ȃ��悤�ɂ��邽�߂̃N���X
- * 
  * @author medysk
+ * ゲームフレームごとに一度だけObjのサブクラスの
+ * インスタンス一覧を種類別に分ける作業を行う
  *
+ * ゲームの1フレーム中にインスタンス一覧を何度も
+ * 全走査しないようにするためのクラス
  */
 public class ObjManager {
 

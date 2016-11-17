@@ -5,14 +5,13 @@ import java.awt.Color;
 import game.Stage;
 
 /**
- * ƒXƒe[ƒW‚ÌƒNƒŠƒA’n“_‚Éİ’u‚·‚éŠø
  * @author medysk
- *
+ * ã‚¹ãƒ†ãƒ¼ã‚¸ã®ã‚¯ãƒªã‚¢åœ°ç‚¹ã«è¨­ç½®ã™ã‚‹æ——
  */
 public class ClearFlag extends Flag {
 
   /**
-   * İ’è‚Ì‰Šú‰»
+   * è¨­å®šã®åˆæœŸåŒ–
    * @param positionX
    * @param positionY
    */

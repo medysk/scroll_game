@@ -15,47 +15,47 @@ import game.object.fixed.Ground;
 import java.awt.Graphics;
 
 /**
- * ƒQ[ƒ€‚É•`Ê‚·‚é‘S‚Ä‚ÌƒIƒuƒWƒFƒNƒg‚ÌƒX[ƒp[ƒNƒ‰ƒX
- * ƒTƒuƒNƒ‰ƒX‚ÉMoveObj‚ÆFixedObjABackgound‚ğ‚Â
- * ƒTƒuƒNƒ‰ƒX‚ğƒCƒ“ƒXƒ^ƒ“ƒX‰»‚·‚éÛ‚Í create(Obj obj) ‚ğg—p‚·‚é
+ * ã‚²ãƒ¼ãƒ ã«æå†™ã™ã‚‹å…¨ã¦ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚¹ãƒ¼ãƒ‘ãƒ¼ã‚¯ãƒ©ã‚¹
+ * ã‚µãƒ–ã‚¯ãƒ©ã‚¹ã«MoveObjã¨FixedObjã€Backgoundã‚’æŒã¤
+ * ã‚µãƒ–ã‚¯ãƒ©ã‚¹ã‚’ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹åŒ–ã™ã‚‹éš›ã¯ create(Obj obj) ã‚’ä½¿ç”¨ã™ã‚‹
  *
  * @author medysk
  *
  */
 public abstract class Obj  implements Cloneable {
-  // ###  static•Ï”  ###
+  // ###  staticå¤‰æ•°  ###
 
-  // ƒTƒuƒNƒ‰ƒX‚ğƒCƒ“ƒXƒ^ƒ“ƒX‰»‚·‚éÛ‚É‚±‚Ì•Ï”‚ÉŠi”[‚·‚é
+  // ã‚µãƒ–ã‚¯ãƒ©ã‚¹ã‚’ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹åŒ–ã™ã‚‹éš›ã«ã“ã®å¤‰æ•°ã«æ ¼ç´ã™ã‚‹
   private static ConcurrentHashMap<String,Obj> instances = new ConcurrentHashMap<>();
 
-  // ###  instance•Ï”  ###
-  // ƒIƒuƒWƒFƒNƒg‚ÌˆêˆÓ‚ÈID
+  // ###  instanceå¤‰æ•°  ###
+  // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä¸€æ„ãªID
   protected String objId;
 
-  // ‰Šú‚ÌˆÊ’u
+  // åˆæœŸã®ä½ç½®
   protected int initialPositionX;
   protected int initialPositionY;
 
-  // Œ»İ‚ÌÀ•W
+  // ç¾åœ¨ã®åº§æ¨™
   protected int positionX;
   protected int positionY;
 
-  // ƒIƒuƒWƒFƒNƒg‚ÌƒTƒCƒY
+  // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚µã‚¤ã‚º
   protected int height;
   protected int width;
 
-  // ‰æ‘œ‚©"java.awt.Graphics"‚È‚Ì‚©
+  // ç”»åƒã‹"java.awt.Graphics"ãªã®ã‹
   protected boolean isImg;
 
   /**
-   * Trajectory—p‚Ìƒ_ƒ~[ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+   * Trajectoryç”¨ã®ãƒ€ãƒŸãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
    */
   public Obj() {}
 
   /**
-   * TrajectoryˆÈŠO‚ÌƒQ[ƒ€•`Ê—p‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^
-   * @param positionX ‰ŠúˆÊ’u
-   * @param positionY ‰ŠúˆÊ’u
+   * Trajectoryä»¥å¤–ã®ã‚²ãƒ¼ãƒ æå†™ç”¨ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+   * @param positionX åˆæœŸä½ç½®
+   * @param positionY åˆæœŸä½ç½®
    */
   public Obj( int positionX, int positionY ) {
     setPosition( positionX, positionY );
@@ -157,14 +157,14 @@ public abstract class Obj  implements Cloneable {
   }
 
   /**
-   * ƒCƒ“ƒXƒ^ƒ“ƒXíœ
+   * ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å‰Šé™¤
    */
   public void destructor() {
     instances.remove(this.objId);
   }
 
   /**
-   * ƒIƒuƒWƒFƒNƒg‚ÌƒOƒ‰ƒtƒBƒbƒN
+   * ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯
    * @param g
    */
   public abstract void draw(Graphics g);
