@@ -11,6 +11,8 @@ import game.system.StageManager;
  */
 public class SaveFlag extends Flag {
 
+  private boolean canSave;
+
   /**
    * 設定の初期化
    * @param positionX
@@ -20,12 +22,17 @@ public class SaveFlag extends Flag {
     super(positionX, positionY);
     flagColor = Color.CYAN;
     flagSymbol = "S";
+    canSave = true;
   }
 
   @Override
   public void event() {
+    if(! canSave) {
+      return;
+    }
     flagColor = Color.WHITE;
     StageManager.save();
+    canSave = false;
   }
 
 }

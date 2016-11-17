@@ -19,6 +19,7 @@ public class StageManager {
     cpInstances = new HashMap<>();
     FrameManager.getFrameCount();
 
+
     Obj.getInstances().forEach( (id,obj) -> {
       try {
         cpInstances.put(id, (Obj) obj.clone() );
@@ -26,7 +27,6 @@ public class StageManager {
         e.printStackTrace();
       }
     });
-
   }
 
   /**
@@ -35,6 +35,10 @@ public class StageManager {
   public static void load() {
     Obj.overwriteInstances(cpInstances);
     FrameManager.setFrameCount(frameCount);
+
+    // ロード時にキャラクターのベクトルを調整
+    Obj.getCharacter().setVectorX(0);
+    Obj.getCharacter().setVectorY(0);
   }
 }
 
