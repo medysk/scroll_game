@@ -3,6 +3,7 @@ package game.object;
 import java.util.function.Consumer;
 
 import config.GameData;
+import game.Stage;
 import game.system.CollisionData;
 import game.system.CollisionManager;
 
@@ -39,7 +40,10 @@ public abstract class MoveObj extends Obj {
   public void execute() {
     // Characterがゲームから除外された場合、動作を行わない
     if( Obj.getCharacter() == null ) { return; }
-
+    // 画面下に落ちた場合、ゲームから除外する
+    if( positionY > GameData.PANEL_HEIGHT ) {
+      destructor();
+    }
     fall();
     action();
     move();
@@ -65,12 +69,6 @@ public abstract class MoveObj extends Obj {
   public void move() {
     positionX += vectorX;
     positionY += vectorY;
-
-    // 画面下に落ちた場合、ゲームから除外する
-    if( positionY > GameData.PANEL_HEIGHT ) {
-      positionY = GameData.PANEL_HEIGHT;
-      destructor();
-    }
   }
 
   // オブジェクトの移動確認用メソッド

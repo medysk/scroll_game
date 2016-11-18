@@ -16,7 +16,7 @@ import config.GameData;
  */
 public class HeadingPanel extends JPanel {
   private static final int width = GameData.PANEL_WIDTH;
-  private static final int height = GameData.PANEL_HALF_WIDTH;
+  private static final int height = GameData.PANEL_HEIGHT;
 
   private String heading;
   private int x;

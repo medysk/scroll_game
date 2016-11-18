@@ -97,6 +97,7 @@ public class Character extends MoveObj {
 
   @Override
   public void destructor() {
+    move();
     // echoのX座標を割り出す
     int x;
     if( positionX < GameData.PANEL_HALF_WIDTH ) {
@@ -108,7 +109,7 @@ public class Character extends MoveObj {
       x = GameData.PANEL_HALF_WIDTH;
     }
 
-    Stage.echo("下手すぎる", x - 50, positionY -30, 1, 800);
+    Stage.echo("下手すぎる", x - 50, positionY -60, 1, 800);
     super.destructor();
   }
 
