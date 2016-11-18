@@ -15,6 +15,7 @@ import game.object.fixed.Downhill;
 import game.object.fixed.Flat;
 import game.object.fixed.Ground;
 import game.object.fixed.Uphill;
+import game.object.move.enemy.Enemy1;
 
 /**
  * @author medysk
@@ -100,31 +101,53 @@ public class CollisionInfoAnalyzer {
       completionIds.forEach( id -> ids.remove(ids.indexOf(id)) );
     }
 
-    // 最終的な位置が坂だったら collisionMap の BOTTOM を上書き
+    // 最終的な位置が坂だった場合の処理
     if( hill != null ) {
-      CollisionData data = collisionForHill(tTrajectory, hill);
+      hillProc(hill, tTrajectory, collisionMap, target);
+    }
 
-      if( collisionMap.containsKey(Side.BOTTOM) &&
-          collisionMap.get(Side.BOTTOM).getSubject() instanceof Flat ) {
-        collisionMap.remove(Side.BOTTOM);
-      }
-
-      if( data != null ) {
-        collisionMap.put(Side.BOTTOM, data);
-
-        // 坂の登頂付近で壁になっていないFlatに衝突しないようにする
-        Side course = target.getVectorX() < 0 ? Side.LEFT : Side.RIGHT;
-        Side deleteSide = collisionOnGroundAtHill(
-            collisionMap, course, (Ground) data.getSubject() );
-
-        if( deleteSide != null ) {
-          collisionMap.remove(deleteSide);
-        }
-      }
+    // 敵を踏んだ時はサイドの敵との衝突を起こさないようにする
+    if( collisionMap.containsKey(Side.BOTTOM) &&
+        collisionMap.get(Side.BOTTOM).getSubject() instanceof Enemy1 ) {
+      steppedOnEnemy(collisionMap, Side.LEFT);
+      steppedOnEnemy(collisionMap, Side.RIGHT);
     }
 
     collisionMap.forEach( (k,v) -> collisionDataList.add(v) );
     return collisionDataList;
+  }
+
+  // サイドが敵との衝突を起こしている場合、削除
+  private static void steppedOnEnemy(HashMap<Side,CollisionData> collisionMap, Side side) {
+    if( collisionMap.containsKey(side) &&
+        collisionMap.get(side).getSubject() instanceof Enemy1 ) {
+      collisionMap.remove(side);
+    }
+  }
+
+  private static void hillProc(Ground hill, Trajectory tTrajectory,
+      HashMap<Side,CollisionData> collisionMap, MoveObj target) {
+
+    // 最終的な位置が坂だったら collisionMap の BOTTOM を上書き
+    CollisionData data = collisionForHill(tTrajectory, hill);
+    // 坂に立っている場合、足元のFlatと衝突しない
+    if( collisionMap.containsKey(Side.BOTTOM) &&
+        collisionMap.get(Side.BOTTOM).getSubject() instanceof Flat ) {
+      collisionMap.remove(Side.BOTTOM);
+    }
+
+    if( data != null ) {
+      collisionMap.put(Side.BOTTOM, data);
+
+      // 坂の登頂付近で壁になっていないFlatに衝突しないようにする
+      Side course = target.getVectorX() < 0 ? Side.LEFT : Side.RIGHT;
+      Side deleteSide = collisionOnGroundAtHill(
+          collisionMap, course, (Ground) data.getSubject() );
+
+      if( deleteSide != null ) {
+        collisionMap.remove(deleteSide);
+      }
+    }
   }
 
   /**
