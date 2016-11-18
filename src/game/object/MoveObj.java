@@ -3,7 +3,6 @@ package game.object;
 import java.util.function.Consumer;
 
 import config.GameData;
-import game.Stage;
 import game.system.CollisionData;
 import game.system.CollisionManager;
 
