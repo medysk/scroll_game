@@ -15,7 +15,7 @@ import game.object.FixedObj;
 public abstract class Flag extends FixedObj {
 
   protected Color flagColor;
-  protected String flagSymbol;
+  protected String flagSymbol;  // 旗印
 
   /**
    * 設定の初期化
@@ -39,10 +39,10 @@ public abstract class Flag extends FixedObj {
   public void draw(Graphics g) {
     g.translate(positionX, positionY);
     g.setColor( Color.GRAY );
-    g.fillRect(0, 0, 5, 80);
+    g.fillRect(0, 0, 5, height);
     g.setColor( flagColor );
     int xPoints[] = { 5, 30, 5 };
-    int yPoints[] = { 0, 15, 30 };
+    int yPoints[] = { 0, 15, width };
 
     g.fillPolygon(xPoints, yPoints, xPoints.length);
 

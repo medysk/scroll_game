@@ -82,6 +82,7 @@ public abstract class Obj  implements Cloneable {
     });
   }
 
+  // TODO: 呼び出すたびに走査しないようにする
   public static Character getCharacter() {
     for(Obj obj : instances.values()) {
       if( obj instanceof Character ) {
@@ -95,6 +96,7 @@ public abstract class Obj  implements Cloneable {
     return instances;
   }
 
+  // TODO: 呼び出すたびに走査しないようにする
   public static CopyOnWriteArrayList<String> moveObjIds() {
     List<String> ids = selectIds( obj -> obj instanceof MoveObj );
     return new CopyOnWriteArrayList<String>(ids);

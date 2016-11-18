@@ -8,14 +8,15 @@ import java.awt.RenderingHints;
 
 import javax.swing.JPanel;
 
+import config.GameData;
+
 /**
  * @author medysk
  * 文字表示
  */
 public class HeadingPanel extends JPanel {
-  // TODO: 設定ファイルから読み込む
-  public static final int WIDTH = 1000;
-  public static final int HEIGHT = 700;
+  private static final int width = GameData.PANEL_WIDTH;
+  private static final int height = GameData.PANEL_HALF_WIDTH;
 
   private String heading;
   private int x;
@@ -25,7 +26,7 @@ public class HeadingPanel extends JPanel {
    *
    */
   public HeadingPanel(String heading, int x, int y) {
-    setSize( new Dimension(WIDTH, HEIGHT) );
+    setSize( new Dimension(width, height) );
     setOpaque(false);
     setFocusable( true );
     this.heading = heading;

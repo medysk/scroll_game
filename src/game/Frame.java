@@ -6,6 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
+import config.GameData;
+
 /**
  * @author medysk
  * GUI用のフレームを作成
@@ -18,7 +20,8 @@ public class Frame extends JFrame {
     setTitle("Horizontal Scroll");
 //    contentPane = getContentPane();
     layerPane = new JLayeredPane();
-    layerPane.setPreferredSize(new Dimension( StagePanel.WIDTH, StagePanel.HEIGHT ));
+    layerPane.setPreferredSize(
+        new Dimension( GameData.PANEL_WIDTH, GameData.PANEL_HEIGHT ));
     layerPane.add(panel, JLayeredPane.DEFAULT_LAYER);
 
     getContentPane().add(layerPane);

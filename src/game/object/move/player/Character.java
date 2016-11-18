@@ -3,7 +3,7 @@ package game.object.move.player;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import game.StagePanel;
+import config.GameData;
 import game.Stage;
 import game.object.FixedObj;
 import game.object.MoveObj;
@@ -26,14 +26,13 @@ public class Character extends MoveObj {
 
   public Character( int positionX, int positionY ) {
     super( positionX, positionY );
-    // TODO: 設定ファイルから読み込む
-    height = 50;
-    width = 28;
-    minSpeed = 1;
-    maxSpeed = 10;
-    fallVelocity = 1;
-    maxFallVelocity = height - 1; //
-    verticalLeap = 20;
+    height = GameData.CHARACTER_HEIGHT;
+    width = GameData.CHARACTER_WIDTH;
+    minSpeed = GameData.CHARACTER_MIN_SPEED;
+    maxSpeed = GameData.CHARACTER_MAX_SPEED;
+    fallVelocity = GameData.CHARACTER_FALL_VELOCITY;
+    maxFallVelocity = GameData.CHARACTER_MAX_FALL_VELOCITY;
+    verticalLeap = GameData.CHARACTER_VERTICAL_LEAP;
     momentum = new Momentum( this ); // Momentumは破壊的(副作用)な操作を行う
   }
 
@@ -67,7 +66,7 @@ public class Character extends MoveObj {
    */
   @Override
   public void draw( Graphics g ) {
-    g.setColor( Color.BLUE );
+    g.setColor( new Color(GameData.CHARACTER_COLOR) );
     g.fillRect( positionX, positionY, width, height );
   }
 
@@ -100,13 +99,13 @@ public class Character extends MoveObj {
   public void destructor() {
     // echoのX座標を割り出す
     int x;
-    if( positionX < StagePanel.WIDTH  / 2 ) {
+    if( positionX < GameData.PANEL_HALF_WIDTH ) {
       x = positionX;
-    } else if( positionX > Map.getRightLimit() - StagePanel.WIDTH / 2  ) {
+    } else if( positionX > Map.getRightLimit() - GameData.PANEL_HALF_WIDTH ) {
       int clearance = Map.getRightLimit() - positionX;
-      x = StagePanel.WIDTH - clearance;
+      x = GameData.PANEL_WIDTH - clearance;
     } else {
-      x = StagePanel.WIDTH / 2;
+      x = GameData.PANEL_HALF_WIDTH;
     }
 
     Stage.echo("下手すぎる", x - 50, positionY -30, 1, 800);

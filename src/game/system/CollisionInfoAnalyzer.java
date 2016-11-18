@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-import game.StagePanel;
+import config.GameData;
 import game.object.FixedObj;
 import game.object.MoveObj;
 import game.object.Obj;
@@ -161,7 +161,7 @@ public class CollisionInfoAnalyzer {
     try {
       centerSoleLimit = Map.getLowerLimit(centerSolePositionX);
     } catch( NullPointerException e ) {
-      centerSoleLimit = StagePanel.HEIGHT + target.getHeight();
+      centerSoleLimit = GameData.PANEL_WIDTH + target.getHeight();
     }
     if( centerSolePositionY > centerSoleLimit ) {
       return new CollisionData(target.getMoveObj(), subject, Side.BOTTOM,

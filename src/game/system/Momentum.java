@@ -10,7 +10,7 @@ public class Momentum {
   private MoveObj obj;
   private int minSpeed;
   private int maxSpeed;
-  private int interval = 5; // TODO: 設定ファイルから読み込む
+  private int interval = 5;
 
   public Momentum( MoveObj obj ) {
     this.obj = obj;

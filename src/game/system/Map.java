@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+import config.GameData;
 import game.Stage;
 import game.object.Obj;
 import game.object.fixed.Downhill;
@@ -92,16 +93,16 @@ public class Map {
     List<String[]> records = new ArrayList<>();
 
     try {
-      // map{n}.conf は20行までをマップの記述エリアとしている
-      while ( (line = br.readLine()) != null && records.size() <= 20) {
+      int lines = GameData.MAP_FILE_VALID_RECORD; // マップファイルの有効行数
+      while ( (line = br.readLine()) != null && records.size() <= lines) {
         records.add( line.split("") );
         if(lineLength < records.get(records.size() - 1).length ) {
           lineLength = records.get(records.size() - 1).length;
         }
       }
 
-      if( records.size() < 20 ) {
-        throw new IOException("map{n}.conf が20行未満です");
+      if( records.size() < lines ) {
+        throw new IOException("map{n}.conf が" + lines + "行未満です");
       }
 
       br.close();
@@ -114,9 +115,8 @@ public class Map {
   }
 
   private static void createObj( List<String[]> records ) {
-    // TODO: 設定ファイルから読み込む
-    final int baseHeight = 30;
-    final int baseWidth = 30;
+    final int baseWidth = GameData.BASE_OBJ_WIDTH;
+    final int baseHeight = GameData.BASE_OBJ_HEIGHT;
     int recordLength = 0;
     int columnLength;
 
@@ -148,8 +148,7 @@ public class Map {
 
   // 位置補正
   private static void positionCorrection(Obj obj) {
-    // TODO: 30はベースのオブジェクトサイズ　設定ファイルから読み込む
-    int dif = obj.getHeight() - 30;
+    int dif = obj.getHeight() - GameData.BASE_OBJ_HEIGHT;
     obj.setPosition(obj.getPositionX(), obj.getPositionY() - dif);
   }
 

@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.swing.JLayeredPane;
 
+import config.GameData;
 import game.Frame;
 import game.StagePanel;
 import game.object.MoveObj;
@@ -77,7 +78,7 @@ public class Stage implements Runnable {
       // ゲームの速度
       // TODO: ゲームの基本機能を実装したのち、調整する また、設定ファイルから読み込む
       try {
-        TimeUnit.MILLISECONDS.sleep(15);
+        TimeUnit.MILLISECONDS.sleep(GameData.SYSTEM_SLEEP);
       } catch( InterruptedException e ) {
         e.printStackTrace();
       }
@@ -105,9 +106,11 @@ public class Stage implements Runnable {
 
   /**
    * 文字列を描写
-   * @param str 文字列
+   * @param msg 文字列
    * @param x X座標
    * @param y Y座標
+   * @param flassing 点滅回数
+   * @param milliSeconds 点滅時間(ミリ秒)
    */
   public static void echo( String msg, int x, int y, int flashing, int milliSeconds ) {
     HeadingPanel headingPanel = new HeadingPanel(msg, x, y);

@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.swing.JPanel;
 
+import config.GameData;
 import game.object.FixedObj;
 import game.object.Obj;
 import game.object.move.player.Character;
@@ -17,9 +18,9 @@ import game.system.Map;
  * ゲーム用のメインパネル
  */
 public class StagePanel extends JPanel {
-  // TODO: 設定ファイルから読み込む
-  public static final int WIDTH = 1000;
-  public static final int HEIGHT = 600;
+  private static final int width = GameData.PANEL_WIDTH;
+  private static final int harfWidth = GameData.PANEL_HALF_WIDTH;
+  private static final int height = GameData.PANEL_HEIGHT;
 
   // ゲームに描写するオブジェクトを格納する
   private ConcurrentHashMap<String,Obj> objs = new ConcurrentHashMap<>();
@@ -28,7 +29,7 @@ public class StagePanel extends JPanel {
    * パネルの設定と変数の初期化
    */
   public StagePanel() {
-    setSize( new Dimension(WIDTH, HEIGHT) );
+    setSize( new Dimension(width, height) );
     setFocusable( true );
     objs = Obj.getInstances();
   }
@@ -38,7 +39,7 @@ public class StagePanel extends JPanel {
     super.paintComponent(g);
 
     // TODO: Backgroundクラスに処理を任せる
-    g.setColor( new Color(30, 144, 255) );
+    g.setColor( new Color(GameData.BACKGROUND_COLOR) );
     g.fillRect( 0, 0, getWidth(), getHeight() );
 
     // オブジェクトの描写
@@ -60,21 +61,21 @@ public class StagePanel extends JPanel {
       }
 
       // 画面外のオブジェクトは描写しない
-      if( character.getPositionX() + WIDTH / 2 < obj.getPositionX() &&
-          character.getPositionX() - WIDTH / 2 > obj.getPositionX() + obj.getWidth() ) {
+      if( character.getPositionX() + harfWidth < obj.getPositionX() &&
+          character.getPositionX() - harfWidth > obj.getPositionX() + obj.getWidth() ) {
         return;
       }
 
       // キャラクターに合わせてマップをスライドさせる
-      if( character.getPositionX() < (WIDTH / 2) ) {
+      if( character.getPositionX() < harfWidth ) {
         obj.draw( g.create() );
-      } else if( character.getPositionX() > (Map.getRightLimit() - WIDTH / 2) ) {
+      } else if( character.getPositionX() > (Map.getRightLimit() - harfWidth) ) {
         Graphics ng = g.create();
-        ng.translate( - Map.getRightLimit() + (WIDTH), 0);
+        ng.translate( - Map.getRightLimit() + width, 0);
         obj.draw(ng);
       } else {
         Graphics ng = g.create();
-        ng.translate(- character.getPositionX() + (WIDTH / 2), 0);
+        ng.translate(- character.getPositionX() + harfWidth, 0);
         obj.draw(ng);
       }
     } );

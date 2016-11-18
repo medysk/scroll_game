@@ -3,7 +3,7 @@ package game.object.move.enemy;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import game.StagePanel;
+import config.GameData;
 import game.object.MoveObj;
 import game.object.Obj;
 import game.object.move.player.Character;
@@ -23,13 +23,13 @@ public class Enemy1 extends MoveObj {
    */
   public Enemy1(int positionX, int positionY) {
     super(positionX, positionY);
-    height = 28;
-    width = 28;
-    minSpeed = 2;
-    maxSpeed = 2;
-    fallVelocity = 1;
-    maxFallVelocity = height - 1;
-    verticalLeap = 12;
+    height = GameData.ENEMY1_HEIGHT;
+    width = GameData.ENEMY1_WIDTH;
+    minSpeed = GameData.ENEMY1_MIN_SPEED;
+    maxSpeed = GameData.ENEMY1_MAX_SPEED;
+    fallVelocity = GameData.ENEMY1_FALL_VELOCITY;
+    maxFallVelocity = GameData.ENEMY1_MAX_FALL_VELOCITY;
+    verticalLeap = GameData.ENEMY1_VERTICAL_LEAP;
   }
 
   /* (非 Javadoc)
@@ -64,11 +64,11 @@ public class Enemy1 extends MoveObj {
   protected void action() {
     // キャラクターが近ずくと動き始める
     int difference = Obj.getCharacter().getPositionX() - positionX;
-    if( Math.abs(difference) > StagePanel.WIDTH / 2 ) {
+    if( Math.abs(difference) > GameData.PANEL_HALF_WIDTH ) {
       return;
     }
 
-    if( FrameManager.isActionFrame(100) ) {
+    if( FrameManager.isActionFrame( GameData.ENEMY1_JUMP_INTERVAL ) ) {
       jump();
     }
 
@@ -81,7 +81,7 @@ public class Enemy1 extends MoveObj {
    */
   @Override
   public void draw(Graphics g) {
-    g.setColor( Color.ORANGE);
+    g.setColor( new Color(GameData.ENEMY1_COLOR) );
     g.fillRect(positionX, positionY, width, height);
   }
 

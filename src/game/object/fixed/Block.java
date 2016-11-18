@@ -2,6 +2,7 @@ package game.object.fixed;
 
 import java.awt.Graphics;
 
+import config.GameData;
 import game.object.FixedObj;
 
 /**
@@ -17,10 +18,9 @@ public abstract class Block extends FixedObj {
    */
   public Block(int positionX, int positionY) {
     super(positionX, positionY);
-    // TODO: 設定ファイルから読み込む
     canPassing = false;
-    height = 30;
-    width = 30;
+    height = GameData.BASE_OBJ_HEIGHT;
+    width = GameData.BASE_OBJ_WIDTH;
   }
 
   public void event() {}

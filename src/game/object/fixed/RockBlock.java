@@ -3,6 +3,8 @@ package game.object.fixed;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import config.GameData;
+
 /**
  * @author medysk
  * 破壊できないブロック
@@ -46,9 +48,9 @@ public class RockBlock extends Block {
    */
   @Override
   public void draw(Graphics g) {
-    g.setColor( new Color(128, 128, 128) );
+    g.setColor( new Color(GameData.ROCK_BLOCK_MAIN_COLOR) );
     g.fillRect( positionX, positionY, width, height );
-    g.setColor( new Color(32, 32, 32) );
+    g.setColor( new Color(GameData.ROCK_BLOCK_FRAME_COLOR) );
     g.drawRect( positionX, positionY, width, height );
   }
 }

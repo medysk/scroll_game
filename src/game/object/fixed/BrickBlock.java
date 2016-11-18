@@ -3,6 +3,8 @@ package game.object.fixed;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import config.GameData;
+
 /**
  * @author medysk
  * 破壊可能なブロック
@@ -37,11 +39,11 @@ public class BrickBlock extends Block {
    */
   @Override
   public void draw(Graphics g) {
-    g.setColor( new Color(139, 69, 19) );
+    g.setColor( new Color(GameData.BRICK_BLOCK_MAIN_COLOR) );
     g.fillRect( positionX, positionY, width, height );
-    g.setColor( new Color(60, 60, 60) );
+    g.setColor( new Color(GameData.BRICK_BLOCK_FRAME_COLOR) );
     g.drawRect( positionX, positionY, width, height );
-    g.setColor( new Color(96, 96, 96) );
+    g.setColor( new Color(GameData.BRICK_BLOCK_LINE_COLOR) );
     g.drawLine( positionX + width / 2,
                 positionY,
                 positionX + width / 2,
