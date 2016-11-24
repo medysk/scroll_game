@@ -8,7 +8,7 @@ import java.awt.RenderingHints;
 
 import javax.swing.JPanel;
 
-import config.GameData;
+import game.config.GameData;
 
 /**
  * @author medysk

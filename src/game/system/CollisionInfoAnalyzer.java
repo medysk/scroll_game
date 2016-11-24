@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-import config.GameData;
+import game.config.GameData;
 import game.object.FixedObj;
 import game.object.MoveObj;
 import game.object.Obj;

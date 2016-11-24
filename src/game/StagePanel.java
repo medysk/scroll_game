@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.swing.JPanel;
 
-import config.GameData;
+import game.config.GameData;
 import game.object.FixedObj;
 import game.object.Obj;
 import game.object.move.player.Character;

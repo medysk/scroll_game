@@ -3,7 +3,7 @@ package game.object.fixed;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import config.GameData;
+import game.config.GameData;
 
 /**
  * @author medysk

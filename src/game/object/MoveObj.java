@@ -2,7 +2,7 @@ package game.object;
 
 import java.util.function.Consumer;
 
-import config.GameData;
+import game.config.GameData;
 import game.system.CollisionData;
 import game.system.CollisionManager;
 

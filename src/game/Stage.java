@@ -4,9 +4,9 @@ import java.util.concurrent.TimeUnit;
 
 import javax.swing.JLayeredPane;
 
-import config.GameData;
 import game.Frame;
 import game.StagePanel;
+import game.config.GameData;
 import game.object.MoveObj;
 import game.object.Obj;
 import game.system.FrameManager;

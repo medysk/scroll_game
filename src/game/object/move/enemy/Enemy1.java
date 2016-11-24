@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Random;
 
-import config.GameData;
+import game.config.GameData;
 import game.object.MoveObj;
 import game.object.Obj;
 import game.object.move.player.Character;

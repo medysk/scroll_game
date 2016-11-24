@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
-import config.GameData;
+import game.config.GameData;
 
 /**
  * @author medysk

@@ -3,8 +3,8 @@ package game.object.move.player;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import config.GameData;
 import game.Stage;
+import game.config.GameData;
 import game.object.FixedObj;
 import game.object.MoveObj;
 import game.object.fixed.Flag;
