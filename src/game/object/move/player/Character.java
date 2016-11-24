@@ -91,7 +91,7 @@ public class Character extends MoveObj {
     }
     // キーボードの↑が押された
     if( keyState.isKeyPressed( Key.UP.getName() ) ) {
-      if( ! isFlying ) { jump(); }
+      jump();
     }
   }
 

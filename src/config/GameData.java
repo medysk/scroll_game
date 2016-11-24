@@ -31,11 +31,12 @@ public class GameData {
   public static final int ENEMY1_WIDTH = 28;    // サイズ
   public static final int ENEMY1_HEIGHT = 28;   // サイズ
   public static final int ENEMY1_MIN_SPEED = 1; // 最小スピード
-  public static final int ENEMY1_MAX_SPEED = 2; // 最大スピード
+  public static final int ENEMY1_MAX_SPEED = 1; // 最大スピード
   public static final int ENEMY1_FALL_VELOCITY = 1;       // 落下速度増加値
   public static final int ENEMY1_MAX_FALL_VELOCITY = 27;  // 最大落下速度
   public static final int ENEMY1_VERTICAL_LEAP = 12;      // ジャンプ力
-  public static final int ENEMY1_JUMP_INTERVAL = 100;     // ジャンプ間隔
+  public static final int ENEMY1_MOVE_INTERVAL = 300;     // 移動方向変更間隔
+  public static final int ENEMY1_JUMP_INTERVAL = 300;     // ジャンプ間隔
   public static final int ENEMY1_COLOR = 0xff4500;        // カラー
 
   public static final int BRICK_BLOCK_MAIN_COLOR = 0x8b4513;  // メインの色

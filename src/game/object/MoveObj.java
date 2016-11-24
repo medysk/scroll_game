@@ -66,6 +66,13 @@ public abstract class MoveObj extends Obj {
    * オブジェクトを移動させるためのメソッド
    */
   public void move() {
+    if( Math.abs(vectorX) > maxSpeed ) {
+      vectorX = vectorX > 0 ? maxSpeed : - maxSpeed;
+    }
+    if( vectorY > maxFallVelocity ) {
+      vectorY = vectorY > 0 ? maxFallVelocity : - maxFallVelocity;
+    }
+
     positionX += vectorX;
     positionY += vectorY;
   }
@@ -115,7 +122,9 @@ public abstract class MoveObj extends Obj {
   * ジャンプ処理
   */
   protected void jump() {
-    vectorY -= verticalLeap + Math.abs( vectorX / 2 );
+    if( ! isFlying ) {
+      vectorY -= verticalLeap + Math.abs( vectorX / 2 );
+    }
   }
 
   /**

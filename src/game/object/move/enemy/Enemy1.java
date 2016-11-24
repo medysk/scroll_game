@@ -2,6 +2,7 @@ package game.object.move.enemy;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.Random;
 
 import config.GameData;
 import game.object.MoveObj;
@@ -62,14 +63,22 @@ public class Enemy1 extends MoveObj {
    */
   @Override
   protected void action() {
-    // キャラクターが近ずくと動き始める
+    Random rand = new Random();
+    int moveChangeInterval = rand.nextInt( GameData.ENEMY1_MOVE_INTERVAL );
+    int jumpInterval = rand.nextInt( GameData.ENEMY1_JUMP_INTERVAL );
+    // キャラクターが近く
     int difference = Obj.getCharacter().getPositionX() - positionX;
-    if( Math.abs(difference) > GameData.PANEL_HALF_WIDTH ) {
+    if( Math.abs(difference) > GameData.PANEL_HALF_WIDTH  ) {
+      vectorX = 0;
       return;
     }
 
-    if( FrameManager.isActionFrame( GameData.ENEMY1_JUMP_INTERVAL ) ) {
+    if( FrameManager.isActionFrame( jumpInterval + 1 ) ) {
       jump();
+    }
+
+    if( ! FrameManager.isActionFrame( moveChangeInterval + 1 ) ) {
+      return;
     }
 
     vectorX = Obj.getCharacter().getPositionX() < positionX ?
