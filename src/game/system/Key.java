@@ -41,8 +41,8 @@ public enum Key {
   }
 
   /**
-   * getter
-   * @return キーコードを返す
+   * キーコードをもとにenumを返す
+   * @return
    */
   public static Key searchByCode(int keyCode) {
     for( Key key : Key.values() ) {

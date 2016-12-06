@@ -48,7 +48,7 @@ public abstract class Obj  implements Cloneable {
   protected boolean isImg;
 
   /**
-   * Trajectory用のダミーコンストラクタ
+   * Trajectory用のコンストラクタ
    */
   public Obj() {}
 
@@ -163,6 +163,13 @@ public abstract class Obj  implements Cloneable {
    */
   public void destructor() {
     instances.remove(this.objId);
+  }
+
+  /**
+   * instancesの初期化
+   */
+  public static void clearInstances() {
+    instances.clear();
   }
 
   /**

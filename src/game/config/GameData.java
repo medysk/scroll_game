@@ -7,7 +7,14 @@ package game.config;
 // TODO: yamlかjson5かcsonに置き換える
 public class GameData {
   public static final int SYSTEM_SLEEP = 15;    // 1フレームごとのスリープ（ミリ秒）
-  public static final int MAP_FILE_VALID_RECORD = 20; // マップファイルの有効行数
+  public static final int STAGE_FILE_VALID_RECORD = 20; // マップファイルの有効行数
+  public static final String STAGE_FILE_DIR_PATH = "config/stage/"; // マップファイルのディレクトリﾊﾟｽ
+
+  public static final int STAGE_BG_COLOR = 0x1E90FF; // 背景色
+  public static final int MENU_BG_COLOR = 0x000;     // 背景色
+  public static final int MENU_TEXT_COLOR = 0x3CB371;   // メニューの文字色
+  public static final int CHOICES_TEXT_COLOR = 0x808080;   // ステージ選択肢
+  public static final int CHOICES_FOCUS_TEXT_COLOR = 0xFFFF00;   // ステージ選択肢のフォーカス
 
   public static final int BASE_OBJ_WIDTH = 30;  // ステージ配置オブジェクト(地面、ブロック)
   public static final int BASE_OBJ_HEIGHT = 30; // ステージ配置オブジェクト(地面、ブロック)
@@ -15,9 +22,7 @@ public class GameData {
   public static final int PANEL_WIDTH = 1000;   // パネルの幅
   public static final int PANEL_HALF_WIDTH = PANEL_WIDTH / 2;
   public static final int PANEL_HEIGHT =
-      MAP_FILE_VALID_RECORD * BASE_OBJ_HEIGHT;   // パネルの高さ
-
-  public static final int BACKGROUND_COLOR = 0x1E90FF; // 背景色
+      STAGE_FILE_VALID_RECORD * BASE_OBJ_HEIGHT;   // パネルの高さ
 
   public static final int CHARACTER_WIDTH = 28;     // キャラクターのサイズ
   public static final int CHARACTER_HEIGHT = 50;    // キャラクターのサイズ

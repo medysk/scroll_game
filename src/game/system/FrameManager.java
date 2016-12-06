@@ -6,7 +6,14 @@ package game.system;
  * また、数フレームに一度動作する機能も提供する( 真偽値を渡すだけ )
  */
 public class FrameManager {
-  private static long frameCount = 0;  // フレーム数
+  private static long frameCount;  // フレーム数
+
+  /**
+   * 初期化
+   */
+  public static void initialize() {
+    frameCount = 0;
+  }
 
   /**
    * num 回に一度trueを返す

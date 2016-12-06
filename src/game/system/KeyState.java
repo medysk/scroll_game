@@ -16,6 +16,9 @@ public class KeyState implements KeyListener {
     keyState = new KeyState();
   }
 
+  /**
+   * キーステートを生成する
+   */
   public KeyState() {
     keyStatus = new HashMap<String, Boolean>();
 
@@ -53,8 +56,6 @@ public class KeyState implements KeyListener {
       case ENTER :
         keyStatus.put( Key.ENTER.getName(), true );
           break;
-      default:
-        break;
     }
   }
 
@@ -87,20 +88,35 @@ public class KeyState implements KeyListener {
     case ENTER :
       keyStatus.put( Key.ENTER.getName(), false );
         break;
-    default:
-      break;
-  }
+    }
   }
 
   public void keyTyped( KeyEvent e ) {}
+
+  /**
+   * 全てのキーステートをクリア（false）する
+   */
+  public void clearAll() {
+    keyStatus.forEach( (k,v) -> {
+      keyStatus.put( k, false );
+    });
+  }
+
+  /**
+   * 指定したキーステートをクリア（false）する
+   * @param key
+   */
+  public void clear( Key key ) {
+    keyStatus.put( key.getName(), false );
+  }
 
   /**
    * 任意のキーの状態を返す
    * @param keyName Key(enum)のnameを渡す
    * @return true: キーが押されている false: キーが押されていない
    */
-  public boolean isKeyPressed( String keyName ) {
-    return keyStatus.get( keyName );
+  public boolean isKeyPressed( Key key ) {
+    return keyStatus.get( key.getName() );
   }
 
   /**
@@ -111,6 +127,10 @@ public class KeyState implements KeyListener {
     return keyStatus;
   }
 
+  /**
+   * キーステートの取得
+   * @return
+   */
   public static KeyState getInstance() {
     return keyState;
   }
