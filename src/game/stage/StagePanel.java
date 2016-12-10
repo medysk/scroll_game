@@ -1,4 +1,4 @@
-package game;
+package game.stage;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -11,7 +11,7 @@ import game.config.GameData;
 import game.object.FixedObj;
 import game.object.Obj;
 import game.object.move.player.Character;
-import game.system.Map;
+import game.system.LoadStage;
 
 /**
  * @author medysk
@@ -39,8 +39,8 @@ public class StagePanel extends JPanel {
     super.paintComponent(g);
 
     // TODO: Backgroundクラスに処理を任せる
-    g.setColor( new Color(GameData.BACKGROUND_COLOR) );
-    g.fillRect( 0, 0, getWidth(), getHeight() );
+    g.setColor( new Color(GameData.STAGE_BG_COLOR) );
+    g.fillRect( 0, 0, width, height );
 
     // オブジェクトの描写
     if( objs.isEmpty() ) {
@@ -69,9 +69,9 @@ public class StagePanel extends JPanel {
       // キャラクターに合わせてマップをスライドさせる
       if( character.getPositionX() < harfWidth ) {
         obj.draw( g.create() );
-      } else if( character.getPositionX() > (Map.getRightLimit() - harfWidth) ) {
+      } else if( character.getPositionX() > (LoadStage.getRightLimit() - harfWidth) ) {
         Graphics ng = g.create();
-        ng.translate( - Map.getRightLimit() + width, 0);
+        ng.translate( - LoadStage.getRightLimit() + width, 0);
         obj.draw(ng);
       } else {
         Graphics ng = g.create();

@@ -182,7 +182,7 @@ public class CollisionInfoAnalyzer {
     int centerSolePositionY = target.upperLeft().get("y") + target.getHeight();
     int centerSoleLimit;
     try {
-      centerSoleLimit = Map.getLowerLimit(centerSolePositionX);
+      centerSoleLimit = LoadStage.getLowerLimit(centerSolePositionX);
     } catch( NullPointerException e ) {
       centerSoleLimit = GameData.PANEL_WIDTH + target.getHeight();
     }

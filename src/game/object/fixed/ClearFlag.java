@@ -2,7 +2,7 @@ package game.object.fixed;
 
 import java.awt.Color;
 
-import game.Stage;
+import game.stage.Stage;
 
 /**
  * @author medysk
@@ -23,7 +23,7 @@ public class ClearFlag extends Flag {
 
   @Override
   public void event() {
-    Stage.clear();
+    Stage.getInstance().clear();
   }
 
 }

@@ -23,12 +23,12 @@ public class HeadingPanel extends JPanel {
   private int y;
 
   /**
-   *
+   * 初期化
    */
   public HeadingPanel(String heading, int x, int y) {
     setSize( new Dimension(width, height) );
     setOpaque(false);
-    setFocusable( true );
+    setFocusable(false);
     this.heading = heading;
     this.x = x;
     this.y = y;

@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-import game.Stage;
 import game.config.GameData;
 import game.object.Obj;
 import game.object.fixed.Downhill;
@@ -18,13 +17,12 @@ import game.object.fixed.Flat;
 import game.object.fixed.Ground;
 import game.object.fixed.RockBlock;
 import game.object.fixed.Uphill;
-import game.object.move.player.Character;
 
 /**
  * @author medysk
- * ゲームのマップをマップファイルから読み込む
+ * ゲームのステージをステージファイルから読み込む
  */
-public class Map {
+public class LoadStage {
   private final static ConcurrentHashMap<String,Obj> objs = Obj.getInstances();
   // key: Y座標, value: X座標(地面最上部)
   private final static HashMap<Integer,Integer> lowerLimit = new HashMap<>();   // Y軸上の地面の表面
@@ -37,15 +35,15 @@ public class Map {
 
 
   /**
-   * マップをファイルから読み込み
-   * マップ情報を設定
+   * ステージをファイルから読み込み
+   * ステージ情報を設定
    */
   public static void create(String filePath) {
     List<String[]> records = readFile(filePath);
 
     createObj(records);
 
-    createMapInformation();
+    examineMapInformation();
   }
 
   /**
@@ -93,7 +91,7 @@ public class Map {
     List<String[]> records = new ArrayList<>();
 
     try {
-      int lines = GameData.MAP_FILE_VALID_RECORD; // マップファイルの有効行数
+      int lines = GameData.STAGE_FILE_VALID_RECORD; // マップファイルの有効行数
       while ( (line = br.readLine()) != null && records.size() <= lines) {
         records.add( line.split("") );
         if(lineLength < records.get(records.size() - 1).length ) {
@@ -134,9 +132,7 @@ public class Map {
 
         Obj obj = instantiation(symbol, x, y);
         // パラメータが必要なインスタンスなら、セットする
-        if(obj instanceof Character) {
-          ((Character) obj).setKeyState(Stage.getKeyState());
-        } else if( symbol.equals("I") ) {
+        if( symbol.equals("I") ) {
           ((RockBlock) obj).invisibility();
         }
 
@@ -178,7 +174,7 @@ public class Map {
     return obj;
   }
 
-  private static void createMapInformation() {
+  private static void examineMapInformation() {
     groundIds = Obj.groundIds();
     leftLimit = 0;
     rightLimit = 0;

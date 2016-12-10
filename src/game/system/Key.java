@@ -7,10 +7,14 @@ import java.awt.event.KeyEvent;
  * このプログラム上でのキーの名前を統一するためのenum
  */
 public enum Key {
+  Z    ("z", KeyEvent.VK_Z),
+  X    ("x", KeyEvent.VK_X),
   UP   ("up",    KeyEvent.VK_UP),
   RIGHT( "right", KeyEvent.VK_RIGHT ),
   DOWN ("down",  KeyEvent.VK_DOWN),
-  LEFT ("left",  KeyEvent.VK_LEFT);
+  LEFT ("left",  KeyEvent.VK_LEFT),
+  SPACE("space", KeyEvent.VK_SPACE),
+  ENTER("enter", KeyEvent.VK_ENTER);
 
   private final String name;
   private final int code;
@@ -34,5 +38,18 @@ public enum Key {
    */
   public int getCode() {
     return code;
+  }
+
+  /**
+   * キーコードをもとにenumを返す
+   * @return
+   */
+  public static Key searchByCode(int keyCode) {
+    for( Key key : Key.values() ) {
+      if(keyCode == key.getCode()) {
+        return key;
+      }
+    }
+    return null;
   }
 }
