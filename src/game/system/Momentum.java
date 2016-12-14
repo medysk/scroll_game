@@ -3,15 +3,14 @@ package game.system;
 import game.object.MoveObj;
 
 /**
- * MoveObj‚Ì“®‚«‚Ì¨‚¢‚ğ’²®‚µAƒIƒuƒWƒFƒNƒg‚ÌˆÚ“®‹——£‚ğ”j‰ó“I‚É•ÏX‚·‚é
  * @author medysk
- *
+ * MoveObjã®å‹•ãã®å‹¢ã„ã‚’èª¿æ•´ã—ã€ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç§»å‹•è·é›¢ã‚’ç ´å£Šçš„(å‰¯ä½œç”¨)ã«å¤‰æ›´ã™ã‚‹
  */
 public class Momentum {
   private MoveObj obj;
   private int minSpeed;
   private int maxSpeed;
-  private int interval = 5; // TODO: İ’èƒtƒ@ƒCƒ‹‚©‚ç“Ç‚İ‚Ş
+  private int interval = 5;
 
   public Momentum( MoveObj obj ) {
     this.obj = obj;
@@ -20,14 +19,14 @@ public class Momentum {
   }
 
   /**
-  * MoveObj‚Ì‰E•ûŒü‚Ì‘‰Á‚ğ’²®‚·‚é”j‰ó“I‚Èƒƒ\ƒbƒh
+  * MoveObjã®å³æ–¹å‘ã®å¢—åŠ ã‚’èª¿æ•´ã™ã‚‹ç ´å£Šçš„ãªãƒ¡ã‚½ãƒƒãƒ‰
   */
   public void rightVectorIncrease() {
     if( obj.isLeftMove() ) {
-      // ƒIƒuƒWƒFƒNƒg‚ª¶•ûŒü‚Éi‚ñ‚Å‚¢‚éê‡AƒXƒgƒbƒv‚·‚é
+      // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå·¦æ–¹å‘ã«é€²ã‚“ã§ã„ã‚‹å ´åˆã€ã‚¹ãƒˆãƒƒãƒ—ã™ã‚‹
       obj.setVectorX( 0 );
     } else if( obj.isRightMove() ) {
-      // ƒIƒuƒWƒFƒNƒg‚ª‰E•ûŒü‚Éi‚ñ‚Å‚¢‚éê‡AmaxSpeed‚Ü‚Å’iŠK“I‚É‰Á‘¬
+      // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå³æ–¹å‘ã«é€²ã‚“ã§ã„ã‚‹å ´åˆã€maxSpeedã¾ã§æ®µéšçš„ã«åŠ é€Ÿ
       obj.setVectorX( acceleratedCalc() );
     } else {
       obj.setVectorX( minSpeed );
@@ -35,28 +34,28 @@ public class Momentum {
   }
 
   /**
-  * MoveObj‚Ì¶•ûŒü‚Ì‘‰Á‚ğ’²®‚·‚é”j‰ó“I‚Èƒƒ\ƒbƒh
+  * MoveObjã®å·¦æ–¹å‘ã®å¢—åŠ ã‚’èª¿æ•´ã™ã‚‹ç ´å£Šçš„ãªãƒ¡ã‚½ãƒƒãƒ‰
   */
   public void leftVectorIncrease() {
     if( obj.isRightMove() ) {
-      // ƒIƒuƒWƒFƒNƒg‚ª‰E•ûŒü‚Éi‚ñ‚Å‚¢‚éê‡AƒXƒgƒbƒv‚·‚é
+      // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå³æ–¹å‘ã«é€²ã‚“ã§ã„ã‚‹å ´åˆã€ã‚¹ãƒˆãƒƒãƒ—ã™ã‚‹
       obj.setVectorX( 0 );
     } else if( obj.isLeftMove() ) {
-      obj.setVectorX( - acceleratedCalc() ); // ƒ}ƒCƒiƒX
+      obj.setVectorX( - acceleratedCalc() ); // ãƒã‚¤ãƒŠã‚¹
     } else {
-      obj.setVectorX( - minSpeed ); // ƒ}ƒCƒiƒX
+      obj.setVectorX( - minSpeed ); // ãƒã‚¤ãƒŠã‚¹
     }
   }
 
   /**
-  * MoveObj‚Ì¶•ûŒü‚ÌŒ¸­‚ğ’²®‚·‚é”j‰ó“I‚Èƒƒ\ƒbƒh
+  * MoveObjã®å·¦æ–¹å‘ã®æ¸›å°‘ã‚’èª¿æ•´ã™ã‚‹ç ´å£Šçš„ãªãƒ¡ã‚½ãƒƒãƒ‰
   */
   public void rightVectorDecrease() {
-    obj.setVectorX( decelerationCalc() ); // ƒ}ƒCƒiƒX
+    obj.setVectorX( decelerationCalc() ); // ãƒã‚¤ãƒŠã‚¹
   }
 
   /**
-  * MoveObj‚Ì¶•ûŒü‚ÌŒ¸­‚ğ’²®‚·‚é”j‰ó“I‚Èƒƒ\ƒbƒh
+  * MoveObjã®å·¦æ–¹å‘ã®æ¸›å°‘ã‚’èª¿æ•´ã™ã‚‹ç ´å£Šçš„ãªãƒ¡ã‚½ãƒƒãƒ‰
   */
   public void leftVectorDecrease() {
     obj.setVectorX( - decelerationCalc() );
@@ -65,13 +64,13 @@ public class Momentum {
   // ***  Private Methods ###
 
   /**
-  * ‰Á‘¬’†‚ÌˆÚ“®‹——£‚ğ•Ô‚·
-  * @return ˆÚ“®‹——£‚Ì"â‘Î’l"‚ğ•Ô‚·
+  * åŠ é€Ÿä¸­ã®ç§»å‹•è·é›¢ã‚’è¿”ã™
+  * @return ç§»å‹•è·é›¢ã®"çµ¶å¯¾å€¤"ã‚’è¿”ã™
   */
   private int acceleratedCalc() {
-    // ƒIƒuƒWƒFƒNƒg‚ª”CˆÓ‚Ì•ûŒü‚ÉŒp‘±“I‚Éi‚ñ‚Å‚¢‚éê‡AmaxSpeed‚Ü‚Å’iŠK“I‚É‰Á‘¬
-    // ˆ—‚Í runFrame‰ñ‚Éˆê“xÀs‚·‚é
-    if( FrameManagement.isActionFrame(interval) ) {
+    // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒä»»æ„ã®æ–¹å‘ã«ç¶™ç¶šçš„ã«é€²ã‚“ã§ã„ã‚‹å ´åˆã€maxSpeedã¾ã§æ®µéšçš„ã«åŠ é€Ÿ
+    // å‡¦ç†ã¯ runFrameå›ã«ä¸€åº¦å®Ÿè¡Œã™ã‚‹
+    if( FrameManager.isActionFrame(interval) ) {
       int acceleration = (maxSpeed - minSpeed) / 10;
       if( acceleration == 0 ) { acceleration = 1; }
       int distance = acceleration + Math.abs( obj.getVectorX() );
@@ -82,9 +81,9 @@ public class Momentum {
   }
 
   private int decelerationCalc() {
-    // ƒIƒuƒWƒFƒNƒg‚ªi‚ñ‚Å‚¢‚éAƒL[‚ğ—£‚·‚Æ’â~‚Ü‚Å’iŠK“I‚ÉŒ¸‘¬‚³‚¹‚é
-    // ˆ—‚Í runFrame‰ñ‚Éˆê“xÀs‚·‚é
-    if( FrameManagement.isActionFrame(interval) ) {
+    // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒé€²ã‚“ã§ã„ã‚‹æ™‚ã€ã‚­ãƒ¼ã‚’é›¢ã™ã¨åœæ­¢ã¾ã§æ®µéšçš„ã«æ¸›é€Ÿã•ã›ã‚‹
+    // å‡¦ç†ã¯ runFrameå›ã«ä¸€åº¦å®Ÿè¡Œã™ã‚‹
+    if( FrameManager.isActionFrame(interval) ) {
       int deceleration = (maxSpeed - 0) / 3;
       if( deceleration == 0 ) { deceleration = 1; }
       int distance = Math.abs( obj.getVectorX() ) - deceleration;

@@ -3,9 +3,8 @@ package game.object.fixed;
 import java.awt.Graphics;
 
 /**
- * •½’nƒIƒuƒWƒFƒNƒg
  * @author medysk
- *
+ * å¹³åœ°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
  */
 public class Flat extends Ground {
 
@@ -14,7 +13,7 @@ public class Flat extends Ground {
   }
 
 
-  /* (”ñ Javadoc)
+  /* (é Javadoc)
    * @see game.object.fixed.Ground#draw(java.awt.Graphics)
    */
   @Override

@@ -4,72 +4,131 @@ import java.rmi.server.UID;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Predicate;
 
+import game.object.move.player.Character;
 import game.object.background.Background;
 import game.object.fixed.Ground;
 
 import java.awt.Graphics;
 
 /**
- * ƒQ[ƒ€‚É•`Ê‚·‚é‘S‚Ä‚ÌƒIƒuƒWƒFƒNƒg‚ÌƒX[ƒp[ƒNƒ‰ƒX
- * ƒTƒuƒNƒ‰ƒX‚ÉMoveObj‚ÆFixedObjABackgound‚ğ‚Â
- * ƒTƒuƒNƒ‰ƒX‚ğƒCƒ“ƒXƒ^ƒ“ƒX‰»‚·‚éÛ‚Í create(Obj obj) ‚ğg—p‚·‚é
+ * ã‚²ãƒ¼ãƒ ã«æå†™ã™ã‚‹å…¨ã¦ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚¹ãƒ¼ãƒ‘ãƒ¼ã‚¯ãƒ©ã‚¹
+ * ã‚µãƒ–ã‚¯ãƒ©ã‚¹ã«MoveObjã¨FixedObjã€Backgoundã‚’æŒã¤
+ * ã‚µãƒ–ã‚¯ãƒ©ã‚¹ã‚’ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹åŒ–ã™ã‚‹éš›ã¯ create(Obj obj) ã‚’ä½¿ç”¨ã™ã‚‹
  *
  * @author medysk
  *
  */
-public abstract class Obj {
-  // ###  static•Ï”  ###
-  // ƒTƒuƒNƒ‰ƒX‚ğƒCƒ“ƒXƒ^ƒ“ƒX‰»‚·‚éÛ‚É‚±‚Ì•Ï”‚ÉŠi”[‚·‚é
-  private static final HashMap<String,Obj> instances = new HashMap<>();
+public abstract class Obj  implements Cloneable {
+  // ###  staticå¤‰æ•°  ###
 
-  // ƒTƒuƒNƒ‰ƒX‚ğƒCƒ“ƒXƒ^ƒ“ƒX‰»‚·‚éÛ‚Éí—Ş•Ê‚ÉID‚ğŠi”[‚·‚é
-  private static final List<String> moveObjIds = new ArrayList<>();
-  private static final List<String> fixedObjOtherGroundIds = new ArrayList<>();
-  private static final List<String> groundIds = new ArrayList<>();
-  private static final List<String> backgroundIds = new ArrayList<>();
+  // ã‚µãƒ–ã‚¯ãƒ©ã‚¹ã‚’ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹åŒ–ã™ã‚‹éš›ã«ã“ã®å¤‰æ•°ã«æ ¼ç´ã™ã‚‹
+  private static ConcurrentHashMap<String,Obj> instances = new ConcurrentHashMap<>();
 
-  // ###  instance•Ï”  ###
-  // ƒIƒuƒWƒFƒNƒg‚ÌˆêˆÓ‚ÈID
+  // ###  instanceå¤‰æ•°  ###
+  // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä¸€æ„ãªID
   protected String objId;
 
-  // ‰Šú‚ÌˆÊ’u
+  // åˆæœŸã®ä½ç½®
   protected int initialPositionX;
   protected int initialPositionY;
 
-  // Œ»İ‚ÌÀ•W
+  // ç¾åœ¨ã®åº§æ¨™
   protected int positionX;
   protected int positionY;
 
-  // ƒIƒuƒWƒFƒNƒg‚ÌƒTƒCƒY
+  // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚µã‚¤ã‚º
   protected int height;
   protected int width;
 
-  // ‰æ‘œ‚©"java.awt.Graphics"‚È‚Ì‚©
+  // ç”»åƒã‹"java.awt.Graphics"ãªã®ã‹
   protected boolean isImg;
 
   /**
-   * Trajectory—p‚Ìƒ_ƒ~[ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+   * Trajectoryç”¨ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
    */
   public Obj() {}
 
   /**
-   * TrajectoryˆÈŠO‚ÌƒQ[ƒ€•`Ê—p‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^
-   * @param positionX ‰ŠúˆÊ’u
-   * @param positionY ‰ŠúˆÊ’u
+   * Trajectoryä»¥å¤–ã®ã‚²ãƒ¼ãƒ æå†™ç”¨ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+   * @param positionX åˆæœŸä½ç½®
+   * @param positionY åˆæœŸä½ç½®
    */
   public Obj( int positionX, int positionY ) {
     setPosition( positionX, positionY );
     objId = new UID().toString();
   }
+  // ########################
   // ###  Static Methods  ###
+  // ########################
+
   public static Obj create( Obj obj ) {
     instances.put( obj.getObjId(), obj );
-    storeId( obj );
     return obj;
   }
 
+  public static void overwriteInstances(HashMap<String,Obj> cpInstances) {
+    instances.clear();
+
+    cpInstances.forEach( (id,obj) -> {
+      try {
+        instances.put(id, (Obj) obj.clone() );
+      } catch (CloneNotSupportedException e) {
+        e.printStackTrace();
+      }
+    });
+  }
+
+  // TODO: å‘¼ã³å‡ºã™ãŸã³ã«èµ°æŸ»ã—ãªã„ã‚ˆã†ã«ã™ã‚‹
+  public static Character getCharacter() {
+    for(Obj obj : instances.values()) {
+      if( obj instanceof Character ) {
+        return (Character) obj;
+      }
+    }
+    return null;
+  }
+
+  public static ConcurrentHashMap<String, Obj> getInstances() {
+    return instances;
+  }
+
+  // TODO: å‘¼ã³å‡ºã™ãŸã³ã«èµ°æŸ»ã—ãªã„ã‚ˆã†ã«ã™ã‚‹
+  public static CopyOnWriteArrayList<String> moveObjIds() {
+    List<String> ids = selectIds( obj -> obj instanceof MoveObj );
+    return new CopyOnWriteArrayList<String>(ids);
+  }
+
+  public static List<String> backgroundIds() {
+    return selectIds( obj -> obj instanceof Background );
+  }
+
+  public static List<String> groundIds() {
+    return selectIds( obj -> obj instanceof Ground );
+  }
+
+  public static List<String> fixedObjOtherGroundIds() {
+    return selectIds( obj -> {
+      return ! (obj instanceof Ground) && obj instanceof FixedObj;
+    });
+  }
+
+  private static List<String> selectIds(Predicate<Obj> predicate) {
+    List<String> list = new ArrayList<>();
+    instances.forEach( (id,obj) -> {
+      if( predicate.test(obj) ) {
+        list.add(id);
+      }
+    });
+    return list;
+  }
+
+  // ##########################
   // ###  Instance Methods  ###
+  // ##########################
 
   public HashMap<String,Integer> upperLeft() {
     return new HashMap<String,Integer>(){ {
@@ -100,65 +159,38 @@ public abstract class Obj {
   }
 
   /**
-   * ƒCƒ“ƒXƒ^ƒ“ƒXíœ—pƒƒ\ƒbƒh
-   * @param id ObjƒTƒuƒNƒ‰ƒX‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ÉˆêˆÓ‚É—^‚¦‚ç‚ê‚éobjId‚ğ“n‚·
+   * ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å‰Šé™¤
    */
-  public void destructor(String id) {
-    instances.remove(id);
+  public void destructor() {
+    instances.remove(this.objId);
   }
 
   /**
-   * ƒIƒuƒWƒFƒNƒg‚ÌƒOƒ‰ƒtƒBƒbƒN—pƒƒ\ƒbƒh
+   * instancesã®åˆæœŸåŒ–
+   */
+  public static void clearInstances() {
+    instances.clear();
+  }
+
+  /**
+   * ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯
    * @param g
    */
   public abstract void draw(Graphics g);
 
-
-  // ### Accessors ###
-
-  public static HashMap<String,Obj> getInstances() {
-    return instances;
-  }
-  public static List<String> getMoveObjIds() {
-    return moveObjIds;
-  }
-  public static List<String> getBackgroundIds() {
-    return backgroundIds;
-  }
-  public static List<String> getGroundIds() {
-    return groundIds;
-  }
-  public static List<String> getFixedObjOtherGroundIds() {
-    return fixedObjOtherGroundIds;
+  @Override
+  public Object clone() throws CloneNotSupportedException {
+    return super.clone();
   }
 
   public String getObjId() { return objId; }
-  public int getPositinX() { return positionX; }
-  public int getPositinY() { return positionY; }
+  public int getPositionX() { return positionX; }
+  public int getPositionY() { return positionY; }
   public int getWidth()    { return width; }
   public int getHeight()   { return height; }
 
   public void setPosition( int x, int y ) {
     positionX = x;
     positionY = y;
-  }
-
-  // ###  Private Methods  ###
-
-  /**
-   * ƒCƒ“ƒXƒ^ƒ“ƒX‚Ìid‚ğObjƒTƒuƒNƒ‰ƒX‚Ìí—Ş‚²‚Æ‚É•ª‚¯A
-   * ‚»‚ê‚¼‚ê‚ÌƒŠƒXƒg‚ÉŠi”[‚·‚é
-   * @param id ObjƒTƒuƒNƒ‰ƒX‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ÉˆêˆÓ‚É—^‚¦‚ç‚ê‚éobjId‚ğ“n‚·
-   */
-  private static void storeId(Obj obj) {
-    if( obj instanceof MoveObj ) {
-      moveObjIds.add( obj.getObjId() );
-    } else if( obj instanceof Background ) {
-      backgroundIds.add( obj.getObjId() );
-    } else if( obj instanceof Ground ) {  // GroundƒNƒ‰ƒX‚ÍFixedObj‚ÌƒTƒuƒNƒ‰ƒX
-      groundIds.add( obj.getObjId() );
-    } else if( obj instanceof FixedObj ) {
-      fixedObjOtherGroundIds.add( obj.getObjId() );
-    }
   }
 }

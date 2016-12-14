@@ -3,153 +3,180 @@ package game.object.move.player;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import game.FieldPanel;
+import game.Game;
+import game.config.GameData;
+import game.object.FixedObj;
 import game.object.MoveObj;
-import game.object.fixed.Ground;
-import game.system.CollisionDetection;
+import game.object.fixed.Flag;
+import game.system.CollisionData;
 import game.system.Key;
 import game.system.KeyState;
-import game.system.Map;
+import game.system.LoadStage;
 import game.system.Momentum;
 import game.system.Side;
 
 /**
- * ���L�����N�^�[
  * @author medysk
- *
+ * 自キャラクター
  */
 public class Character extends MoveObj {
-  private KeyState keyState; // �L�[�̏��(������Ă��邩�ǂ���)
-  private Momentum momentum; // �I�u�W�F�N�g�̐����𒲐�����N���X
-  private CollisionDetection cd;    // �Փ˔���p�N���X
 
-  public Character( int positionX, int positionY, KeyState keyState ) {
+  private KeyState keyState; // キーの状態(押されているかどうか)
+  private Momentum momentum; // オブジェクトの勢いを調整するクラス
+
+  public Character( int positionX, int positionY ) {
     super( positionX, positionY );
-    this.keyState = keyState;
-    // TODO: �ݒ�t�@�C������ǂݍ���
-    height = 60;
-    width = 30;
-    minSpeed = 1;
-    maxSpeed = 10;
-    fallVelocity = 1;
-    maxFallVelocity = height - 1; //
-    verticalLeap = 20;
-    cd = new CollisionDetection(this);
-    momentum = new Momentum( this ); // Momentum�͔j��I�ȑ�����s��
+    height = GameData.CHARACTER_HEIGHT;
+    width = GameData.CHARACTER_WIDTH;
+    minSpeed = GameData.CHARACTER_MIN_SPEED;
+    maxSpeed = GameData.CHARACTER_MAX_SPEED;
+    fallVelocity = GameData.CHARACTER_FALL_VELOCITY;
+    maxFallVelocity = GameData.CHARACTER_MAX_FALL_VELOCITY;
+    verticalLeap = GameData.CHARACTER_VERTICAL_LEAP;
+    momentum = new Momentum( this ); // Momentumは破壊的(副作用)な操作を行う
+    keyState = KeyState.getInstance();
   }
 
-  /* (�� Javadoc)
+  /* (非 Javadoc)
    * @see game.object.MoveObj#execute()
    */
   @Override
   public void execute() {
     super.execute();
-    action();
-    super.move();
-    cd.execute();
-    isFlying = ! cd.onGround();
-    // �ʒu�␳
-    positionCorrection();
+
+    // マップの両端から出ないようにする
     positionWithinLimit();
+
+    // 衝突処理
+    collisionHandling( data -> {
+      // 衝突したオブジェクトがFixedObjかMoveObjかで、処理を分ける
+      if( data.getSubject() instanceof FixedObj ) {
+        collisionHandlingForFixedObj(data);
+      } else if( data.getSubject() instanceof MoveObj ) {
+        collisionHandlingForMoveObj(data);
+      }
+    });
+
+    // 位置補正後に前回位置を更新
+    updatePrePosition();
+
   }
 
-  /**
-   * ���~�b�g�O�Ɉړ��ł��Ȃ��悤�ɂ���
-   */
-  private void positionWithinLimit() {
-    if( positionX < Map.getLeftLimit() ) {
-      positionX = Map.getLeftLimit();
-    } else if( (positionX + width) > Map.getRightLimit() ) {
-      positionX = Map.getRightLimit() - width;
-    }
-
-//    if( isFlying ) { return; }
-//
-//    int leftSoleLimit;
-//    int centerSoleLimit;
-//    int rightSoleLimit;
-//    try {
-//      leftSoleLimit = Map.getLowerLimit(positionX);
-//    } catch( NullPointerException e ) {
-//      leftSoleLimit = FieldPanel.HEIGHT + height;
-//    }
-//    try {
-//      centerSoleLimit = Map.getLowerLimit(positionX + width / 2);
-//    } catch( NullPointerException e ) {
-//      centerSoleLimit = FieldPanel.HEIGHT + height;
-//    }
-//    try {
-//      rightSoleLimit = Map.getLowerLimit(positionX + width);
-//    } catch ( NullPointerException e) {
-//      rightSoleLimit = FieldPanel.HEIGHT + height;
-//    }
-//
-//    int sole = positionY + height;
-//    if( cd.onUphill() || cd.onDownhill() ) {
-//      if( sole > centerSoleLimit ) {
-//        positionY = centerSoleLimit - height;
-//      }
-//      return;
-//    }
-//    if( sole > leftSoleLimit ) {
-//      positionY = leftSoleLimit - height;
-//    }
-//    if( sole > rightSoleLimit ) {
-//      positionY = rightSoleLimit - height;
-//    }
-  }
-
-  /**
-   * �L�����N�^�[�̓���
-   */
-  public void action() {
-    if( keyState.isKeyPressed( Key.RIGHT.getName() ) ) {
-      momentum.rightVectorIncrease();
-    } else if( isRightMove() ) {
-      momentum.rightVectorDecrease();
-    }
-
-    if( keyState.isKeyPressed( Key.LEFT.getName() ) ) {
-      momentum.leftVectorIncrease();
-    } else if( isLeftMove() ) {
-      momentum.leftVectorDecrease();
-    }
-
-    if( keyState.isKeyPressed( Key.UP.getName() ) ) {
-      if( ! isFlying ) { jump(); }
-    }
-  }
-
-  /* (�� Javadoc)
+  /* (非 Javadoc)
    * @see game.object.MoveObj#execute()
    */
   @Override
   public void draw( Graphics g ) {
-    g.setColor( Color.BLUE );
+    g.setColor( new Color(GameData.CHARACTER_COLOR) );
     g.fillRect( positionX, positionY, width, height );
   }
 
-  /**
-   * �I�u�W�F�N�g���d�Ȃ�Ȃ��悤�ɂ���
+  // ###  Protected methods  ###
+
+  /* (非 Javadoc)
+   * @see game.object.MoveObj#action()
    */
-  private void positionCorrection() {
-    cd.forEach( obj -> {
-//      if( obj.getSubjectObj() instanceof Ground ) { return; }
-      switch (obj.getSide()) {
-      case TOP:
-        positionY = obj.getCollisionPositionY();
-        break;
-      case LEFT:
-        positionX = obj.getCollisionPositionX();
-        break;
-      case BOTTOM:
-        positionY = obj.getCollisionPositionY();
-        break;
-      case RIGHT:
-        positionX = obj.getCollisionPositionX();
-        break;
+  @Override
+  protected void action() {
+    // キーボードの→が押された
+    if( keyState.isKeyPressed( Key.RIGHT ) ) {
+      momentum.rightVectorIncrease();
+    } else if( isRightMove() ) {
+      momentum.rightVectorDecrease();
+    }
+    // キーボードの←が押された
+    if( keyState.isKeyPressed( Key.LEFT ) ) {
+      momentum.leftVectorIncrease();
+    } else if( isLeftMove() ) {
+      momentum.leftVectorDecrease();
+    }
+    // キーボードの↑が押された
+    if( keyState.isKeyPressed( Key.UP ) ) {
+      jump();
+    }
+  }
+
+  @Override
+  public void destructor() {
+    move();
+    // echoのX座標を割り出す
+    int x;
+    if( positionX < GameData.PANEL_HALF_WIDTH ) {
+      x = positionX;
+    } else if( positionX > LoadStage.getRightLimit() - GameData.PANEL_HALF_WIDTH ) {
+      int clearance = LoadStage.getRightLimit() - positionX;
+      x = GameData.PANEL_WIDTH - clearance;
+    } else {
+      x = GameData.PANEL_HALF_WIDTH;
+    }
+
+    Game.echo("下手すぎる", x - 50, positionY -60, 1, 800);
+    super.destructor();
+  }
+
+  @Override
+  public Object clone() throws CloneNotSupportedException {
+    Character obj = (Character)super.clone();
+    obj.setCollisionManager(obj);
+    obj.setMomentum(obj);
+    obj.keyState = KeyState.getInstance();
+    return obj;
+  }
+
+  public void setMomentum(Character character) {
+    momentum = new Momentum(character);
+  }
+
+  // ###  Private methods  ###
+
+  /**
+   * FixedObjとの衝突時処理
+   * @param data 衝突情報
+   */
+  private void collisionHandlingForFixedObj( CollisionData data ) {
+    // オブジェクトのTOPに衝突した かつ ジャンプ中(上昇中)
+    if( data.getSide() == Side.TOP && (isFlying && vectorY < 0) ) {
+
+      ((FixedObj) data.getSubject()).bottomEvent();
+
+      vectorY = - vectorY / 3; // 頭がぶつかり跳ね返る
+    }
+
+    // クリアフラッグと衝突したらステージクリア
+    if( data.getSubject() instanceof Flag ) {
+      ((FixedObj) data.getSubject()).event();
+    }
+  }
+
+  /**
+   * MoveObjとの衝突時処理
+   * @param data 衝突情報
+   */
+  private void collisionHandlingForMoveObj( CollisionData data ) {
+    if( data.getSide() == Side.BOTTOM ) {
+      // 踏んだら敵を倒す
+      if( keyState.isKeyPressed( Key.UP ) ) {
+        vectorY = - verticalLeap - vectorY / 3;
+      } else {
+        vectorY = - vectorY / 3;
       }
-    });
+      data.getSubject().destructor();
+    } else {
+      // TODO: キャラクター爆破グラフィック
+      destructor();
+    }
+  }
+
+
+  /**
+   * リミット外に移動できないようにする
+   */
+  private void positionWithinLimit() {
+    if( positionX < LoadStage.getLeftLimit() ) {
+      positionX = LoadStage.getLeftLimit();
+    } else if( (positionX + width) > LoadStage.getRightLimit() ) {
+      positionX = LoadStage.getRightLimit() - width;
+    }
   }
 }
 

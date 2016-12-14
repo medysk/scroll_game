@@ -1,9 +1,8 @@
 package game.system;
 
 /**
- * Õ“ËˆÊ’u‚ğˆµ‚¤‚Æ‚«‚É—˜—p‚·‚é
  * @author medysk
- *
+ * è¡çªä½ç½®ã‚’æ‰±ã†ã¨ãã«åˆ©ç”¨ã™ã‚‹
  */
 public enum Side {
   TOP,

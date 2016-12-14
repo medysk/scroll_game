@@ -4,11 +4,10 @@ import java.awt.Graphics;
 import java.util.HashMap;
 
 /**
- * ƒIƒuƒWƒFƒNƒg‚ÌˆÚ“®’†‚Ì‹O“¹‚ğŠÇ—‚·‚é
- * Obj‚ÌƒTƒuƒNƒ‰ƒX‚¾‚ªƒQ[ƒ€‚É‚Í•`Ê‚µ‚È‚¢“Á•Ê‚ÈƒNƒ‰ƒX
- * MoveObj‚Ìƒ‰ƒbƒp[ƒNƒ‰ƒX
  * @author medysk
- *
+ * ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç§»å‹•ä¸­ã®è»Œé“ã‚’ç®¡ç†ã™ã‚‹
+ * Objã®ã‚µãƒ–ã‚¯ãƒ©ã‚¹ã ãŒã‚²ãƒ¼ãƒ ã«ã¯æå†™ã—ãªã„ç‰¹åˆ¥ãªã‚¯ãƒ©ã‚¹
+ * MoveObjã®ãƒ©ãƒƒãƒ‘ãƒ¼ã‚¯ãƒ©ã‚¹
  */
 public class Trajectory extends Obj {
   private HashMap<String,Double> firstPosition = new HashMap<>();
@@ -17,9 +16,9 @@ public class Trajectory extends Obj {
   private MoveObj obj;
 
   /**
-   * ‰Šú‰»‚ğs‚¤
-   * @param obj ‹O“¹‚ğŠÇ—‚µ‚½‚¢ MoveObj‚ÌƒCƒ“ƒXƒ^ƒ“ƒX
-   * @param denominator ‹O“¹‚ÌÅ¬’l‚ğŒˆ‚ß‚é‚½‚ß‚Ì•ª•ê
+   * åˆæœŸåŒ–ã‚’è¡Œã†
+   * @param obj è»Œé“ã‚’ç®¡ç†ã—ãŸã„ MoveObjã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
+   * @param denominator è»Œé“ã®æœ€å°å€¤ã‚’æ±ºã‚ã‚‹ãŸã‚ã®åˆ†æ¯
    */
   public Trajectory(MoveObj obj,int denominator) {
     this.obj = obj;
@@ -38,7 +37,7 @@ public class Trajectory extends Obj {
   }
 
   /**
-   * currentPosition ‚ği‚ß‚é
+   * currentPosition ã‚’é€²ã‚ã‚‹
    */
   public void increase() {
     currentPosition.put("x", currentPosition.get("x") + distance.get("x"));
@@ -46,7 +45,7 @@ public class Trajectory extends Obj {
   }
 
   /**
-   * @return currentPosition ‚ğ lÌŒÜ“ü‚µ‚Ä•Ô‚·
+   * @return currentPosition ã‚’ å››æ¨äº”å…¥ã—ã¦è¿”ã™
    */
   public HashMap<String,Integer> roundedCorrentPosition() {
     return new HashMap<String,Integer>() {
@@ -85,8 +84,8 @@ public class Trajectory extends Obj {
     } };
   }
 
-  // ©g‚ÌID‚Å‚Í‚È‚­ƒ‰ƒbƒv‚µ‚Ä‚¢‚éMoveObj‚ÌID‚ğ•Ô‚·
-  /* (”ñ Javadoc)
+  // è‡ªèº«ã®IDã§ã¯ãªããƒ©ãƒƒãƒ—ã—ã¦ã„ã‚‹MoveObjã®IDã‚’è¿”ã™
+  /* (é Javadoc)
    * @see game.object.Obj#getObjId()
    */
   public String getObjId() {
@@ -98,6 +97,6 @@ public class Trajectory extends Obj {
   }
 
   @Override
-  public void draw(Graphics g) {} // g—p‚µ‚È‚¢
+  public void draw(Graphics g) {} // ä½¿ç”¨ã—ãªã„
 
 }
