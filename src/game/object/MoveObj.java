@@ -1,84 +1,102 @@
 package game.object;
 
+import java.util.function.Consumer;
+
+import game.config.GameData;
+import game.system.CollisionData;
+import game.system.CollisionManager;
+
 /**
- * ƒQ[ƒ€‚É•`Ê‚·‚éƒIƒuƒWƒFƒNƒg‚Ì“à
- * “®ì‚Ì‚ ‚éƒIƒuƒWƒFƒNƒg‚ÌƒX[ƒp[ƒNƒ‰ƒX
  * @author medysk
- *
+ * ã‚²ãƒ¼ãƒ ã«æå†™ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å†…
+ * å‹•ä½œã®ã‚ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚¹ãƒ¼ãƒ‘ãƒ¼ã‚¯ãƒ©ã‚¹
  */
 public abstract class MoveObj extends Obj {
 
-  protected boolean isFlying; // ƒIƒuƒWƒFƒNƒg‚ª”ò‚ñ‚Å‚¢‚é‚©H
-  protected int minSpeed;     // ˆÚ“®‘¬“x
-  protected int currentSpeed; // Œ»İ‚Ì‘¬“x
-  protected int maxSpeed;     // Å‘å‘¬“x( ©ƒIƒuƒWƒFƒNƒgˆÈŠO‚Ì—vˆö‚Å’´‚¦‚é‚±‚Æ‚ª‚ ‚é )
-  protected int fallVelocity; // —‰º‘¬“x
-  protected int maxFallVelocity; // Å‘å—‰º‘¬“x ƒIƒuƒWƒFƒNƒg‚Ì height ‚æ‚è¬‚³‚­‚·‚é
-  protected int verticalLeap; // ƒWƒƒƒ“ƒv—Í
-  protected int vectorX;      // ƒxƒNƒgƒ‹
+  protected boolean isFlying; // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒé£›ã‚“ã§ã„ã‚‹ã‹ï¼Ÿ
+  protected int minSpeed;     // ç§»å‹•é€Ÿåº¦
+  protected int currentSpeed; // ç¾åœ¨ã®é€Ÿåº¦
+  protected int maxSpeed;     // æœ€å¤§é€Ÿåº¦( è‡ªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆä»¥å¤–ã®è¦å› ã§è¶…ãˆã‚‹ã“ã¨ãŒã‚ã‚‹ )
+  protected int fallVelocity; // è½ä¸‹é€Ÿåº¦
+  protected int maxFallVelocity; // æœ€å¤§è½ä¸‹é€Ÿåº¦ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã® height ã‚ˆã‚Šå°ã•ãã™ã‚‹
+  protected int verticalLeap; // ã‚¸ãƒ£ãƒ³ãƒ—åŠ›
+  protected int vectorX;      // ãƒ™ã‚¯ãƒˆãƒ«
   protected int vectorY;
-  protected int prePositionX; // ‘O‰ñ‚ÌˆÊ’u
+  protected int prePositionX; // å‰å›ã®ä½ç½®
   protected int prePositionY;
+  protected CollisionManager cm;    // è¡çªåˆ¤å®šç”¨ã‚¯ãƒ©ã‚¹
 
   public MoveObj( int positionX, int positionY ) {
     super( positionX, positionY );
+    cm = new CollisionManager(this);
     setPrePositionX(positionX);
     setPrePositionY(positionY);
   }
 
   /**
-   * ƒIƒuƒWƒFƒNƒg‚ÌÀs—pƒƒ\ƒbƒh
+   * ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å®Ÿè¡Œç”¨ãƒ¡ã‚½ãƒƒãƒ‰
    */
   public void execute() {
+    // CharacterãŒã‚²ãƒ¼ãƒ ã‹ã‚‰é™¤å¤–ã•ã‚ŒãŸå ´åˆã€å‹•ä½œã‚’è¡Œã‚ãªã„
+    if( Obj.getCharacter() == null ) { return; }
+    // ç”»é¢ä¸‹ã«è½ã¡ãŸå ´åˆã€ã‚²ãƒ¼ãƒ ã‹ã‚‰é™¤å¤–ã™ã‚‹
+    if( positionY > GameData.PANEL_HEIGHT ) {
+      destructor();
+    }
     fall();
+    action();
+    move();
+
+    cm.execute();                 // è¡çªåˆ¤å®š
+    isFlying = ! cm.onFixedObj(); // ç©ºä¸­åˆ¤å®š
+
+    positionCorrection();         // ä½ç½®è£œæ­£
   }
 
+  // ###  Abstract methods  ###
+
+ /**
+   * MoveObjã®å‹•ä½œã‚’å®Ÿè£…ã™ã‚‹
+   */
+  abstract protected void action();
+
+  // ###  Instance methods  ###
+
   /**
-   * ƒIƒuƒWƒFƒNƒg‚ğˆÚ“®‚³‚¹‚é‚½‚ß‚Ìƒƒ\ƒbƒh
+   * ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç§»å‹•ã•ã›ã‚‹ãŸã‚ã®ãƒ¡ã‚½ãƒƒãƒ‰
    */
   public void move() {
-    prePositionX = positionX;
-    prePositionY = positionY;
+    if( Math.abs(vectorX) > maxSpeed ) {
+      vectorX = vectorX > 0 ? maxSpeed : - maxSpeed;
+    }
+    if( vectorY > maxFallVelocity ) {
+      vectorY = vectorY > 0 ? maxFallVelocity : - maxFallVelocity;
+    }
+
     positionX += vectorX;
     positionY += vectorY;
   }
 
-  /**
-  * —‰ºˆ—
-  */
-  public void fall() {
-    if( isFlying ) {
-      vectorY += fallVelocity;
-      if( vectorY > maxFallVelocity ) {
-        vectorY = maxFallVelocity;
-      }
-    } else {
-      vectorY = 0;
-//      vectorY = fallVelocity;
-    }
-  }
-
-  /**
-  * ƒWƒƒƒ“ƒvˆ—
-  */
-  public void jump() {
-    vectorY -= verticalLeap + Math.abs( vectorX / 2 );
-  }
-
-  // ƒIƒuƒWƒFƒNƒg‚ÌˆÚ“®Šm”F—pƒƒ\ƒbƒh
+  // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç§»å‹•ç¢ºèªç”¨ãƒ¡ã‚½ãƒƒãƒ‰
   public boolean isUpMove()    { return vectorY < 0; }
   public boolean isRightMove() { return vectorX > 0; }
   public boolean isDownMove()  { return vectorY > 0; }
   public boolean isLeftMove()  { return vectorX < 0; }
 
-  // ###  Accessorss  ###
+  // ###  Accessors  ###
 
   /**
-   * getter
-   * @return ƒIƒuƒWƒFƒNƒg‚ª”ò‚ñ‚Å‚¢‚ê‚Îtrue
+   * @return ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒé£›ã‚“ã§ã„ã‚Œã°true
    */
   public boolean isFlying() {
     return isFlying;
+  }
+
+  @Override
+  public Object clone() throws CloneNotSupportedException {
+    MoveObj obj = (MoveObj)super.clone();
+    obj.setCollisionManager(obj);
+    return obj;
   }
 
   // getter
@@ -96,5 +114,82 @@ public abstract class MoveObj extends Obj {
   public void setPrePositionY(int y) { prePositionY = y; }
   public void setVectorX(int px) { vectorX = px; }
   public void setVectorY(int px) { vectorY = px; }
+  public void setCollisionManager(MoveObj obj) { cm = new CollisionManager(obj); }
 
+  // ###  Protected methods  ###
+
+  /**
+  * ã‚¸ãƒ£ãƒ³ãƒ—å‡¦ç†
+  */
+  protected void jump() {
+    if( ! isFlying ) {
+      vectorY -= verticalLeap + Math.abs( vectorX / 2 );
+    }
+  }
+
+  /**
+   * å‰å›ä½ç½®ã®æ›´æ–°
+   */
+  protected void updatePrePosition() {
+    prePositionX = positionX;
+    prePositionY = positionY;
+  }
+
+  /**
+   * MoveObjã®ã‚µãƒ–ã‚¯ãƒ©ã‚¹ã‹ã‚‰ã€è¡çªå‡¦ç†ã‚’å®Ÿè£…ã™ã‚‹ã¨ãã«åˆ©ç”¨ã™ã‚‹ã€‚
+   * @param cons è¡çªå‡¦ç†ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°
+   */
+  protected void collisionHandling(Consumer<CollisionData> cons) {
+    cm.forEach( data -> {
+      // è‡ªã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã¨ã®è¡çªã§ã¯ãªã„å ´åˆã€å‡¦ç†ã‚’é£›ã°ã™
+      if( data.getTarget() != this) {
+        return;
+      }
+      cons.accept( data );
+    } );
+  }
+
+  // ###  Private methods  ###
+
+  /**
+  * è½ä¸‹å‡¦ç†
+  */
+  private void fall() {
+    if( isFlying ) {
+      vectorY += fallVelocity;
+      if( vectorY > maxFallVelocity ) {
+        vectorY = maxFallVelocity;
+      }
+    } else {
+      vectorY = fallVelocity;
+    }
+  }
+
+  /**
+   * ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒé‡ãªã‚‰ãªã„ã‚ˆã†ã«ã™ã‚‹
+   */
+  private void positionCorrection() {
+    cm.forEach( data -> {
+      // é€šéã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å ´åˆã€æ¬¡ã®dataã¸
+      if( data.getSubject() instanceof FixedObj &&
+          ((FixedObj) data.getSubject()).canPassing() ) {
+        return;
+      }
+
+      switch (data.getSide()) {
+      case TOP:
+        positionY = data.getCollisionPositionY();
+        break;
+      case LEFT:
+        positionX = data.getCollisionPositionX();
+        break;
+      case BOTTOM:
+        positionY = data.getCollisionPositionY();
+        break;
+      case RIGHT:
+        positionX = data.getCollisionPositionX();
+        break;
+      }
+    });
+  }
 }

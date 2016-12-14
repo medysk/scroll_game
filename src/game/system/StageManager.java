@@ -1,0 +1,44 @@
+package game.system;
+
+import java.util.HashMap;
+
+import game.object.Obj;
+
+/**
+ * @author medysk
+ * ステージのObjの状態の保存、読み込みを行う
+ */
+public class StageManager {
+  private static HashMap<String,Obj> cpInstances;
+  private static long frameCount;
+
+  /**
+   * セーブ
+   */
+  public static void save() {
+    cpInstances = new HashMap<>();
+    FrameManager.getFrameCount();
+
+
+    Obj.getInstances().forEach( (id,obj) -> {
+      try {
+        cpInstances.put(id, (Obj) obj.clone() );
+      } catch (CloneNotSupportedException e) {
+        e.printStackTrace();
+      }
+    });
+  }
+
+  /**
+   * ロード
+   */
+  public static void load() {
+    Obj.overwriteInstances(cpInstances);
+    FrameManager.setFrameCount(frameCount);
+
+    // ロード時にキャラクターのベクトルを調整
+    Obj.getCharacter().setVectorX(0);
+    Obj.getCharacter().setVectorY(0);
+  }
+}
+

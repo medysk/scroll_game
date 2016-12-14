@@ -3,15 +3,18 @@ package game.system;
 import java.awt.event.KeyEvent;
 
 /**
- * このプログラム上でのキーの名前を統一するためのenum
  * @author medysk
- *
+ * 縺薙�ｮ繝励Ο繧ｰ繝ｩ繝荳翫〒縺ｮ繧ｭ繝ｼ縺ｮ蜷榊燕繧堤ｵｱ荳縺吶ｋ縺溘ａ縺ｮenum
  */
 public enum Key {
+  Z    ("z", KeyEvent.VK_Z),
+  X    ("x", KeyEvent.VK_X),
   UP   ("up",    KeyEvent.VK_UP),
   RIGHT( "right", KeyEvent.VK_RIGHT ),
   DOWN ("down",  KeyEvent.VK_DOWN),
-  LEFT ("left",  KeyEvent.VK_LEFT);
+  LEFT ("left",  KeyEvent.VK_LEFT),
+  SPACE("space", KeyEvent.VK_SPACE),
+  ENTER("enter", KeyEvent.VK_ENTER);
 
   private final String name;
   private final int code;
@@ -23,7 +26,7 @@ public enum Key {
 
   /**
    * getter
-   * @return キーのnameを返す
+   * @return 繧ｭ繝ｼ縺ｮname繧定ｿ斐☆
    */
   public String getName() {
     return name;
@@ -31,9 +34,22 @@ public enum Key {
 
   /**
    * getter
-   * @return キーコードを返す
+   * @return 繧ｭ繝ｼ繧ｳ繝ｼ繝峨ｒ霑斐☆
    */
   public int getCode() {
     return code;
+  }
+
+  /**
+   * 繧ｭ繝ｼ繧ｳ繝ｼ繝峨ｒ繧ゅ→縺ｫenum繧定ｿ斐☆
+   * @return
+   */
+  public static Key searchByCode(int keyCode) {
+    for( Key key : Key.values() ) {
+      if(keyCode == key.getCode()) {
+        return key;
+      }
+    }
+    return null;
   }
 }

@@ -5,10 +5,9 @@ import java.awt.Graphics;
 import game.object.FixedObj;
 
 /**
- * ’n–ÊƒIƒuƒWƒFƒNƒg‚ÌƒX[ƒp[ƒNƒ‰ƒX
- * ƒTƒuƒNƒ‰ƒX‚ÉFlat, Downhill, Uphill‚ğ‚Â
  * @author medysk
- *
+ * åœ°é¢ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚¹ãƒ¼ãƒ‘ãƒ¼ã‚¯ãƒ©ã‚¹
+ * ã‚µãƒ–ã‚¯ãƒ©ã‚¹ã«Flat, Downhill, Uphillã‚’æŒã¤
  */
 public class Ground extends FixedObj {
   // Constructor
@@ -16,15 +15,27 @@ public class Ground extends FixedObj {
     super( positionX, positionY );
     isVisibility = true;
     isDestory = false;
+    canCollision = true;
+    canPassing = false;
     height = 30;
     width = 30;
   }
 
-  /* (”ñ Javadoc)
+  /* (é Javadoc)
    * @see game.object.fixed.Ground#draw(java.awt.Graphics)
    */
   @Override
   public void draw(Graphics g) {
-    g.setColor( new Color(139, 69, 19) );
+    g.setColor( new Color(222, 184, 135) );
   }
+
+  @Override
+  public void event() {}
+
+  /* (é Javadoc)
+   * @see game.object.FixedObj#bottomAction()
+   */
+  @Override
+  public void bottomEvent() {}
+
 }

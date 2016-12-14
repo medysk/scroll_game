@@ -2,67 +2,88 @@ package game;
 
 import java.util.concurrent.TimeUnit;
 
+import javax.swing.JLayeredPane;
+
 import game.Frame;
-import game.FieldPanel;
-import game.object.Obj;
-import game.object.move.player.Character;
-import game.system.FrameManagement;
+import game.select.SelectPanel;
+import game.stage.Stage;
+import game.stage.StagePanel;
 import game.system.KeyState;
-import game.system.Map;
 
-/**
- * ƒvƒƒOƒ‰ƒ€Às—p‚ÌƒNƒ‰ƒX
- * @author medysk
- *
- */
-public class Game implements Runnable {
-  private static Frame frame;           // GUI—p‚ÌƒtƒŒ[ƒ€
-  private static FieldPanel fieldPanel;       // ƒQ[ƒ€•`Ê—p‚ÌƒƒCƒ“ƒpƒlƒ‹
-  private static Character character;   // ©ƒLƒƒƒ‰
-  private static KeyState keyState;     // ƒL[“ü—ÍŠÇ—
-  private static Thread game;           // ƒXƒŒƒbƒh—pƒNƒ‰ƒX
+public class Game {
 
-  // ‰Šú‰»Aİ’èAÀs
+  private static Frame frame;                  // ãƒ•ãƒ¬ãƒ¼ãƒ 
+  private static KeyState keyState;        // ã‚­ãƒ¼å…¥åŠ›ç®¡ç†
+  private static StagePanel stagePanel; // ã‚¹ãƒ†ãƒ¼ã‚¸ãƒ‘ãƒãƒ«
+
   static {
-    Map.create();
     frame = new Frame();
-    fieldPanel = new FieldPanel();
     keyState = new KeyState();
-    fieldPanel.addKeyListener(keyState);
-    character = (Character) Obj.create( new Character( 20, 20, keyState ) ); // TODO: ‰ŠúˆÊ’u‚Íİ’èƒtƒ@ƒCƒ‹‚©‚ç“Ç‚İ‚Ş
-    fieldPanel.setCharacter(character);
+  }
+
+  public static void main(String[] args) {
+    while( true ) {
+      SelectPanel selectPanel = new SelectPanel();
+      frame.addLayer(selectPanel, JLayeredPane.DEFAULT_LAYER);
+
+      Thread selectThread = new Thread(selectPanel);
+      selectThread.start();
+      mainThreadPause(selectThread);
+      frame.removeLayer(selectPanel);
+
+      stagePanel = new StagePanel();
+      String stageFilePath = selectPanel.getSelectedFilePath();
+      Stage stage = new Stage(stageFilePath);
+      stage.setStagePanel(stagePanel);
+      Thread stageThread = new Thread(stage);
+      frame.addLayer(stagePanel, JLayeredPane.DEFAULT_LAYER);
+
+      stageThread.start();
+      mainThreadPause(stageThread);
+      frame.removeLayer(stagePanel);
+    }
   }
 
   /**
-   * Main Method
+   * æ–‡å­—åˆ—ã‚’æå†™
+   * @param msg æ–‡å­—åˆ—
+   * @param x Xåº§æ¨™
+   * @param y Yåº§æ¨™
+   * @param flassing ç‚¹æ»…å›æ•°
+   * @param milliSeconds ç‚¹æ»…æ™‚é–“(ãƒŸãƒªç§’)
    */
-  public static void main(String[] args){
-    FrameManagement.increment();
-    game = new Thread( new Game() );
+  public static void echo( String msg, int x, int y, int flashing, int milliSeconds ) {
+    HeadingPanel headingPanel = new HeadingPanel(msg, x, y);
 
-    frame.setParams( fieldPanel );
-    game.start();
-  }
-
-  /**
-   * ƒXƒŒƒbƒh‚ÌÀ‘•ƒƒ\ƒbƒh
-   * ƒQ[ƒ€‚Ì‹N“_
-   */
-  public void run() {
-
-    while(true) {
-      FrameManagement.increment();
-      character.execute();
-      fieldPanel.repaint();      // ƒƒCƒ“ƒpƒlƒ‹‚ÌÄ•`Ê
-
-      // ƒQ[ƒ€‚Ì‘¬“x‚É‰e‹¿‚·‚éˆ—
-      // TODO: ƒQ[ƒ€‚ÌŠî–{‹@”\‚ğÀ‘•‚µ‚½‚Ì‚¿A’²®‚·‚é ‚Ü‚½Aİ’èƒtƒ@ƒCƒ‹‚©‚ç“Ç‚İ‚Ş
+    for( int i=0; i<flashing * 2; i++ ) {
+      // æ–‡å­—åˆ—ã‚’ç‚¹æ»…ã•ã›ã‚‹
+      if( i % 2 == 0 ) {
+        frame.addLayer(headingPanel, JLayeredPane.POPUP_LAYER);
+      }
       try {
-//        TimeUnit.MILLISECONDS.sleep(15);
-        TimeUnit.MILLISECONDS.sleep(15);
+        TimeUnit.MILLISECONDS.sleep(milliSeconds);
       } catch( InterruptedException e ) {
         e.printStackTrace();
       }
+      frame.removeLayer(headingPanel);
+    }
+    headingPanel = null;
+  }
+
+  /**
+   * @return KeyStateã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
+   */
+  public KeyState getKeyState() {
+    return keyState;
+  }
+
+  // å¼•æ•°ã®ã‚¹ãƒ¬ãƒƒãƒ‰ãŒçµ‚äº†ã™ã‚‹ã¾ã§ãƒ¡ã‚¤ãƒ³ã‚¹ãƒ¬ãƒƒãƒ‰åœæ­¢
+  private static void mainThreadPause( Thread thread ) {
+    try {
+      thread.join();
+    } catch (InterruptedException e) {
+      e.printStackTrace();
     }
   }
+
 }

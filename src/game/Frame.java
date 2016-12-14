@@ -1,32 +1,50 @@
 package game;
 
-import java.awt.Container;
+import java.awt.Dimension;
 
 import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
+import game.config.GameData;
+import game.system.KeyState;
+
 /**
- * GUI用のフレームを作成
  * @author medysk
- *
+ * GUI逕ｨ縺ｮ繝輔Ξ繝ｼ繝繧剃ｽ懈��
  */
 public class Frame extends JFrame {
-  private Container contentPane;
+
+  private JLayeredPane layerPane;
 
   public Frame() {
     setTitle("Horizontal Scroll");
-    contentPane = getContentPane();
-  }
+    layerPane = new JLayeredPane();
+    layerPane.setPreferredSize(
+        new Dimension( GameData.PANEL_WIDTH, GameData.PANEL_HEIGHT ));
 
-  /**
-   * フレーム設定
-   * @param panel ゲーム描写用のパネル貼り付け
-   */
-  public void setParams( JPanel panel) {
-    contentPane.add(panel);
+    getContentPane().add(layerPane);
+
+    addKeyListener(KeyState.getInstance());
 
     setDefaultCloseOperation( EXIT_ON_CLOSE );
     setVisible( true );
     pack();
+  }
+
+  /**
+   * 繝代ロ繝ｫ霑ｽ蜉
+   * @param panel
+   */
+  public void addLayer(JPanel panel, Integer layer) {
+    layerPane.add(panel, layer);
+  }
+
+  /**
+   * 繝代ロ繝ｫ蜑企勁
+   * @param panel
+   */
+  public void removeLayer(JPanel panel) {
+    layerPane.remove(panel);
   }
 }

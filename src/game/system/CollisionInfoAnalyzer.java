@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
-import game.FieldPanel;
+import game.config.GameData;
+import game.object.FixedObj;
 import game.object.MoveObj;
 import game.object.Obj;
 import game.object.Trajectory;
@@ -13,21 +15,21 @@ import game.object.fixed.Downhill;
 import game.object.fixed.Flat;
 import game.object.fixed.Ground;
 import game.object.fixed.Uphill;
+import game.object.move.enemy.Enemy1;
 
 /**
- * CollisionDetection‚©‚ç—˜—p‚·‚éÕ“Ë‚Ì‰ğÍ‚ğs‚¤ƒNƒ‰ƒX
  * @author medysk
- *
+ * CollisionDetectionã‹ã‚‰åˆ©ç”¨ã™ã‚‹è¡çªã®è§£æã‚’è¡Œã†ã‚¯ãƒ©ã‚¹
  */
 public class CollisionInfoAnalyzer {
   /**
-   * Õ“Ë”»’è‚Ìˆ—
+   * è¡çªåˆ¤å®šã®å‡¦ç†
    *
    * @param target
    * @param subject
    */
   public static boolean isCollided( Obj target, Obj subject ) {
-    // Õ“Ë‚µ‚Ä‚¢‚ê‚Î true
+    // è¡çªã—ã¦ã„ã‚Œã° true
     return target.upperLeft().get("x")  < subject.upperRight().get("x") &&
            target.lowerRight().get("x") > subject.lowerLeft().get("x")  &&
            target.upperLeft().get("y")  < subject.lowerLeft().get("y")  &&
@@ -35,32 +37,33 @@ public class CollisionInfoAnalyzer {
   }
 
   /**
-   * Õ“Ëî•ñ‚ÌƒŠƒXƒg‚ğ‚à‚Æ‚ÉÚ×‚ÈÕ“Ëî•ñ‚ğæ“¾‚·‚é
-   * @param target ‘ÎÛƒIƒuƒWƒFƒNƒg
-   * @param ids Õ“Ë‚ğ‹N‚±‚µ‚½”í‘ÎÛƒIƒuƒWƒFƒNƒgID‚ÌƒŠƒXƒg
-   * @return CollisionData‚ÌƒŠƒXƒg‚ğ•Ô‚·
+   * è¡çªæƒ…å ±ã®ãƒªã‚¹ãƒˆã‚’ã‚‚ã¨ã«è©³ç´°ãªè¡çªæƒ…å ±ã‚’å–å¾—ã™ã‚‹
+   * @param target å¯¾è±¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+   * @param ids è¡çªã‚’èµ·ã“ã—ãŸè¢«å¯¾è±¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆIDã®ãƒªã‚¹ãƒˆ
+   * @return CollisionDataã®ãƒªã‚¹ãƒˆã‚’è¿”ã™
    */
   public static List<CollisionData> createCollisionData(MoveObj target, List<String> ids) {
-    // Trajectory‚Ég—p‚·‚é•ª•ê
+    // Trajectoryã«ä½¿ç”¨ã™ã‚‹åˆ†æ¯
     int denominator = Math.abs(target.getVectorX()) > Math.abs(target.getVectorY()) ?
         Math.abs(target.getVectorX()) : Math.abs(target.getVectorY());
+
     int targetMoveCount = 0;
     Obj subject;
-    HashMap<String,Obj> objs = Obj.getInstances();
+    ConcurrentHashMap<String,Obj> objs = Obj.getInstances();
     HashMap<Side,CollisionData> collisionMap = new HashMap<>();
     Trajectory tTrajectory = new Trajectory(target, denominator);
     List<CollisionData> collisionDataList = new ArrayList<>();
     Ground hill = null;
 
-    // ‘ÎÛ‚ÌƒIƒuƒWƒFƒNƒg‚Ì‘O‰ñˆÊ’u‚©‚çˆÚ“®æ‚Ü‚Å‚Ìƒ‹[ƒv
+    // å¯¾è±¡ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å‰å›ä½ç½®ã‹ã‚‰ç§»å‹•å…ˆã¾ã§ã®ãƒ«ãƒ¼ãƒ—
     while( targetMoveCount <= denominator ) {
       HashSet<String> completionIds = new HashSet<>();
       targetMoveCount++;
       tTrajectory.increase();
 
-      // Õ“ËƒŠƒXƒg‚ÌƒIƒuƒWƒFƒNƒg‚ğ„‰ñ‚·‚éƒ‹[ƒv
+      // è¡çªãƒªã‚¹ãƒˆã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å·¡å›ã™ã‚‹ãƒ«ãƒ¼ãƒ—
       for( String id : ids ) {
-        // MoveObj‚Ìê‡target‚Æ“¯‚¶”‚¾‚¯ˆÊ’u‚ği‚ß‚é
+        // MoveObjã®å ´åˆtargetã¨åŒã˜æ•°ã ã‘ä½ç½®ã‚’é€²ã‚ã‚‹
         if( objs.get(id) instanceof MoveObj ) {
           subject = new Trajectory((MoveObj) objs.get(id), denominator);
 
@@ -70,19 +73,19 @@ public class CollisionInfoAnalyzer {
         } else {
           subject = objs.get(id);
         }
-        // Õ“Ë‚ğ‹N‚±‚µ‚Ä‚¢‚½‚ç
+        // è¡çªã‚’èµ·ã“ã—ã¦ã„ãŸã‚‰
         if( isCollided( tTrajectory, subject ) ) {
-          // â‚Í•Ê‚Éˆ—‚·‚é
+          // å‚ã¯åˆ¥ã«å‡¦ç†ã™ã‚‹
           if( objs.get(id) instanceof Uphill || objs.get(id) instanceof Downhill ) {
-            // Õ“Ë‚µ‚½ƒIƒuƒWƒFƒNƒg‚ÌID‚ğ“ü‚ê‚é(ids‚©‚çíœ‚·‚é‚Æ‚«‚Ég‚¤)
+            // è¡çªã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®IDã‚’å…¥ã‚Œã‚‹(idsã‹ã‚‰å‰Šé™¤ã™ã‚‹ã¨ãã«ä½¿ã†)
             completionIds.add(subject.getObjId());
             hill = (Ground)subject;
             continue;
           }
 
-          // Õ“Ë‚µ‚½ƒIƒuƒWƒFƒNƒg‚ÌID‚ğ“ü‚ê‚é(ids‚©‚çíœ‚·‚é‚Æ‚«‚Ég‚¤)
+          // è¡çªã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®IDã‚’å…¥ã‚Œã‚‹(idsã‹ã‚‰å‰Šé™¤ã™ã‚‹ã¨ãã«ä½¿ã†)
           completionIds.add(subject.getObjId());
-          // Õ“ËˆÊ’u‚ğæ“¾
+          // è¡çªä½ç½®ã‚’å–å¾—
           Side side = checkSide(tTrajectory, objs.get(id));
           if( side == null ) { continue; }
 
@@ -94,33 +97,61 @@ public class CollisionInfoAnalyzer {
           }
         }
       }
-      // Õ“ËÏ‚İ‚ÌID‚ğíœ
+      // è¡çªæ¸ˆã¿ã®IDã‚’å‰Šé™¤
       completionIds.forEach( id -> ids.remove(ids.indexOf(id)) );
     }
 
-    // ÅI“I‚ÈˆÊ’u‚ªâ‚¾‚Á‚½‚ç collisionMap ‚Ì BOTTOM ‚ğã‘‚«
+    // æœ€çµ‚çš„ãªä½ç½®ãŒå‚ã ã£ãŸå ´åˆã®å‡¦ç†
     if( hill != null ) {
-      CollisionData data = collisionForHill(tTrajectory, hill);
-      if( data != null ) {
-        collisionMap.put(Side.BOTTOM, data);
+      hillProc(hill, tTrajectory, collisionMap, target);
+    }
 
-        // â‚Ì“o’¸•t‹ß‚Å•Ç‚É‚È‚Á‚Ä‚¢‚È‚¢Flat‚ÉÕ“Ë‚µ‚È‚¢‚æ‚¤‚É‚·‚é
-        Side course = target.getVectorX() < 0 ? Side.LEFT : Side.RIGHT;
-        Side deleteSide = collisionOnGroundAtHill(
-            collisionMap, course, (Ground) data.getSubject() );
-
-        if( deleteSide != null ) {
-          collisionMap.remove(deleteSide);
-        }
-      }
+    // æ•µã‚’è¸ã‚“ã æ™‚ã¯ã‚µã‚¤ãƒ‰ã®æ•µã¨ã®è¡çªã‚’èµ·ã“ã•ãªã„ã‚ˆã†ã«ã™ã‚‹
+    if( collisionMap.containsKey(Side.BOTTOM) &&
+        collisionMap.get(Side.BOTTOM).getSubject() instanceof Enemy1 ) {
+      steppedOnEnemy(collisionMap, Side.LEFT);
+      steppedOnEnemy(collisionMap, Side.RIGHT);
     }
 
     collisionMap.forEach( (k,v) -> collisionDataList.add(v) );
     return collisionDataList;
   }
 
+  // ã‚µã‚¤ãƒ‰ãŒæ•µã¨ã®è¡çªã‚’èµ·ã“ã—ã¦ã„ã‚‹å ´åˆã€å‰Šé™¤
+  private static void steppedOnEnemy(HashMap<Side,CollisionData> collisionMap, Side side) {
+    if( collisionMap.containsKey(side) &&
+        collisionMap.get(side).getSubject() instanceof Enemy1 ) {
+      collisionMap.remove(side);
+    }
+  }
+
+  private static void hillProc(Ground hill, Trajectory tTrajectory,
+      HashMap<Side,CollisionData> collisionMap, MoveObj target) {
+
+    // æœ€çµ‚çš„ãªä½ç½®ãŒå‚ã ã£ãŸã‚‰ collisionMap ã® BOTTOM ã‚’ä¸Šæ›¸ã
+    CollisionData data = collisionForHill(tTrajectory, hill);
+    // å‚ã«ç«‹ã£ã¦ã„ã‚‹å ´åˆã€è¶³å…ƒã®Flatã¨è¡çªã—ãªã„
+    if( collisionMap.containsKey(Side.BOTTOM) &&
+        collisionMap.get(Side.BOTTOM).getSubject() instanceof Flat ) {
+      collisionMap.remove(Side.BOTTOM);
+    }
+
+    if( data != null ) {
+      collisionMap.put(Side.BOTTOM, data);
+
+      // å‚ã®ç™»é ‚ä»˜è¿‘ã§å£ã«ãªã£ã¦ã„ãªã„Flatã«è¡çªã—ãªã„ã‚ˆã†ã«ã™ã‚‹
+      Side course = target.getVectorX() < 0 ? Side.LEFT : Side.RIGHT;
+      Side deleteSide = collisionOnGroundAtHill(
+          collisionMap, course, (Ground) data.getSubject() );
+
+      if( deleteSide != null ) {
+        collisionMap.remove(deleteSide);
+      }
+    }
+  }
+
   /**
-   * â‚ÅFlat‚ÉÕ“Ë‚µ‚Ä‚¢‚é‚©”»•Ê‚·‚é
+   * å‚ã§Groundã«è¡çªã—ã¦ã„ã‚‹ã‹åˆ¤å®šã™ã‚‹
    * @param collisionMap
    * @param side
    * @param lower
@@ -128,12 +159,19 @@ public class CollisionInfoAnalyzer {
    */
   private static Side collisionOnGroundAtHill(
       HashMap<Side,CollisionData> collisionMap, Side side, Ground hill) {
-    if( collisionMap.containsKey(side) ) {
+    // ã‚µã‚¤ãƒ‰ãŒè¡çªã—ã¦ã„ã‚‹ ã‹ã¤ Ground ã¨è¡çªã—ã¦ã„ã‚‹
+    if( collisionMap.containsKey(side) &&
+        collisionMap.get(side).getSubject() instanceof Ground ) {
+
+      int positionY;
       if( collisionMap.get(side).getSubject() instanceof Flat ) {
-        int flatPositionY = collisionMap.get(side).getSubject().upperLeft().get("y");
-        if( flatPositionY <= hill.getPositinY() ) {
-          return side;
-        }
+        positionY = collisionMap.get(side).getSubject().getPositionY();
+      } else {
+        positionY = collisionMap.get(side).getSubject().lowerLeft().get("y");
+      }
+
+      if( positionY >= hill.getPositionY() ) {
+        return side;
       }
     }
     return null;
@@ -144,9 +182,9 @@ public class CollisionInfoAnalyzer {
     int centerSolePositionY = target.upperLeft().get("y") + target.getHeight();
     int centerSoleLimit;
     try {
-      centerSoleLimit = Map.getLowerLimit(centerSolePositionX);
+      centerSoleLimit = LoadStage.getLowerLimit(centerSolePositionX);
     } catch( NullPointerException e ) {
-      centerSoleLimit = FieldPanel.HEIGHT + target.getHeight();
+      centerSoleLimit = GameData.PANEL_WIDTH + target.getHeight();
     }
     if( centerSolePositionY > centerSoleLimit ) {
       return new CollisionData(target.getMoveObj(), subject, Side.BOTTOM,
@@ -183,10 +221,10 @@ public class CollisionInfoAnalyzer {
   }
 
   /**
-   * Õ“Ë‚µ‚½‘¤–Ê‚ğ’²‚×‚é
-   * @param target ‘ÎÛƒIƒuƒWƒFƒNƒg
-   * @param subject ”í‘ÎÛƒIƒuƒWƒFƒNƒg
-   * @return SideŒ^(enum)‚Å•Ô‚· ”»’è‚Å‚«‚È‚¢ê‡‚Í null ‚ğ•Ô‚·
+   * è¡çªã—ãŸå´é¢ã‚’èª¿ã¹ã‚‹
+   * @param target å¯¾è±¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+   * @param subject è¢«å¯¾è±¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+   * @return Sideå‹(enum)ã§è¿”ã™ åˆ¤å®šã§ããªã„å ´åˆã¯ null ã‚’è¿”ã™
    */
   private static Side checkSide( Obj target, Obj subject ) {
     int xLength;
@@ -194,7 +232,7 @@ public class CollisionInfoAnalyzer {
     boolean isRight;
     boolean isTop;
 
-    // Õ“Ë‚µ‚½”ÍˆÍ‚ğæ“¾
+    // è¡çªã—ãŸç¯„å›²ã‚’å–å¾—
     if( target.upperLeft().get("x") < subject.upperLeft().get("x") ) {
       isRight = true;
       xLength = target.upperRight().get("x") - subject.upperLeft().get("x");
@@ -211,20 +249,25 @@ public class CollisionInfoAnalyzer {
       yLength = subject.lowerLeft().get("y") - target.upperLeft().get("y");
     }
 
-    if( xLength <= 1 && yLength <= 1 ) { return null; }
+    // è¡çªã—ãŸç¯„å›²ãŒç‹­ã„å ´åˆã«ç„¡åŠ¹ã«ã™ã‚‹
+    if( subject instanceof MoveObj ) {
+      if( xLength <= 1 && yLength <= 1 ) { return null; }
+    } else if( subject instanceof FixedObj ) {
+      if( xLength <= 7 && yLength <= 1 ) { return null; }
+    }
 
-    // Õ“Ë‚µ‚½ƒTƒCƒh‚ğ•Ô‚·
+    // è¡çªã—ãŸã‚µã‚¤ãƒ‰ã‚’è¿”ã™
     if( isRight ) {
       if( isTop ) {
-        return xLength < yLength ? Side.RIGHT : Side.TOP;
+        return xLength <= yLength ? Side.RIGHT : Side.TOP;
       } else {
-        return xLength < yLength ? Side.RIGHT : Side.BOTTOM;
+        return xLength <= yLength ? Side.RIGHT : Side.BOTTOM;
       }
     } else {
       if( isTop ) {
-        return xLength < yLength ? Side.LEFT : Side.TOP;
+        return xLength <= yLength ? Side.LEFT : Side.TOP;
       } else {
-        return xLength < yLength ? Side.LEFT : Side.BOTTOM;
+        return xLength <= yLength ? Side.LEFT : Side.BOTTOM;
       }
     }
   }

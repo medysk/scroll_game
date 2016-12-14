@@ -5,57 +5,88 @@ import java.awt.event.KeyListener;
 import java.util.HashMap;
 
 /**
- * ƒL[ƒCƒxƒ“ƒg‚ğ‚à‚Æ‚ÉŒ»İ‚ÌƒL[‚Ìó‘Ô‚ğ•Û‚·‚éƒNƒ‰ƒX
  * @author medysk
- *
+ * ã‚­ãƒ¼ã‚¤ãƒ™ãƒ³ãƒˆã‚’ã‚‚ã¨ã«ç¾åœ¨ã®ã‚­ãƒ¼ã®çŠ¶æ…‹ã‚’ä¿æŒã™ã‚‹ã‚¯ãƒ©ã‚¹
  */
 public class KeyState implements KeyListener {
-  private HashMap<String, Boolean> keyState;
+  private HashMap<String, Boolean> keyStatus;
+  private static KeyState keyState;
 
+  static {
+    keyState = new KeyState();
+  }
+
+  /**
+   * ã‚­ãƒ¼ã‚¹ãƒ†ãƒ¼ãƒˆã‚’ç”Ÿæˆã™ã‚‹
+   */
   public KeyState() {
-    keyState = new HashMap<String, Boolean>();
+    keyStatus = new HashMap<String, Boolean>();
 
     for( Key key: Key.values() ) {
-      keyState.put( key.getName(), false );
+      keyStatus.put( key.getName(), false );
     }
   }
 
-  /* (”ñ Javadoc)
+  /* (é Javadoc)
    * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
    */
   public void keyPressed( KeyEvent e ) {
-    switch( e.getKeyCode() ) {
-      case KeyEvent.VK_UP :
-        keyState.put( Key.UP.getName(), true );
+    switch( Key.searchByCode( e.getKeyCode() ) ) {
+      case X :
+        keyStatus.put( Key.X.getName(), true );
+          break;
+      case Z :
+        keyStatus.put( Key.Z.getName(), true );
+          break;
+      case UP:
+        keyStatus.put( Key.UP.getName(), true );
         break;
-      case KeyEvent.VK_RIGHT :
-        keyState.put( Key.RIGHT.getName(), true );
+      case RIGHT :
+        keyStatus.put( Key.RIGHT.getName(), true );
         break;
-      case KeyEvent.VK_DOWN :
-        keyState.put( Key.DOWN.getName(), true );
+      case DOWN :
+        keyStatus.put( Key.DOWN.getName(), true );
         break;
-      case KeyEvent.VK_LEFT :
-        keyState.put( Key.LEFT.getName(), true );
+      case LEFT :
+        keyStatus.put( Key.LEFT.getName(), true );
         break;
+      case SPACE :
+        keyStatus.put( Key.SPACE.getName(), true );
+          break;
+      case ENTER :
+        keyStatus.put( Key.ENTER.getName(), true );
+          break;
     }
   }
 
-  /* (”ñ Javadoc)
+  /* (é Javadoc)
    * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
    */
   public void keyReleased( KeyEvent e ) {
-    switch( e.getKeyCode() ) {
-      case KeyEvent.VK_UP :
-        keyState.put( Key.UP.getName(), false );
+    switch( Key.searchByCode( e.getKeyCode() ) ) {
+    case X :
+      keyStatus.put( Key.X.getName(), false );
         break;
-      case KeyEvent.VK_RIGHT :
-        keyState.put( Key.RIGHT.getName(), false );
+    case Z :
+      keyStatus.put( Key.Z.getName(), false );
         break;
-      case KeyEvent.VK_DOWN :
-        keyState.put( Key.DOWN.getName(), false );
+    case UP:
+      keyStatus.put( Key.UP.getName(), false );
+      break;
+    case RIGHT :
+      keyStatus.put( Key.RIGHT.getName(), false );
+      break;
+    case DOWN :
+      keyStatus.put( Key.DOWN.getName(), false );
+      break;
+    case LEFT :
+      keyStatus.put( Key.LEFT.getName(), false );
+      break;
+    case SPACE :
+      keyStatus.put( Key.SPACE.getName(), false );
         break;
-      case KeyEvent.VK_LEFT :
-        keyState.put( Key.LEFT.getName(), false );
+    case ENTER :
+      keyStatus.put( Key.ENTER.getName(), false );
         break;
     }
   }
@@ -63,19 +94,44 @@ public class KeyState implements KeyListener {
   public void keyTyped( KeyEvent e ) {}
 
   /**
-   * ”CˆÓ‚ÌƒL[‚Ìó‘Ô‚ğ•Ô‚·
-   * @param keyName Key(enum)‚Ìname‚ğ“n‚·
-   * @return true: ƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚é false: ƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚È‚¢
+   * å…¨ã¦ã®ã‚­ãƒ¼ã‚¹ãƒ†ãƒ¼ãƒˆã‚’ã‚¯ãƒªã‚¢ï¼ˆfalseï¼‰ã™ã‚‹
    */
-  public boolean isKeyPressed( String keyName ) {
-    return keyState.get( keyName );
+  public void clearAll() {
+    keyStatus.forEach( (k,v) -> {
+      keyStatus.put( k, false );
+    });
   }
 
   /**
-   * ‘S‚Ä‚ÌƒL[‚Ìó‘Ô‚ğ•Ô‚·
-   * @return keyName( Key(enum)‚Ìname ), ƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚ê‚Îtrue
+   * æŒ‡å®šã—ãŸã‚­ãƒ¼ã‚¹ãƒ†ãƒ¼ãƒˆã‚’ã‚¯ãƒªã‚¢ï¼ˆfalseï¼‰ã™ã‚‹
+   * @param key
+   */
+  public void clear( Key key ) {
+    keyStatus.put( key.getName(), false );
+  }
+
+  /**
+   * ä»»æ„ã®ã‚­ãƒ¼ã®çŠ¶æ…‹ã‚’è¿”ã™
+   * @param keyName Key(enum)ã®nameã‚’æ¸¡ã™
+   * @return true: ã‚­ãƒ¼ãŒæŠ¼ã•ã‚Œã¦ã„ã‚‹ false: ã‚­ãƒ¼ãŒæŠ¼ã•ã‚Œã¦ã„ãªã„
+   */
+  public boolean isKeyPressed( Key key ) {
+    return keyStatus.get( key.getName() );
+  }
+
+  /**
+   * å…¨ã¦ã®ã‚­ãƒ¼ã®çŠ¶æ…‹ã‚’è¿”ã™
+   * @return keyName( Key(enum)ã®name ), ã‚­ãƒ¼ãŒæŠ¼ã•ã‚Œã¦ã„ã‚Œã°true
    */
   public HashMap<String, Boolean> getKeyState() {
+    return keyStatus;
+  }
+
+  /**
+   * ã‚­ãƒ¼ã‚¹ãƒ†ãƒ¼ãƒˆã®å–å¾—
+   * @return
+   */
+  public static KeyState getInstance() {
     return keyState;
   }
 }

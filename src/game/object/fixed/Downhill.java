@@ -3,9 +3,8 @@ package game.object.fixed;
 import java.awt.Graphics;
 
 /**
- * ‰º‚èâƒIƒuƒWƒFƒNƒg
  * @author medysk
- *
+ * ä¸‹ã‚Šå‚ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
  */
 public class Downhill extends Ground {
 
@@ -13,7 +12,7 @@ public class Downhill extends Ground {
     super( positionX, positionY );
   }
 
-  /* (”ñ Javadoc)
+  /* (é Javadoc)
    * @see game.object.fixed.Ground#draw(java.awt.Graphics)
    */
   @Override
