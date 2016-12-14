@@ -66,7 +66,6 @@ public class Game {
         e.printStackTrace();
       }
       frame.removeLayer(headingPanel);
-      stagePanel.repaint();
     }
     headingPanel = null;
   }
